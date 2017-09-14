@@ -8,22 +8,27 @@
               :startY="0"
               @pullingDown="onPullingDown"
               @pullingUp="onPullingUp">
-           	<router-link tag="div" class="list" v-for="item in list" :key="item.id" :to="{name: 'projectDetail',query: {id: item.id}}">
+           	<div class="list vux-1px-b" v-for="item in list" :key="item.id">
            		<div class="mask">
            			<span class="time" v-text="'截止时间：'+item.time"></span>
            		</div>
            		<img class="main-img" :src="item.url" v-if="item.url">
            		<img class="main-img" src="../../static/images/default.png" v-else>
-           		<group gutter="-5px">
-	      			<cell :title="item.title"></cell>
-			    </group>
-           	</router-link>
+			    <div class="content">
+			    	<p class="title" v-text="item.title"></p>
+			    	<div class="options">
+			    		<Options v-for="(option,i) in item.options" :data="option" :index="i" :selected="selectedOption.key" :key="option.key" @selectOption="selectOption"></Options>
+			    	</div>
+			    	<BettingBox :isShow="item.options.indexOf(selectedOption)>-1" @select="selectNum"></BettingBox>
+			    </div>
+           	</div>
       	</Scroll>
 	</div>
 </template>
 <script>
-	import Scroll from './Common/Scroll.vue'
-	import {Group,Cell} from 'vux'
+	import Scroll from './Common/Scroll'
+	import Options from './Common/Option'
+	import BettingBox from './Common/BettingBox'
 	export default {
 	  	data () {
 	    	return {
@@ -40,6 +45,9 @@
 		        scrollToTime: 700,
 		        scrollToEasing: 'bounce',
 		        scrollToEasingOptions: ['bounce', 'swipe', 'swipeBounce'],
+
+		        selectedOption: {},
+		        selectedNum: '',
 	    	}
 	  	},
 	  	computed: {
@@ -51,7 +59,7 @@
 	      	},
 	      	pullUpLoadObj() {
 	        	return this.pullUpLoad ? {threshold: parseInt(this.pullUpLoadThreshold), txt: {more: this.pullUpLoadMoreTxt, noMore: this.pullUpLoadNoMoreTxt}} : false
-	      	}
+	      	},
 	    },
 	    watch: {
 	      	pullDownRefreshObj() {
@@ -99,12 +107,20 @@
 		          this.$refs.scroll.destroy()
 		          this.$refs.scroll.initScroll()
 		        })
+	      	},
+	      	selectOption(data) {
+	      		console.log(JSON.stringify(data));
+	      		this.selectedOption = data;
+	      	},
+	      	selectNum(data) {
+	      		console.log(JSON.stringify(data));
+	      		this.selectedNum = data.key;
 	      	}
 		},
 	  	components: {
 	  		Scroll,
-			Group,
-			Cell,
+	  		Options,
+	  		BettingBox
 		}
 	}
 </script>
@@ -138,6 +154,14 @@
 					// border 1px solid rgba(255,255,255,.5)
 					border-left 0
 			.main-img
+				display block
 				width 100%
 				height 180px
+			.content
+				width 100%
+				padding 5px 15px
+				background-color #fff
+				.title
+					font-size 17px
+					line-height 160%
 </style>

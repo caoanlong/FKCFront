@@ -6,16 +6,19 @@
         "time": "2017年10月1日",
         "options": [
             {
-                "id": "llkksjjflk",
-                "value": "今夏转会皇马"
+                "key": "llkksjjflk",
+                "value": "今夏转会皇马",
+                "odd": "2.10"
             },
             {
-                "id": "llkkrtjflk",
-                "value": "下赛季依然留在曼联"
+                "key": "llkkrtjflk",
+                "value": "下赛季依然留在曼联",
+                "odd": "3.70"
             },
             {
-                "id": "lkkksjjflk",
-                "value": "下赛季转会其他球队"
+                "key": "lkkksjjflk",
+                "value": "下赛季转会其他球队",
+                "odd": "1.50"
             }
         ]
     },
@@ -26,16 +29,19 @@
         "time": "2017年12月1日",
         "options": [
             {
-                "id": "llkksjjiok",
-                "value": "今夏转会皇马"
+                "key": "llkksjjiok",
+                "value": "今夏转会皇马",
+                "odd": "1.20"
             },
             {
-                "id": "llkksjjjkl",
-                "value": "下赛季依然留在曼联"
+                "key": "llkksjjjkl",
+                "value": "下赛季依然留在曼联",
+                "odd": "2.40"
             },
             {
-                "id": "llertjjflk",
-                "value": "下赛季转会其他球队"
+                "key": "llertjjflk",
+                "value": "下赛季转会其他球队",
+                "odd": "4.70"
             }
         ]
     },
@@ -46,16 +52,19 @@
         "time": "2018年2月4日",
         "options": [
             {
-                "id": "llkksjkldu",
-                "value": "今夏转会皇马"
+                "key": "llkksjkldu",
+                "value": "今夏转会皇马",
+                "odd": "3.30"
             },
             {
-                "id": "poplkjjflk",
-                "value": "下赛季依然留在曼联"
+                "key": "poplkjjflk",
+                "value": "下赛季依然留在曼联",
+                "odd": "1.40"
             },
             {
-                "id": "llkksjhytf",
-                "value": "下赛季转会其他球队"
+                "key": "llkksjhytf",
+                "value": "下赛季转会其他球队",
+                "odd": "2.60"
             }
         ]
     },
@@ -66,16 +75,19 @@
         "time": "2018年4月3日",
         "options": [
             {
-                "id": "llk8uyjflk",
-                "value": "今夏转会皇马"
+                "key": "llk8uyjflk",
+                "value": "今夏转会皇马",
+                "odd": "5.30"
             },
             {
-                "id": "llkksjj0p3",
-                "value": "下赛季依然留在曼联"
+                "key": "llkksjj0p3",
+                "value": "下赛季依然留在曼联",
+                "odd": "3.20"
             },
             {
-                "id": "llkikmjflk",
-                "value": "下赛季转会其他球队"
+                "key": "llkikmjflk",
+                "value": "下赛季转会其他球队",
+                "odd": "1.70"
             }
         ]
     },
@@ -86,16 +98,19 @@
         "time": "2018年6月1日",
         "options": [
             {
-                "id": "3esdsjjflk",
-                "value": "今夏转会皇马"
+                "key": "3esdsjjflk",
+                "value": "今夏转会皇马",
+                "odd": "3.60"
             },
             {
-                "id": "llkksjjocf",
-                "value": "下赛季依然留在曼联"
+                "key": "llkksjjocf",
+                "value": "下赛季依然留在曼联",
+                "odd": "1.90"
             },
             {
-                "id": "llkksjjf0p",
-                "value": "下赛季转会其他球队"
+                "key": "llkksjjf0p",
+                "value": "下赛季转会其他球队",
+                "odd": "2.80"
             }
         ]
     }
