@@ -6,6 +6,8 @@ import router from './router'
 import App from './App'
 import vueResource from 'vue-resource'
 import Vuex from 'vuex'
+import  { AlertPlugin } from 'vux'
+Vue.use(AlertPlugin)
 //配置vuex
 Vue.use(Vuex);
 Vue.use(vueResource);

@@ -30,9 +30,24 @@ export default new Router({
       component: resolve => require(['@/components/Register'], resolve)
     },
     {
-      path: '/mine',
-      name: 'mine',
-      component: resolve => require(['@/components/Mine'], resolve)
+      path: '/my',
+      name: 'my',
+      component: resolve => require(['@/components/My'], resolve)
+    },
+    {
+      path: '/getGoldBean',
+      name: 'getGoldBean',
+      component: resolve => require(['@/components/GetGoldBean'], resolve)
+    },
+    {
+      path: '/myGuess',
+      name: 'myGuess',
+      component: resolve => require(['@/components/MyGuess'], resolve)
+    },
+    {
+      path: '/accountDetail',
+      name: 'accountDetail',
+      component: resolve => require(['@/components/AccountDetail'], resolve)
     }
   ]
 })

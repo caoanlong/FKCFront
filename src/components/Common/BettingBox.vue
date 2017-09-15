@@ -12,10 +12,11 @@
 		<div class="size">
 			<div class="option" :class="{'active': selected == opt}" v-for="opt in option" v-text="opt.value" @click="selectSize(opt)"></div>
 		</div>		    		
-		<button class="bettingBtn" :class="{'disabled': !selected}" :disabled="!selected">投注</button>		    		
+		<button class="bettingBtn" :class="{'disabled': !selected}" :disabled="!selected" @click="betting()">投注</button>
 	</div>
 </template>
 <script>
+	import {Alert} from 'vux'
 	export default {
 		props: {
 			isShow: {
@@ -35,14 +36,29 @@
 		    		key: '1000',
 		    		value: 1000
 		    	},],
-		    	selected: null
+		    	selected: null,
 		    }
 		},
 		methods: {
 			selectSize(option) {
 				this.selected = option;
 				this.$emit('select',option);
+			},
+			betting() {
+				this.$vux.alert.show({
+			        title: '恭喜',
+			        content: '投注成功',
+			        onShow () {
+			          	console.log('Plugin: I\'m showing')
+			        },
+			        onHide () {
+			          	console.log('Plugin: I\'m hiding now')
+			        }
+		      	})
 			}
+		},
+		components:{
+			Alert
 		}
 	}
 </script>

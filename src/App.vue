@@ -2,8 +2,8 @@
   	<div class="container">
   		<x-header class="header">
   			<span v-text="title"></span>
-      		<a slot="overwrite-left" class="icon-people" v-if="!isCome"></a>
-      		<a slot="right" class="icon-add" v-if="isAdd"></a>
+      		<router-link :to="{name:'my'}" slot="overwrite-left" class="icon-people" v-if="!isCome"></router-link>
+      		<router-link to="" slot="right" class="icon-add" v-if="isAdd"></router-link>
   		</x-header>
     	<router-view></router-view>
   	</div>
