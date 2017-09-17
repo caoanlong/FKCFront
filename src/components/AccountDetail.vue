@@ -1,5 +1,5 @@
 <template>
-  	<div>
+  	<div class="account">
       <group title="金豆明细记录（近三月）">
         <cell v-for="(item,i) in 7" :key="i">
           <div slot="title">
@@ -35,4 +35,9 @@ export default {
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+  .account
+    width 100%
+    position absolute
+    top 46px
+    left 0
 </style>

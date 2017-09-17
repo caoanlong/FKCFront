@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="my">
 	  	<div class="profile">
 	  		<div class="head">
 	  			<img src="../assets/img/avatar.svg">
@@ -39,20 +39,25 @@
 	}
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-	.profile
+	.my
 		width 100%
-		height 140px
-		padding-top 20px
-		background-color #35495e
-		.head
-			width 80px
-			height 80px
-			border-radius 40px
-			background-color #fff
-			padding 1px
-			margin 0 auto
-			img
-				display block
-				width 100%
-				height 100%
+		position absolute
+		left 0
+		top 46px
+		.profile
+			width 100%
+			height 140px
+			padding-top 20px
+			background-color #35495e
+			.head
+				width 80px
+				height 80px
+				border-radius 40px
+				background-color #fff
+				padding 1px
+				margin 0 auto
+				img
+					display block
+					width 100%
+					height 100%
 </style>

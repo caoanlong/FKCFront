@@ -3,14 +3,14 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-export default new Router({
+var router = new Router({
   routes: [
     { 
       path: '*', 
       redirect: {name: 'home'}
     },
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: resolve => require(['@/components/Home'], resolve)
     },
@@ -20,9 +20,12 @@ export default new Router({
       component: resolve => require(['@/components/ProjectDetail'], resolve)
     },
     {
-      path: '/login',
+      path: '/',
       name: 'login',
-      component: resolve => require(['@/components/Login'], resolve)
+      component: resolve => require(['@/components/Login'], resolve),
+      meta: {
+        loginout: true
+      }
     },
     {
       path: '/register',
@@ -50,4 +53,21 @@ export default new Router({
       component: resolve => require(['@/components/AccountDetail'], resolve)
     }
   ]
-})
+});
+//刷新页面重新从缓存中获取会员信息
+// if (localStorage.getItem('memberInfo')) {
+//     store.commit('login',localStorage.getItem('memberInfo'));
+// };
+
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.loginout) {
+//     if (store.state.memberInfo) {
+//       next({name: 'Home'});
+//     }else {
+//       next();
+//     }
+//   }else {
+//     next()
+//   }
+// });
+export default router
