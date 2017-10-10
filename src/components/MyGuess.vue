@@ -3,7 +3,7 @@
       <tab class="tab">
         <tab-item selected @on-item-click="">全部</tab-item>
         <tab-item @on-item-click="">待开奖</tab-item>
-        <tab-item @on-item-click="">猜中</tab-item>
+        <tab-item @on-item-click="">已开奖</tab-item>
       </tab>
       <div>
         <group gutter="10px" v-for="item in list" :key="item.title">

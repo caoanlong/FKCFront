@@ -1,5 +1,5 @@
 <template>
-  	<div>
+  	<div class="main">
   		<group>
 	      	<x-input title="手机号" name="mobile" placeholder="请输入手机号码" keyboard="number"></x-input>
 	      	<x-input title="验证码" class="weui-vcode">
@@ -40,4 +40,10 @@
 	}
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+	.main
+		position absolute
+		top 46px
+		left 0
+		right 0
+		bottom 0px
 </style>
