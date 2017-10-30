@@ -5,40 +5,50 @@ import FastClick from 'fastclick'
 import router from './router'
 import App from './App'
 import vueResource from 'vue-resource'
-import Vuex from 'vuex'
-import  { AlertPlugin } from 'vux'
+import store from './store/store'
+import Vuelidate from 'vuelidate'
+import common from './assets/js/common'
+import  { AlertPlugin,ToastPlugin } from 'vux'
+Vue.use(Vuelidate)
 Vue.use(AlertPlugin)
-//配置vuex
-Vue.use(Vuex);
-Vue.use(vueResource);
+Vue.use(ToastPlugin)
 
-FastClick.attach(document.body);
+Vue.use(vueResource)
+Vue.use(common)
 
-Vue.config.productionTip = false;
+FastClick.attach(document.body)
 
-const vuexStore = new Vuex.Store({
-	state: {
-		title: '',
-		isCome: false,
-		isAdd: true,
-	},
-	mutations: {
-		changeTitle(state,obj) {
-			state.title = obj.title;
-			state.isCome = obj.isCome;
-			state.isAdd = obj.isAdd;
+Vue.config.productionTip = false
+
+Vue.http.interceptors.push((request, next) => {
+	let token = localStorage.getItem('token')
+	request.headers.set('X-Access-Token', token)
+	next((resbonse) => {
+		if (resbonse.body.code == 1001 || resbonse.body.code == 1002 || resbonse.body.code == 1003) {
+			localStorage.removeItem('token')
+			window.location.href = '/#/login'
 		}
-	},
-	actions: {
-		changeTitleAsync(context,obj) {
-			context.commit('changeTitle',obj);
-		}
+	})
+})
+
+Vue.filter('getdatefromtimestamp', function(value, bool) {
+	var now = new Date(Number(value))
+	var year = now.getFullYear(); 
+	var month = now.getMonth()+1<10?'0'+(now.getMonth()+1):now.getMonth()+1; 
+	var date = now.getDate()<10?'0'+now.getDate():now.getDate(); 
+	var hour = now.getHours()<10?'0'+now.getHours():now.getHours(); 
+	var minute = now.getMinutes()<10?'0'+now.getMinutes():now.getMinutes(); 
+	var second = now.getSeconds()+'0';
+	if (bool) {
+		return year+"-"+month+"-"+date+"-";
+	}else {
+		return year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
 	}
 })
 
 /* eslint-disable no-new */
 new Vue({
-  router,
-  store: vuexStore,
-  render: h => h(App)
+	router,
+	store: store,
+	render: h => h(App)
 }).$mount('#app-box')

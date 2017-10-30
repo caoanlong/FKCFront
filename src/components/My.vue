@@ -6,8 +6,8 @@
 	  		</div>
 	  	</div>
 	  	<group gutter="0">
-	    	<cell title="我的手机" value="13049497395"></cell>
-	    	<cell title="我的金豆" value="13987" is-link :link="{name: 'getGoldBean'}"></cell>
+	    	<cell title="我的手机" :value="memberInfo.mobile"></cell>
+	    	<cell title="我的金豆" :value="memberInfo.goldBean" is-link :link="{name: 'getGoldBean'}"></cell>
 	  	</group>
 	  	<group>
 	    	<cell title="我的竞猜" is-link :link="{name: 'myGuess'}"></cell>
@@ -16,13 +16,18 @@
 	  	<group>
 	    	<cell title="分享给好友" is-link link=""></cell>
 	  	</group>
+	  	<box gap="20px 10px">
+	    	<x-button type="warn" @click.native="signout">退出</x-button>
+	  	</box>
   	</div>
 </template>
 <script>
-	import { Group,Cell } from 'vux'
+	import { Group,Cell,XButton,Box } from 'vux'
 	export default {
 		data () {
-		    return {}
+		    return {
+		    	memberInfo: {}
+		    }
 		},
 		created() {
 	  		this.$store.commit({
@@ -31,10 +36,28 @@
 	  			isCome: true,
 	  			isAdd: false,
 	  		})
+	  		this.getMemberInfo()
+	  	},
+	  	methods: {
+	  		getMemberInfo() {
+	  			let URL = this.__WEBSERVERURL__ + '/api/member/info';
+	  			this.$http.post(URL).then((res) => {
+	  				if (res.body.code == 0) {
+	  					this.memberInfo = res.body.data
+	  				}
+	  				console.log(JSON.stringify(res.body.data));
+	  			})
+	  		},
+	  		signout() {
+	  			localStorage.clear();
+	  			this.$router.push({name: 'login'})
+	  		}
 	  	},
 	  	components: {
 	  		Group,
-	  		Cell
+	  		Cell,
+	  		XButton,
+	  		Box
 	  	}
 	}
 </script>

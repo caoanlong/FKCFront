@@ -3,7 +3,7 @@
 		<div class="mine">
 			<div class="mineBean">
 				<p>我的金豆</p>
-				<p>16784</p>
+				<p>{{memberInfo.goldBean}}</p>
 			</div>
 			<div class="add">
 				<img class="icon" src="../../assets/img/add.svg"/>
@@ -22,6 +22,12 @@
 			isShow: {
 				type: Boolean,
 				default: false
+			},
+			selectOpt: {
+				type: Object
+			},
+			projectId: {
+				type: String
 			}
 		},
 		data () {
@@ -36,8 +42,13 @@
 		    		key: '1000',
 		    		value: 1000
 		    	},],
-		    	selected: null,
+		    	selected: null
 		    }
+		},
+		computed: {
+			memberInfo() {
+				return this.$store.state.memberInfo
+			}
 		},
 		methods: {
 			selectSize(option) {
@@ -45,17 +56,44 @@
 				this.$emit('select',option);
 			},
 			betting() {
-				this.$vux.alert.show({
-			        title: '恭喜',
-			        content: '投注成功',
-			        onShow () {
-			          	console.log('Plugin: I\'m showing')
-			        },
-			        onHide () {
-			          	console.log('Plugin: I\'m hiding now')
-			        }
-		      	})
-			}
+				let URL = this.__WEBSERVERURL__ + '/api/project/betting';
+				let params = {
+					goldBeanNum: this.selected.value,
+					projectId: this.projectId,
+					projectOption: this.selectOpt
+				}
+				console.log(JSON.stringify(params))
+				var that = this;
+	  			this.$http.post(URL,params).then((res) => {
+	  				console.log(JSON.stringify(res.body));
+	  				if (res.body.code == 0) {
+	  					this.$vux.alert.show({
+					        title: '恭喜',
+					        content: '投注成功',
+					        onShow () {
+					          	that.getMemberInfo()
+					        },
+					        onHide () {
+					          	console.log('Plugin: I\'m hiding now')
+					        }
+				      	})
+	  				}else {
+	  					this.$vux.toast.text(res.body.msg,'middle')
+	  				}
+	  			})
+			},
+			getMemberInfo() {
+	  			let URL = this.__WEBSERVERURL__ + '/api/member/info';
+	  			this.$http.post(URL).then((res) => {
+	  				if (res.body.code == 0) {
+	  					console.log(JSON.stringify(res.body.data))
+	  					this.$store.commit({
+	  						type: 'getMemberInfo',
+	  						memberInfo: res.body.data
+	  					})
+	  				}
+	  			})
+	  		},
 		},
 		components:{
 			Alert

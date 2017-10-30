@@ -8,18 +8,18 @@
               :startY="0"
               @pullingDown="onPullingDown"
               @pullingUp="onPullingUp">
-           	<div class="list vux-1px-b" v-for="item in list" :key="item.id">
+           	<div class="list vux-1px-b" v-for="item in list" :key="item._id">
            		<div class="mask">
-           			<span class="time" v-text="'截止时间：'+item.time"></span>
+           			<span class="time">截止时间：{{item.endTime|getdatefromtimestamp}}</span>
            		</div>
-           		<img class="main-img" :src="item.url" v-if="item.url">
+           		<img class="main-img" :src="'http://127.0.0.1:3000'+item.imgUrl" v-if="item.imgUrl">
            		<img class="main-img" src="../../static/images/default.png" v-else>
 			    <div class="content">
-			    	<p class="title" v-text="item.title"></p>
+			    	<p class="title" v-text="item.name"></p>
 			    	<div class="options">
-			    		<Options v-for="(option,i) in item.options" :data="option" :index="i" :selected="selectedOption.key" :key="option.key" @selectOption="selectOption"></Options>
+			    		<Options v-for="(option,i) in item.options" :data="option" :index="i" :selected="selectedOption.content" :key="option.content" @selectOption="selectOption"></Options>
 			    	</div>
-			    	<BettingBox :isShow="item.options.indexOf(selectedOption)>-1" @select="selectNum"></BettingBox>
+			    	<BettingBox :projectId="item._id.toString()" :selectOpt="selectedOption" :isShow="item.options.indexOf(selectedOption)>-1" @select="selectNum"></BettingBox>
 			    </div>
            	</div>
       	</Scroll>
@@ -33,6 +33,7 @@
 	  	data () {
 	    	return {
 	    		list: [],
+	    		memberInfo: {},
 	    		pullDownRefresh: true,
 		        pullDownRefreshThreshold: 90,
 		        pullDownRefreshStop: 72,
@@ -77,13 +78,27 @@
 	  			isAdd: true,
 	  		})
 	  		this.getProjectList();
+	  		this.getMemberInfo();
 	  	},
 	  	methods: {
 	  		getProjectList() {
-	  			let URL = "../../static/data/json/projectList.json";
+	  			let URL = this.__WEBSERVERURL__ + '/api/project';
 	  			this.$http.get(URL).then((res) => {
-	  				// console.log(JSON.stringify(res.body));
-	  				this.list = res.body;
+	  				console.log(JSON.stringify(res.body));
+	  				this.list = res.body.data.projectList;
+	  			})
+	  		},
+	  		getMemberInfo() {
+	  			let URL = this.__WEBSERVERURL__ + '/api/member/info';
+	  			this.$http.post(URL).then((res) => {
+	  				if (res.body.code == 0) {
+	  					console.log(JSON.stringify(res.body.data))
+	  					this.memberInfo = res.body.data;
+	  					this.$store.commit({
+	  						type: 'getMemberInfo',
+	  						memberInfo: res.body.data
+	  					})
+	  				}
 	  			})
 	  		},
 	  		onPullingDown() {
@@ -114,7 +129,7 @@
 	      	},
 	      	selectNum(data) {
 	      		console.log(JSON.stringify(data));
-	      		this.selectedNum = data.key;
+	      		this.selectedNum = data.content;
 	      	}
 		},
 	  	components: {

@@ -1,5 +1,5 @@
 <template>
-  	<div class="item" :class="{'active': selected == data.key}" @click="changeOption(data)">
+  	<div class="item" :class="{'active': selected == data.content}" @click="changeOption(data)">
 		<span class="tag" v-if="index == 0">A</span>
 		<span class="tag" v-if="index == 1">B</span>
 		<span class="tag" v-if="index == 2">C</span>
@@ -10,8 +10,8 @@
 		<span class="tag" v-if="index == 7">H</span>
 		<span class="tag" v-if="index == 8">I</span>
 		<span class="tag" v-if="index == 9">J</span>
-		<span class="tx" v-text="data.value"></span>
-		<span class="odds">赔率{{data.odd}}</span>
+		<span class="tx" v-text="data.content"></span>
+		<span class="odds">赔率{{data.odds}}</span>
 	</div>
 </template>
 <script>
