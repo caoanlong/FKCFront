@@ -1,89 +1,41 @@
 <template>
   	<div class="myguess">
-      <tab class="tab">
-        <tab-item selected @on-item-click="">全部</tab-item>
-        <tab-item @on-item-click="">待开奖</tab-item>
-        <tab-item @on-item-click="">已开奖</tab-item>
-      </tab>
-      <div>
-        <group gutter="10px" v-for="item in list" :key="item.title">
-          <cell :title="item.title" :value="item.status"></cell>
-          <cell-form-preview :list="item.list"></cell-form-preview>
-        </group>
-      </div>
+        <tab class="tab">
+            <tab-item selected @on-item-click="">全部</tab-item>
+            <tab-item @on-item-click="">待开奖</tab-item>
+            <tab-item @on-item-click="">已开奖</tab-item>
+        </tab>
+        <div>
+            <group gutter="10px" v-for="item in list" :key="item.title">
+                <cell :title="item.project.name" :value="(item.project.endTime > new Date().getTime()) ? '待开奖' : '已开奖'"></cell>
+                <cell-form-preview :list="[
+                    {
+                        label: '竞猜内容',
+                        value: item.projectOption.content
+                    },
+                    {
+                        label: '投注时间',
+                        value: item.addTime.substr(0,10)
+                    },
+                    {
+                        label: '投注金额',
+                        value: item.goldBeanNum
+                    }
+                ]"></cell-form-preview>
+            </group>
+        </div>
     </div>
 </template>
 <script>
-  import { Tab, TabItem, CellFormPreview, Group, Cell  } from 'vux'
-  export default {
+import { Tab, TabItem, CellFormPreview, Group, Cell  } from 'vux'
+export default {
   	data () {
     	return {
-        list: [
-          {
-            title: '德赫亚',
-            status: '待开奖',
-            list: [
-              {
-                label: '竞猜内容',
-                value: '下赛季转会皇马'
-              }, {
-                label: '投注时间',
-                value: '2017-05-02 12:30:38'
-              }, {
-                label: '投注金额',
-                value: '￥500'
-              }
-            ]
-          },
-          {
-            title: '王宝强马蓉',
-            status: '已开奖',
-            list: [
-              {
-                label: '竞猜内容',
-                value: '宋泽插入'
-              }, {
-                label: '投注时间',
-                value: '2017-05-02 12:30:38'
-              }, {
-                label: '投注金额',
-                value: '￥500'
-              }
-            ]
-          },
-          {
-            title: '德赫亚',
-            status: '待开奖',
-            list: [
-              {
-                label: '竞猜内容',
-                value: '下赛季转会皇马'
-              }, {
-                label: '投注时间',
-                value: '2017-05-02 12:30:38'
-              }, {
-                label: '投注金额',
-                value: '￥500'
-              }
-            ]
-          },
-          {
-            title: '德赫亚',
-            status: '待开奖',
-            list: [
-              {
-                label: '竞猜内容',
-                value: '下赛季转会皇马'
-              }, {
-                label: '投注时间',
-                value: '2017-05-02 12:30:38'
-              }, {
-                label: '投注金额',
-                value: '￥500'
-              }
-            ]
-          }
-        ],
+            list: [{
+                project: '',
+                projectOption: '',
+                addTime: ''
+            }]
     	}
   	},
   	created() {
@@ -93,7 +45,17 @@
   			isCome: true,
   			isAdd: false,
   		})
+        this.getGuessList()
   	},
+    methods: {
+        getGuessList() {
+            let URL = this.__WEBSERVERURL__ + '/api/project/guess';
+            this.$http.get(URL).then((res) => {
+                console.log(JSON.stringify(res.body));
+                this.list = res.body.data.guessList;
+            })
+        }
+    },
     components: {
       Tab,
       TabItem,
