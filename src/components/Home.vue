@@ -12,7 +12,7 @@
            		<div class="mask">
            			<span class="time">截止时间：{{item.endTime|getdatefromtimestamp}}</span>
            		</div>
-           		<img class="main-img" :src="'http://127.0.0.1:3000'+item.imgUrl" v-if="item.imgUrl">
+           		<img class="main-img" :src="__WEBSERVERURL__ + item.imgUrl" v-if="item.imgUrl">
            		<img class="main-img" src="../../static/images/default.png" v-else>
 			    <div class="content">
 			    	<p class="title" v-text="item.name"></p>
