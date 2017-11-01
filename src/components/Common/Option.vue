@@ -1,5 +1,5 @@
 <template>
-  	<div class="item" :class="{'active': selected == data.content}" @click="changeOption(data)">
+  	<div class="item" :class="{'active': selected == data}" @click="changeOption(data)">
 		<span class="tag" v-if="index == 0">A</span>
 		<span class="tag" v-if="index == 1">B</span>
 		<span class="tag" v-if="index == 2">C</span>
@@ -24,7 +24,7 @@ export default {
 			type: Number
 		},
 		selected: {
-			type: String
+			type: Object
 		}
 	},
 	methods: {

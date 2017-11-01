@@ -1,6 +1,6 @@
 <template>
-	<div class="bettingBox" v-show="isShow">
-		<div class="mine">
+	<div class="bettingBox" v-if="isShow">
+		<router-link :to="{name: 'getGoldBean'}" tag="div" class="mine">
 			<div class="mineBean">
 				<p>我的金豆</p>
 				<p>{{memberInfo.goldBean}}</p>
@@ -8,9 +8,9 @@
 			<div class="add">
 				<img class="icon" src="../../assets/img/add.svg"/>
 			</div>
-		</div>		    		
+		</router-link>		    		
 		<div class="size">
-			<div class="option" :class="{'active': selected == opt}" v-for="opt in option" v-text="opt.value" @click="selectSize(opt)"></div>
+			<div class="option" :class="{'active': selected.value == opt.value}" v-for="opt in option" v-text="opt.value" @click="selectSize(opt)"></div>
 		</div>		    		
 		<button class="bettingBtn" :class="{'disabled': !selected}" :disabled="!selected" @click="betting()">投注</button>
 	</div>
@@ -31,19 +31,24 @@
 			}
 		},
 		data () {
-		    return {
-		    	option: [{
-		    		key: '100',
-		    		value: 100
-		    	},{
-		    		key: '500',
-		    		value: 500
-		    	},{
-		    		key: '1000',
-		    		value: 1000
-		    	},],
-		    	selected: null
-		    }
+			return {
+				option: [
+					{
+						key: '100',
+						value: 100
+					},{
+						key: '500',
+						value: 500
+					},{
+						key: '1000',
+						value: 1000
+					}
+				],
+				selected: {
+					key: '500',
+					value: 500
+				}
+			}
 		},
 		computed: {
 			memberInfo() {
@@ -64,36 +69,37 @@
 				}
 				console.log(JSON.stringify(params))
 				var that = this;
-	  			this.$http.post(URL,params).then((res) => {
-	  				console.log(JSON.stringify(res.body));
-	  				if (res.body.code == 0) {
-	  					this.$vux.alert.show({
-					        title: '恭喜',
-					        content: '投注成功',
-					        onShow () {
-					          	that.getMemberInfo()
-					        },
-					        onHide () {
-					          	console.log('Plugin: I\'m hiding now')
-					        }
-				      	})
-	  				}else {
-	  					this.$vux.toast.text(res.body.msg,'middle')
-	  				}
-	  			})
+				this.$http.post(URL,params).then((res) => {
+					console.log(JSON.stringify(res.body));
+					if (res.body.code == 0) {
+						this.$vux.alert.show({
+							title: '恭喜',
+							content: '投注成功',
+							onShow () {
+								that.getMemberInfo()
+							},
+							onHide () {
+								console.log('Plugin: I\'m hiding now')
+							}
+						})
+					}else {
+						this.$vux.toast.text(res.body.msg,'middle')
+					}
+				})
 			},
 			getMemberInfo() {
-	  			let URL = this.__WEBSERVERURL__ + '/api/member/info';
-	  			this.$http.post(URL).then((res) => {
-	  				if (res.body.code == 0) {
-	  					console.log(JSON.stringify(res.body.data))
-	  					this.$store.commit({
-	  						type: 'getMemberInfo',
-	  						memberInfo: res.body.data
-	  					})
-	  				}
-	  			})
-	  		},
+				let URL = this.__WEBSERVERURL__ + '/api/member/info';
+				this.$http.post(URL).then((res) => {
+					if (res.body.code == 0) {
+						console.log(JSON.stringify(res.body.data))
+						localStorage.setItem('memberInfo',JSON.stringify(res.body.data));
+						this.$store.commit({
+							type: 'getMemberInfo',
+							memberInfo: res.body.data
+						})
+					}
+				})
+			},
 		},
 		components:{
 			Alert

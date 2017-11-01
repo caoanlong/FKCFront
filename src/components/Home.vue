@@ -17,7 +17,7 @@
 			    <div class="content">
 			    	<p class="title" v-text="item.name"></p>
 			    	<div class="options">
-			    		<Options v-for="(option,i) in item.options" :data="option" :index="i" :selected="selectedOption.content" :key="option.content" @selectOption="selectOption"></Options>
+			    		<Options v-for="(option,i) in item.options" :data="option" :index="i" :selected="selectedOption" :key="option.content" @selectOption="selectOption"></Options>
 			    	</div>
 			    	<BettingBox :projectId="item._id.toString()" :selectOpt="selectedOption" :isShow="item.options.indexOf(selectedOption)>-1" @select="selectNum"></BettingBox>
 			    </div>

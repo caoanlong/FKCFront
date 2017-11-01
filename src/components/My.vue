@@ -44,6 +44,7 @@
 	  			this.$http.post(URL).then((res) => {
 	  				if (res.body.code == 0) {
 	  					this.memberInfo = res.body.data
+	  					localStorage.setItem('memberInfo',JSON.stringify(res.body.data))
 	  				}
 	  				console.log(JSON.stringify(res.body.data));
 	  			})
