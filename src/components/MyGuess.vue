@@ -1,19 +1,19 @@
 <template>
 	<div class="myguess">
 		<tab class="tab">
-			<tab-item selected @on-item-click="searchList(0)">全部</tab-item>
-			<tab-item @on-item-click="searchList(1)">待开奖</tab-item>
-			<tab-item @on-item-click="searchList(2)">已开奖</tab-item>
+			<tab-item selected @on-item-click="searchList(1)">全部</tab-item>
+			<tab-item @on-item-click="searchList(2)">待开奖</tab-item>
+			<tab-item @on-item-click="searchList(3)">已开奖</tab-item>
 		</tab>
 		<div style="padding: 15px 30px" v-show="isOpen">
-			<button-tab>
-				<button-tab-item selected>已中奖</button-tab-item>
-				<button-tab-item>未中奖</button-tab-item>
+			<button-tab v-model="isWinNumber">
+				<button-tab-item selected @on-item-click="iswinFc">已中奖</button-tab-item>
+				<button-tab-item @on-item-click="iswinFc">未中奖</button-tab-item>
 			</button-tab>
 		</div>
 		<div>
 			<group gutter="10px" v-for="item in list" :key="item.title">
-				<cell :title="item.project.name" :value="(item.project.endTime > new Date().getTime()) ? '待开奖' : '已开奖'"></cell>
+				<cell :title="item.project.name" :value="item.project.resultOdds?'已开奖':'待开奖'"></cell>
 				<cell-form-preview :list="[
 					{
 						label: '竞猜内容',
@@ -24,8 +24,16 @@
 						value: item.addTime.substr(0,10)
 					},
 					{
+						label: '投注赔率',
+						value: item.projectOption.odds
+					},
+					{
 						label: '投注金额',
 						value: item.goldBeanNum
+					},
+					{
+						label: '奖金',
+						value: item.goldBeanNum*item.project.resultOdds
 					}
 				]"></cell-form-preview>
 			</group>
@@ -42,7 +50,14 @@ export default {
 				projectOption: '',
 				addTime: ''
 			}],
-			isOpen: false
+			pageIndex: 1,
+			isOpen: false,
+			isWinNumber: 0
+		}
+	},
+	computed: {
+		isWin() {
+			return this.isWinNumber==0?true:false
 		}
 	},
 	created() {
@@ -52,26 +67,36 @@ export default {
 			isCome: true,
 			isAdd: false,
 		})
-		this.getGuessList()
+		this.getGuessList(1)
 	},
 	methods: {
 		searchList(x) {
-			if (x == 0) {
+			if (x == 1) {
 				console.log(x)
 				this.isOpen = false
-			}else if (x == 1) {
+			}else if (x == 2) {
 				console.log(x)
 				this.isOpen = false
 			}else {
 				this.isOpen = true
 			}
+			this.getGuessList(x)
 		},
-		getGuessList() {
+		getGuessList(n) {
 			let URL = this.__WEBSERVERURL__ + '/api/project/guess';
-			this.$http.get(URL).then((res) => {
+			let params = {
+				pageIndex: this.pageIndex,
+				isLottery: n,
+				isWin: this.isWin
+			}
+			this.$http.get(URL,{params:params}).then((res) => {
 				console.log(JSON.stringify(res.body));
 				this.list = res.body.data.guessList;
 			})
+		},
+		iswinFc() {
+			console.log(this.isWin)
+			this.searchList(3)
 		}
 	},
 	components: {

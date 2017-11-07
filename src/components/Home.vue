@@ -12,7 +12,7 @@
            		<div class="mask">
            			<span class="time">截止时间：{{item.endTime|getdatefromtimestamp}}</span>
            		</div>
-           		<img class="main-img" :src="__WEBSERVERURL__ + item.imgUrl" v-if="item.imgUrl">
+           		<img class="main-img" :src="__WEBIMGSERVERURL__ + item.imgUrl" v-if="item.imgUrl">
            		<img class="main-img" src="../../static/images/default.png" v-else>
 			    <div class="content">
 			    	<p class="title" v-text="item.name"></p>
@@ -33,6 +33,7 @@
 	  	data () {
 	    	return {
 	    		list: [],
+	    		pageIndex: 1,
 	    		memberInfo: {},
 	    		pullDownRefresh: true,
 		        pullDownRefreshThreshold: 90,
@@ -83,9 +84,16 @@
 	  	methods: {
 	  		getProjectList() {
 	  			let URL = this.__WEBSERVERURL__ + '/api/project';
-	  			this.$http.get(URL).then((res) => {
+	  			let params = {
+	  				pageIndex: this.pageIndex
+	  			}
+	  			this.$http.get(URL,{params: params}).then((res) => {
 	  				console.log(JSON.stringify(res.body));
-	  				this.list = res.body.data.projectList;
+	  				if (this.pageIndex <= res.body.data.pageIndex) {
+	  					this.list = this.list.concat(res.body.data.projectList)
+	  				} else {
+	  					this.$refs.scroll.forceUpdate()
+	  				}
 	  			})
 	  		},
 	  		getMemberInfo() {
@@ -102,19 +110,16 @@
 	  			})
 	  		},
 	  		onPullingDown() {
+	  			this.pageIndex = 1
+	  			this.list = []
 		        setTimeout(() => {
 		          	this.getProjectList()
 		        }, 1000)
 	      	},
 	      	onPullingUp() {
+	      		this.pageIndex++
 		        setTimeout(() => {
-		          	if (Math.random() > 0.5) {
-		            	// 如果有新数据
-		            	this.list = this.list.concat(this.list)
-		          	} else {
-		            	// 如果没有新数据
-		            	this.$refs.scroll.forceUpdate()
-		          	}
+		        	this.getProjectList()
 		        }, 1000)
 	      	},
 			rebuildScroll() {

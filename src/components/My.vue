@@ -4,9 +4,11 @@
 	  		<div class="head">
 	  			<img src="../assets/img/avatar.svg">
 	  		</div>
+	  		<div class="mobile">
+	  			<p>{{memberInfo.mobile}}</p>
+	  		</div>
 	  	</div>
 	  	<group gutter="0">
-	    	<cell title="我的手机" :value="memberInfo.mobile"></cell>
 	    	<cell title="我的金豆" :value="memberInfo.goldBean" is-link :link="{name: 'getGoldBean'}"></cell>
 	  	</group>
 	  	<group>
@@ -70,7 +72,7 @@
 		top 46px
 		.profile
 			width 100%
-			height 140px
+			height 160px
 			padding-top 20px
 			background-color #35495e
 			.head
@@ -84,4 +86,11 @@
 					display block
 					width 100%
 					height 100%
+			.mobile
+				width 100%
+				height 50px
+				line-height 50px
+				p
+					color #fff
+					text-align center
 </style>
