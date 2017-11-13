@@ -8,3 +8,8 @@
 body {
 	background-color: #fbf9fe
 }
+.eclipsis {
+	overflow: hidden; 
+	text-overflow: ellipsis;  
+	white-space: nowrap;
+}
