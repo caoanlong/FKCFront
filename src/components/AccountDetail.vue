@@ -4,7 +4,7 @@
 				<cell v-for="(item,i) in accountDetails" :key="i">
 					<div slot="title">
 						<p class="eclipsis" :style="{width: winWidth}">{{item.type}}<span style="color:#666;font-size:16px">({{item.info}})</span></p>
-						<p style="font-size: 14px;color: #999">9月13日 21:30</p>
+						<p style="font-size: 14px;color: #999">{{item.addTime}}</p>
 					</div>
 					<div slot="default">
 						<span>{{item.goldBeanChange}}</span>
