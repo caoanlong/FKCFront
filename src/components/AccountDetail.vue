@@ -23,7 +23,6 @@ export default {
 		},
 		computed: {
 			winWidth() {
-				console.log(window.screen)
 				return (window.screen.width-90) + 'px'
 			}
 		},
