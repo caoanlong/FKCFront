@@ -26,8 +26,7 @@ Vue.http.interceptors.push((request, next) => {
 	next((resbonse) => {
 		if (resbonse.body.code == 1001 || resbonse.body.code == 1002 || resbonse.body.code == 1003) {
 			localStorage.removeItem('token')
-			window.location.href = '/FKCFront/#/login'
-			// window.location.href = '/#/login'
+			window.location.href = '/#/login'
 		}
 	})
 })
