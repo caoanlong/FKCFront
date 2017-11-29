@@ -46,11 +46,8 @@
 			})
 		},
 		buyGoldBean(goldBeanNum) {
-			// let params = {
-			// 	goldBeanNum: goldBeanNum
-			// }
 			// 支付对接参数
-			let URL = 'http://pay.e-mac.com.cn/pay/v1/order'
+			let url = 'http://pay.e-mac.com.cn/pay/v1/order'
 			let merNo = '10034'
 			let appId = '26'
 			let key = 'b9a597302b91b312e86e1efa2b40c6bf'
@@ -65,7 +62,16 @@
 			 * MD5(merNo|appId|transType|transAmt|transTime|orderNo|KEY)
 			 * KEY在对接时申请发放 
 			 */
-			window.location.href = `http://pay.e-mac.com.cn/pay/v1/order?merNo=${merNo}&appId=${appId}&key=${key}&transType=${transType}&transAmt=${transAmt}&transTime=${transTime}&orderNo=${orderNo}&sign=${sign}&returnUrl=${returnUrl}`
+			let params = {
+				goldBeanNum: goldBeanNum,
+				orderNo: orderNo
+			}
+			let URL = this.__WEBSERVERURL__ + '/api/shop/buyGoldBean'
+			this.$http.post(URL, params).then(res => {
+				if (res.body.code == 0) {
+					window.location.href = `${url}?merNo=${merNo}&appId=${appId}&key=${key}&transType=${transType}&transAmt=${transAmt}&transTime=${transTime}&orderNo=${orderNo}&sign=${sign}&returnUrl=${returnUrl}`
+				}
+			})
 		}
 	},
 	components: {
