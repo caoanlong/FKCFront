@@ -68,6 +68,7 @@
 			}
 			let URL = this.__WEBSERVERURL__ + '/api/shop/buyGoldBean'
 			this.$http.post(URL, params).then(res => {
+				console.log(res)
 				if (res.body.code == 0) {
 					window.location.href = `${url}?merNo=${merNo}&appId=${appId}&key=${key}&transType=${transType}&transAmt=${transAmt}&transTime=${transTime}&orderNo=${orderNo}&sign=${sign}&returnUrl=${returnUrl}`
 				}
