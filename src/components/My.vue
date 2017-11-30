@@ -3,7 +3,7 @@
 		<div class="profile">
 			<div class="head">
 				<input type="file" class="avatar" ref="avatar" @change="addImg">
-				<img :src="__WEBIMGSERVERURL__ + memberInfo.avatar" v-if="memberInfo.avatar">
+				<img :src="memberInfo.avatar" v-if="memberInfo.avatar">
 				<img src="../assets/img/avatar.svg" v-else>
 			</div>
 			<div class="mobile">
@@ -49,6 +49,8 @@
 					if (res.body.code == 0) {
 						this.memberInfo = res.body.data
 						localStorage.setItem('memberInfo',JSON.stringify(res.body.data))
+					} else {
+						this.$router.push({name: 'login'})
 					}
 					console.log(JSON.stringify(res.body.data));
 				})

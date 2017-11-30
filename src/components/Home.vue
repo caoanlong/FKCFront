@@ -12,7 +12,7 @@
            		<div class="mask">
            			<span class="time">截止时间：{{item.endTime|getdatefromtimestamp}}</span>
            		</div>
-           		<img class="main-img" :src="__WEBIMGSERVERURL__ + item.imgUrl" v-if="item.imgUrl">
+           		<img class="main-img" :src="item.imgUrl" v-if="item.imgUrl">
            		<img class="main-img" src="../../static/images/default.png" v-else>
 			    <div class="content">
 			    	<p class="title" v-text="item.name"></p>
@@ -77,9 +77,9 @@
 	  			title: '疯狂猜',
 	  			isCome: false,
 	  			isAdd: true,
-	  		})
+			  })
+			this.getMemberInfo();
 	  		this.getProjectList();
-	  		this.getMemberInfo();
 	  	},
 	  	methods: {
 	  		getProjectList() {
@@ -106,7 +106,9 @@
 	  						type: 'getMemberInfo',
 	  						memberInfo: res.body.data
 	  					})
-	  				}
+	  				} else {
+						  this.$router.push({name: 'login'})
+					}
 	  			})
 	  		},
 	  		onPullingDown() {
