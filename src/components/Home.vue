@@ -36,8 +36,6 @@
 				selectedNum: '',
 			}
 		},
-		computed: {
-		},
 		created() {
 			this.$store.commit({
 				type: 'changeTitle',
@@ -53,12 +51,11 @@
 				this.pageHeight = this.$refs.projectWrapper.offsetHeight
 				this.disY = this.pageHeight - this.clientHeight + 46
 				// console.log(this.scrollTop, e)
-				if (this.scrollTop >= this.disY) {
-					if (this.pageIndex < this.pages) {
+				if (this.scrollTop > this.disY) {
+					if (this.pageIndex <= this.pages) {
 						this.loadStatus = '正在加载...'
 						this.getProjectList()
-						this.pageIndex++
-					} else if(this.pageIndex == this.pages) {
+					} else {
 						this.loadStatus = '~已经到底了~'
 					}
 				}
@@ -70,6 +67,7 @@
 				let params = {
 					pageIndex: this.pageIndex
 				}
+				this.pageIndex++
 				this.$http.get(URL,{params: params}).then((res) => {
 					console.log(JSON.stringify(res.body))
 					this.pages = res.body.data.pages
