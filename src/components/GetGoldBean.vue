@@ -15,7 +15,7 @@
 </template>
 <script>
   import { Group,Cell,XButton } from 'vux'
-  import md5 from 'md5'
+  import MD5 from 'md5'
   export default {
 	data () {
 		return {
@@ -57,7 +57,8 @@
 			let orderNo = this.getTimeNum() + this.getVerCode(8) // 订单号，不可重复
 			let returnUrl = encodeURIComponent('http://m.91fkc.com/#/success') // 公众号返回页面，可不填，不参与加密（以http://开头）
 			let showQR = 0 // 0:返回链接1:直接显示二维码(扫码接口有效，默认为0，不参与加密)
-			let sign = md5(merNo+'|'+appId+'|'+transType+'|'+transAmt+'|'+transTime+'|'+orderNo+'|'+key)
+			let beforeSign = merNo+'|'+appId+'|'+transType+'|'+transAmt+'|'+transTime+'|'+orderNo+'|'+key
+			let sign = MD5(beforeSign)
 			/* 加密信息，加密规则如下：
 			 * MD5(merNo|appId|transType|transAmt|transTime|orderNo|KEY)
 			 * KEY在对接时申请发放 
