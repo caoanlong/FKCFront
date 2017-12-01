@@ -1,5 +1,6 @@
 <template>
 	<div class="main">
+		<TypeSelector :showSelector="showSelector" @close="sureSelect"></TypeSelector>
 		<div class="block"></div>
 		<div class="wrapper" ref="projectWrapper">
 			<div class="list vux-1px-b" v-for="item in list" :key="item._id">
@@ -24,7 +25,13 @@
 	import Options from './Common/Option'
 	import BettingBox from './Common/BettingBox'
 	import pullUpLoad from './Common/pullUpLoad'
+	import TypeSelector from './Common/TypeSelector'
 	export default {
+		props: {
+			showSelector: {
+				type: Boolean
+			}
+		},
 		data () {
 			return {
 				loadStatus: '正在加载...',
@@ -62,7 +69,7 @@
 			})
 		},
 		methods: {
-			getProjectList() {
+			getProjectList () {
 				let URL = this.__WEBSERVERURL__ + '/api/project'
 				let params = {
 					pageIndex: this.pageIndex
@@ -74,7 +81,7 @@
 					this.list = this.list.concat(res.body.data.projectList)
 				})
 			},
-			getMemberInfo() {
+			getMemberInfo () {
 				let URL = this.__WEBSERVERURL__ + '/api/member/info';
 				this.$http.post(URL).then((res) => {
 					if (res.body.code == 0) {
@@ -89,19 +96,23 @@
 					}
 				})
 			},
-			selectOption(data) {
+			selectOption (data) {
 				console.log(JSON.stringify(data));
 				this.selectedOption = data;
 			},
-			selectNum(data) {
+			selectNum (data) {
 				console.log(JSON.stringify(data));
 				this.selectedNum = data.content;
+			},
+			sureSelect () {
+				this.$emit('close')
 			}
 		},
 		components: {
 			Options,
 			BettingBox,
-			pullUpLoad
+			pullUpLoad,
+			TypeSelector
 		}
 	}
 </script>
@@ -109,13 +120,6 @@
 	.main
 		padding-top 46px
 		overflow hidden
-		.block
-			position fixed
-			top 0
-			left 0
-			right 0
-			bottom 0
-			background-color #f8f8f8
 		.wrapper
 			width 100%
 			position absolute

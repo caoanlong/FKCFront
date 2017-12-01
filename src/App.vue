@@ -3,9 +3,9 @@
   		<x-header class="header">
   			<span v-text="title"></span>
       		<router-link :to="{name:'my'}" slot="overwrite-left" class="icon-people" v-if="!isCome"></router-link>
-      		<router-link to="" slot="right" class="icon-add" v-if="isAdd"></router-link>
+      		<div slot="right" class="icon-add" v-if="isAdd" @click.stop="displaySelector"></div>
   		</x-header>
-    	<router-view></router-view>
+    	<router-view :showSelector="showSelector"></router-view>
   	</div>
 </template>
 <script>
@@ -13,6 +13,7 @@
 	export default {
 		data () {
 			return {
+				showSelector: false
 			}
 		},
 		computed: {
@@ -27,6 +28,9 @@
 			},
 		},
 		methods: {
+			displaySelector () {
+				this.showSelector = !this.showSelector
+			}
 		},
 		components: {
 			XHeader,

@@ -1,28 +1,31 @@
 <template>
 	<div class="my">
-		<div class="profile">
-			<div class="head">
-				<input type="file" class="avatar" ref="avatar" @change="addImg">
-				<img :src="memberInfo.avatar" v-if="memberInfo.avatar">
-				<img src="../assets/img/avatar.svg" v-else>
+		<div class="block"></div>
+		<div class="wrapper">
+			<div class="profile">
+				<div class="head">
+					<input type="file" class="avatar" ref="avatar" @change="addImg">
+					<img :src="memberInfo.avatar" v-if="memberInfo.avatar">
+					<img src="../assets/img/avatar.svg" v-else>
+				</div>
+				<div class="mobile">
+					<p>{{memberInfo.mobile}}</p>
+				</div>
 			</div>
-			<div class="mobile">
-				<p>{{memberInfo.mobile}}</p>
-			</div>
+			<group gutter="0">
+				<cell title="我的金豆" :value="memberInfo.goldBean" is-link :link="{name: 'getGoldBean'}"></cell>
+			</group>
+			<group>
+				<cell title="我的竞猜" is-link :link="{name: 'myGuess'}"></cell>
+				<cell title="账户明细" is-link :link="{name: 'accountDetail'}"></cell>
+			</group>
+			<!-- <group>
+				<cell title="分享给好友" is-link link=""></cell>
+			</group> -->
+			<box gap="20px 10px">
+				<x-button type="warn" @click.native="signout">退出</x-button>
+			</box>
 		</div>
-		<group gutter="0">
-			<cell title="我的金豆" :value="memberInfo.goldBean" is-link :link="{name: 'getGoldBean'}"></cell>
-		</group>
-		<group>
-			<cell title="我的竞猜" is-link :link="{name: 'myGuess'}"></cell>
-			<cell title="账户明细" is-link :link="{name: 'accountDetail'}"></cell>
-		</group>
-		<group>
-			<cell title="分享给好友" is-link link=""></cell>
-		</group>
-		<box gap="20px 10px">
-			<x-button type="warn" @click.native="signout">退出</x-button>
-		</box>
 	</div>
 </template>
 <script>
@@ -92,40 +95,44 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.my
-		width 100%
-		position absolute
-		left 0
-		top 46px
-		.profile
+		padding-top 46px
+		overflow hidden
+		.wrapper
 			width 100%
-			height 160px
-			padding-top 20px
-			background-color #35495e
-			.head
-				width 80px
-				height 80px
-				border-radius 40px
-				background-color #fff
-				border 2px solid #fff
-				margin 0 auto
-				overflow hidden
-				position relative
-				.avatar
-					position absolute
-					width 100%
-					height 100%
-					left 0
-					top 0
-					opacity 0
-				img
-					display block
-					width 100%
-					height 100%
-			.mobile
+			position absolute
+			left 0
+			top 46px
+			right 0
+			.profile
 				width 100%
-				height 50px
-				line-height 50px
-				p
-					color #fff
-					text-align center
+				height 160px
+				padding-top 20px
+				background-color #35495e
+				.head
+					width 80px
+					height 80px
+					border-radius 40px
+					background-color #fff
+					border 2px solid #fff
+					margin 0 auto
+					overflow hidden
+					position relative
+					.avatar
+						position absolute
+						width 100%
+						height 100%
+						left 0
+						top 0
+						opacity 0
+					img
+						display block
+						width 100%
+						height 100%
+				.mobile
+					width 100%
+					height 50px
+					line-height 50px
+					p
+						color #fff
+						text-align center
 </style>

@@ -5,38 +5,41 @@
 			<tab-item @on-item-click="searchList(2)">待开奖</tab-item>
 			<tab-item @on-item-click="searchList(3)">已开奖</tab-item>
 		</tab>
-		<div style="padding: 15px 30px" v-show="isOpen">
-			<button-tab v-model="isWinNumber">
-				<button-tab-item selected @on-item-click="iswinFc">已中奖</button-tab-item>
-				<button-tab-item @on-item-click="iswinFc">未中奖</button-tab-item>
-			</button-tab>
-		</div>
-		<div>
-			<group gutter="10px" v-for="item in list" :key="item.title">
-				<cell :title="item.project.name" :value="item.project.resultOdds?'已开奖':'待开奖'"></cell>
-				<cell-form-preview :list="[
-					{
-						label: '竞猜内容',
-						value: item.projectOption.content
-					},
-					{
-						label: '投注时间',
-						value: item.addTime.substr(0,10)
-					},
-					{
-						label: '投注赔率',
-						value: item.projectOption.odds
-					},
-					{
-						label: '投注金额',
-						value: item.goldBeanNum
-					},
-					{
-						label: '奖金',
-						value: item.goldBeanNum*item.project.resultOdds
-					}
-				]"></cell-form-preview>
-			</group>
+		<div class="block"></div>
+		<div class="wrapper">
+			<div style="padding: 15px 30px" v-show="isOpen">
+				<button-tab v-model="isWinNumber">
+					<button-tab-item selected @on-item-click="iswinFc">已中奖</button-tab-item>
+					<button-tab-item @on-item-click="iswinFc">未中奖</button-tab-item>
+				</button-tab>
+			</div>
+			<div>
+				<group gutter="10px" v-for="item in list" :key="item.title">
+					<cell :title="item.project.name" :value="item.project.resultOdds?'已开奖':'待开奖'"></cell>
+					<cell-form-preview :list="[
+						{
+							label: '竞猜内容',
+							value: item.projectOption.content
+						},
+						{
+							label: '投注时间',
+							value: item.addTime.substr(0,10)
+						},
+						{
+							label: '投注赔率',
+							value: item.projectOption.odds
+						},
+						{
+							label: '投注金额',
+							value: item.goldBeanNum
+						},
+						{
+							label: '奖金',
+							value: item.goldBeanNum*item.project.resultOdds
+						}
+					]"></cell-form-preview>
+				</group>
+			</div>
 		</div>
 	</div>
 </template>
@@ -122,4 +125,10 @@ export default {
 			top 46px
 			width 100%
 			z-index 10
+		.wrapper
+			width 100%
+			position absolute
+			left 0
+			top 0
+			right 0
 </style>

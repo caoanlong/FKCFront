@@ -1,6 +1,8 @@
 <template>
-		<div class="account">
-			<group title="金豆明细记录（近三月）">
+	<div class="account">
+		<div class="block"></div>
+		<div class="wrapper">
+			<group>
 				<cell v-for="(item,i) in accountDetails" :key="i">
 					<div slot="title">
 						<p class="eclipsis" :style="{width: winWidth}">{{item.type}}<span style="color:#666;font-size:16px">({{item.info}})</span></p>
@@ -12,6 +14,7 @@
 				</cell>
 			</group>
 		</div>
+	</div>
 </template>
 <script>
 import { Group,Cell } from 'vux'
@@ -54,8 +57,12 @@ export default {
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.account
-		width 100%
-		position absolute
-		top 46px
-		left 0
+		padding-top 46px
+		overflow hidden
+		.wrapper
+			width 100%
+			position absolute
+			left 0
+			top 46px
+			right 0
 </style>
