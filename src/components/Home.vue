@@ -1,6 +1,11 @@
 <template>
 	<div class="main">
-		<TypeSelector :showSelector="showSelector" @close="sureSelect"></TypeSelector>
+		<div class="selectWarpper" style="overflow:scroll;-webkit-overflow-scrolling:touch;">
+		  	<tab style="width:400px;" bar-active-color="#668599" :line-width="0">
+				<tab-item selected>全部</tab-item>
+				<tab-item v-for="type in typeList" :key="type._id">{{type.name}}</tab-item>
+		  	</tab>
+		</div>
 		<div class="block"></div>
 		<div class="wrapper" ref="projectWrapper">
 			<div class="list vux-1px-b" v-for="item in list" :key="item._id">
@@ -19,13 +24,15 @@
 			</div>
 			<pullUpLoad :loadStatus="loadStatus"></pullUpLoad>
 		</div>
+		<Tabbar></Tabbar>
 	</div>
 </template>
 <script>
+	import Tabbar from './Common/Tabbar'
 	import Options from './Common/Option'
 	import BettingBox from './Common/BettingBox'
 	import pullUpLoad from './Common/pullUpLoad'
-	import TypeSelector from './Common/TypeSelector'
+	import {Tab, TabItem} from 'vux'
 	export default {
 		props: {
 			showSelector: {
@@ -41,16 +48,13 @@
 				memberInfo: {},
 				selectedOption: {},
 				selectedNum: '',
+				typeList: []
 			}
 		},
 		created() {
-			this.$store.commit({
-				type: 'changeTitle',
-				title: '疯狂猜',
-				isCome: false,
-				isAdd: true,
-			  })
+			document.title = '疯狂猜'
 			this.getMemberInfo()
+			this.getProjectType()
 			this.getProjectList()
 			window.addEventListener('scroll', (e) => {
 				this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop
@@ -69,6 +73,12 @@
 			})
 		},
 		methods: {
+			getProjectType () {
+				let URL = this.__WEBSERVERURL__ + '/api/project/type'
+				this.$http.get(URL).then(res => {
+					this.typeList = res.body.data
+				})
+			},
 			getProjectList () {
 				let URL = this.__WEBSERVERURL__ + '/api/project'
 				let params = {
@@ -76,7 +86,7 @@
 				}
 				this.pageIndex++
 				this.$http.get(URL,{params: params}).then((res) => {
-					console.log(JSON.stringify(res.body))
+					// console.log(JSON.stringify(res.body))
 					this.pages = res.body.data.pages
 					this.list = this.list.concat(res.body.data.projectList)
 				})
@@ -109,23 +119,31 @@
 			}
 		},
 		components: {
+			Tabbar,
 			Options,
 			BettingBox,
 			pullUpLoad,
-			TypeSelector
+			Tab,
+			TabItem
 		}
 	}
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.main
-		padding-top 46px
 		overflow hidden
+		.selectWarpper
+			position fixed
+			left 0
+			top 0
+			z-index 99
+			width 100%
 		.wrapper
 			width 100%
 			position absolute
 			left 0
-			top 46px
+			top 44px
 			right 0
+			bottom 46px
 			.list
 				position relative
 				margin-bottom 10px

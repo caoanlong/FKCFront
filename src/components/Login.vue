@@ -36,12 +36,7 @@
 	  		validationGroup: ['mobile','verCode']
 	  	},
 	  	created() {
-	  		this.$store.commit({
-	  			type: 'changeTitle',
-	  			title: '登录',
-	  			isCome: true,
-	  			isAdd: false,
-	  		})
+	  		document.title = '登录'
 	  	},
 	  	methods: {
 	  		getCode() {
@@ -108,8 +103,8 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.main
 		position absolute
-		top 46px
+		top 0
 		left 0
 		right 0
-		bottom 0px
+		bottom 0
 </style>

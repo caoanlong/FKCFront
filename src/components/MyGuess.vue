@@ -35,7 +35,7 @@
 						},
 						{
 							label: '奖金',
-							value: item.goldBeanNum*item.project.resultOdds
+							value: item.goldBeanNum * item.project.resultOdds
 						}
 					]"></cell-form-preview>
 				</group>
@@ -64,12 +64,7 @@ export default {
 		}
 	},
 	created() {
-		this.$store.commit({
-			type: 'changeTitle',
-			title: '我的竞猜',
-			isCome: true,
-			isAdd: false,
-		})
+		document.title = '我的竞猜'
 		this.getGuessList(1)
 	},
 	methods: {
@@ -117,12 +112,12 @@ export default {
 	.myguess
 		width 100%
 		position absolute
-		top 90px
+		top 44px
 		left 0
 		.tab
 			position fixed
 			left 0
-			top 46px
+			top 0
 			width 100%
 			z-index 10
 		.wrapper

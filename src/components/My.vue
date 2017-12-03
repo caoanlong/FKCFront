@@ -26,9 +26,11 @@
 				<x-button type="warn" @click.native="signout">退出</x-button>
 			</box>
 		</div>
+		<Tabbar></Tabbar>
 	</div>
 </template>
 <script>
+	import Tabbar from './Common/Tabbar'
 	import { Group,Cell,XButton,Box } from 'vux'
 	export default {
 		data () {
@@ -37,12 +39,7 @@
 			}
 		},
 		created() {
-			this.$store.commit({
-				type: 'changeTitle',
-				title: '我的',
-				isCome: true,
-				isAdd: false,
-			})
+			document.title = '我的'
 			this.getMemberInfo()
 		},
 		methods: {
@@ -86,6 +83,7 @@
 			}
 		},
 		components: {
+			Tabbar,
 			Group,
 			Cell,
 			XButton,
@@ -95,17 +93,16 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.my
-		padding-top 46px
 		overflow hidden
 		.wrapper
 			width 100%
 			position absolute
 			left 0
-			top 46px
+			top 0
 			right 0
 			.profile
 				width 100%
-				height 160px
+				height 180px
 				padding-top 20px
 				background-color #35495e
 				.head
@@ -114,7 +111,7 @@
 					border-radius 40px
 					background-color #fff
 					border 2px solid #fff
-					margin 0 auto
+					margin 20px auto 0 auto
 					overflow hidden
 					position relative
 					.avatar

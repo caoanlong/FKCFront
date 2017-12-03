@@ -16,12 +16,7 @@
 			}
 		},
 		created() {
-			this.$store.commit({
-				type: 'changeTitle',
-				title: '交易成功',
-				isCome: true,
-				isAdd: false,
-			})
+			document.title = '交易成功'
 		},
 		methods: {
 		},

@@ -1,15 +1,9 @@
 <template>
   	<div class="container">
-  		<x-header class="header">
-  			<span v-text="title"></span>
-      		<router-link :to="{name:'my'}" slot="overwrite-left" class="icon-people" v-if="!isCome"></router-link>
-      		<div slot="right" class="icon-add" v-if="isAdd" @click.stop="displaySelector"></div>
-  		</x-header>
     	<router-view :showSelector="showSelector"></router-view>
   	</div>
 </template>
 <script>
-	import {XHeader} from 'vux'
 	export default {
 		data () {
 			return {
@@ -31,9 +25,6 @@
 			displaySelector () {
 				this.showSelector = !this.showSelector
 			}
-		},
-		components: {
-			XHeader,
 		}
 	}
 </script>

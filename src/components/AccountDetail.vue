@@ -30,12 +30,7 @@ export default {
 			}
 		},
 		created() {
-			this.$store.commit({
-				type: 'changeTitle',
-				title: '账户明细',
-				isCome: true,
-				isAdd: false,
-			})
+			document.title = '账户明细'
 			this.getAccountDetail()
 		},
 		methods: {
@@ -57,12 +52,11 @@ export default {
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.account
-		padding-top 46px
 		overflow hidden
 		.wrapper
 			width 100%
 			position absolute
 			left 0
-			top 46px
+			top -20px
 			right 0
 </style>

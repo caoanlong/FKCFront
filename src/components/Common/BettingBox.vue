@@ -2,7 +2,7 @@
 	<div class="bettingBox" v-if="isShow">
 		<router-link :to="{name: 'getGoldBean'}" tag="div" class="mine">
 			<div class="mineBean">
-				<p>我的金豆</p>
+				<p>金豆</p>
 				<p>{{memberInfo.goldBean}}</p>
 			</div>
 			<div class="add">
@@ -42,6 +42,9 @@
 					},{
 						key: '1000',
 						value: 1000
+					},{
+						key: 'All',
+						value: 'All in'
 					}
 				],
 				selected: {
@@ -63,7 +66,7 @@
 			betting() {
 				let URL = this.__WEBSERVERURL__ + '/api/project/betting';
 				let params = {
-					goldBeanNum: this.selected.value,
+					goldBeanNum: this.selected.key == 'All' ? this.memberInfo.goldBean : this.selected.value,
 					projectId: this.projectId,
 					projectOption: this.selectOpt
 				}
@@ -112,8 +115,9 @@
 		width 100%
 		height 60px
 		.mine
-			flex 0 0 92px
+			flex 0 0 70px
 			display flex
+			position relative
 			.mineBean
 				flex 1
 				font-size 14px
@@ -122,7 +126,9 @@
 					height 30px
 					line-height 30px
 			.add
-				flex 0 0 28px
+				position absolute
+				right 0
+				width 28px
 				.icon
 					display block
 					width 22px
@@ -135,7 +141,7 @@
 			padding-left 0
 			.option
 				flex 1
-				margin 5px
+				margin 5px 3px
 				line-height 230%
 				border-radius 5px
 				text-align center
@@ -148,7 +154,7 @@
 		.bettingBtn
 			border none
 			font-size 16px
-			flex 0 0 80px
+			flex 0 0 70px
 			height 40px
 			line-height 40px
 			margin-top 10px
