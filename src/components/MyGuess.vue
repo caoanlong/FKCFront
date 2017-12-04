@@ -15,7 +15,7 @@
 			</div>
 			<div>
 				<group gutter="10px" v-for="item in list" :key="item.title">
-					<cell :title="item.project.name" :value="item.project.resultOdds?'已开奖':'待开奖'"></cell>
+					<cell :title="item.project.name" :value="item.isLottery?'已开奖':'待开奖'"></cell>
 					<cell-form-preview :list="[
 						{
 							label: '竞猜内容',
@@ -35,7 +35,7 @@
 						},
 						{
 							label: '奖金',
-							value: item.goldBeanNum * item.project.resultOdds
+							value: item.bonus
 						}
 					]"></cell-form-preview>
 				</group>
@@ -81,15 +81,15 @@ export default {
 			this.getGuessList(x)
 		},
 		getGuessList(n) {
-			let URL = this.__WEBSERVERURL__ + '/api/project/guess';
+			let URL = this.__WEBSERVERURL__ + '/api/project/guess'
 			let params = {
 				pageIndex: this.pageIndex,
 				isLottery: n,
 				isWin: this.isWin
 			}
 			this.$http.get(URL,{params:params}).then((res) => {
-				console.log(JSON.stringify(res.body));
-				this.list = res.body.data.guessList;
+				console.log(JSON.stringify(res.body))
+				this.list = res.body.data.guessList
 			})
 		},
 		iswinFc() {

@@ -11,6 +11,9 @@
 				<div class="mobile">
 					<p>{{memberInfo.mobile}}</p>
 				</div>
+				<div class="charm">
+					<p>魅力值：{{memberInfo.charm}}</p>
+				</div>
 			</div>
 			<group gutter="0">
 				<cell title="我的金豆" :value="memberInfo.goldBean" is-link :link="{name: 'getGoldBean'}"></cell>
@@ -64,7 +67,7 @@
 				})
 			},
 			uploadAvatar(imgUrl) {
-				let URL = this.__WEBSERVERURL__ + '/api/member/avatar';
+				let URL = this.__WEBSERVERURL__ + '/api/member/avatar'
 				let params = {
 					memberId: this.memberInfo._id,
 					avatar: imgUrl
@@ -102,7 +105,7 @@
 			right 0
 			.profile
 				width 100%
-				height 180px
+				height 220px
 				padding-top 20px
 				background-color #35495e
 				.head
@@ -129,6 +132,13 @@
 					width 100%
 					height 50px
 					line-height 50px
+					p
+						color #fff
+						text-align center
+				.charm
+					width 100%
+					height 40px
+					line-height 20px
 					p
 						color #fff
 						text-align center
