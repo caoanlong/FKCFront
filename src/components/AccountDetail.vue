@@ -2,7 +2,7 @@
 	<div class="account">
 		<div class="block"></div>
 		<div class="wrapper">
-			<group>
+			<group ref="wrapperIn">
 				<cell v-for="(item,i) in accountDetails" :key="i">
 					<div slot="title">
 						<p class="eclipsis" :style="{width: winWidth}">{{item.type}}<span style="color:#666;font-size:16px">({{item.info}})</span></p>
@@ -12,16 +12,21 @@
 						<span>{{item.goldBeanChange}}</span>
 					</div>
 				</cell>
+				<pullUpLoad :loadStatus="loadStatus"></pullUpLoad>
 			</group>
 		</div>
 	</div>
 </template>
 <script>
 import { Group,Cell } from 'vux'
+import pullUpLoad from './Common/pullUpLoad'
 export default {
 		data () {
 			return {
-				accountDetails: []
+				loadStatus: '正在加载...',
+				accountDetails: [],
+				pageIndex: 1,
+				pages: 1
 			}
 		},
 		computed: {
@@ -32,13 +37,33 @@ export default {
 		created() {
 			document.title = '账户明细'
 			this.getAccountDetail()
+			window.addEventListener('scroll', (e) => {
+				this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+				this.clientHeight = document.documentElement.clientHeight || document.body.clientHeight
+				this.pageHeight = this.$refs.wrapperIn.$el.offsetHeight
+				this.disY = this.pageHeight - this.clientHeight
+				console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
+				if (this.scrollTop > this.disY) {
+					if (this.pageIndex < this.pages) {
+						this.loadStatus = '正在加载...'
+						this.pageIndex++
+						this.getAccountDetail()
+					} else {
+						this.loadStatus = '~已经到底了~'
+					}
+				}
+			})
 		},
 		methods: {
 			getAccountDetail() {
-				let URL = this.__WEBSERVERURL__ + '/api/member/accountDetails';
-	  			this.$http.post(URL).then((res) => {
+				let URL = this.__WEBSERVERURL__ + '/api/member/accountDetails'
+				let params = {
+					pageIndex: this.pageIndex
+				}
+	  			this.$http.post(URL, params).then((res) => {
 	  				if (res.body.code == 0) {
-	  					this.accountDetails = res.body.data
+	  					this.pages = res.body.data.pages
+	  					this.accountDetails = this.accountDetails.concat(res.body.data.accountDetail)
 	  				}
 	  				console.log(JSON.stringify(res.body.data));
 	  			})
@@ -46,7 +71,8 @@ export default {
 		},
 		components: {
 			Group,
-			Cell
+			Cell,
+			pullUpLoad
 		}
 }
 </script>

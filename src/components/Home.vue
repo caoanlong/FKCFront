@@ -36,11 +36,6 @@
 	import pullUpLoad from './Common/pullUpLoad'
 	import {Tab, TabItem} from 'vux'
 	export default {
-		props: {
-			showSelector: {
-				type: Boolean
-			}
-		},
 		data () {
 			return {
 				loadStatus: '正在加载...',

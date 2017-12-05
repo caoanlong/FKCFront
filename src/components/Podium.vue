@@ -2,25 +2,39 @@
 	<div class="podium">
 		<div class="block"></div>
 		<div class="podiumWrapper">
-			<h1 style="color: #999;margin-top: 200px;text-align: center">稍后开放...</h1>
+			<Goods v-for="goods in goodsList" :key="goods._id" :goods="goods"></Goods>
 		</div>
 		<Tabbar></Tabbar>
 	</div>
 </template>
 <script type="text/javascript">
 	import Tabbar from './Common/Tabbar'
+	import Goods from './Common/Goods'
 	export default {
 		data () {
 			return {
-
+				goodsList: []
 			}
 		},
 		created () {
 			console.log(this.$route.name)
 			document.title = '领奖台'
 		},
+		methods: {
+			getPrizeList() {
+				let URL = this.__WEBSERVERURL__ + '/api/shop/prize'
+				let params = {
+					pageIndex: this.pageIndex
+				}
+				this.$http.get(URL,{params:params}).then((res) => {
+					this.pages = res.body.data.pages
+					this.goodsList = this.list.concat(res.body.data.prizeList)
+				})
+			}
+		},
 		components: {
-			Tabbar
+			Tabbar,
+			Goods
 		}
 	}
 </script>
@@ -33,4 +47,5 @@
 		left 0
 		top 0
 		right 0
+		padding 5px
 </style>

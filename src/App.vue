@@ -1,13 +1,12 @@
 <template>
   	<div class="container">
-    	<router-view :showSelector="showSelector"></router-view>
+    	<router-view></router-view>
   	</div>
 </template>
 <script>
 	export default {
 		data () {
 			return {
-				showSelector: false
 			}
 		},
 		computed: {
@@ -22,9 +21,6 @@
 			},
 		},
 		methods: {
-			displaySelector () {
-				this.showSelector = !this.showSelector
-			}
 		}
 	}
 </script>
