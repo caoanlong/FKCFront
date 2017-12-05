@@ -104,6 +104,7 @@
 				}
 				this.list = []
 				this.pageIndex = 1
+				this.pages = 1
 				this.getProjectList()
 			},
 			getMemberInfo () {

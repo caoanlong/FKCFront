@@ -20,25 +20,32 @@
 			</group>
 			<group>
 				<cell title="我的竞猜" is-link :link="{name: 'myGuess'}"></cell>
+				<cell title="我的奖品" is-link link="" @click.native="laterOpen"></cell>
 				<cell title="账户明细" is-link :link="{name: 'accountDetail'}"></cell>
 			</group>
-			<!-- <group>
-				<cell title="分享给好友" is-link link=""></cell>
-			</group> -->
+			<group>
+				<cell title="意见反馈" is-link link="" @click.native="laterOpen"></cell>
+			</group>
 			<box gap="20px 10px">
-				<x-button type="warn" @click.native="signout">退出</x-button>
+				<x-button type="default" @click.native="showExit=true">退出</x-button>
 			</box>
 		</div>
 		<Tabbar></Tabbar>
+		<actionsheet v-model="showExit" :menus="signoutMenu" @on-click-menu="showExit=false" @on-click-menu-delete="signout" show-cancel></actionsheet>
 	</div>
 </template>
 <script>
 	import Tabbar from './Common/Tabbar'
-	import { Group,Cell,XButton,Box } from 'vux'
+	import { Group,Cell,XButton,Box,Actionsheet } from 'vux'
 	export default {
 		data () {
 			return {
-				memberInfo: {}
+				memberInfo: {},
+				showExit: false,
+				signoutMenu: {
+					'title.noop': '确定退出吗？',
+					delete: '<span style="color:red">退出</span>'
+				},
 			}
 		},
 		created() {
@@ -46,7 +53,7 @@
 			this.getMemberInfo()
 		},
 		methods: {
-			getMemberInfo() {
+			getMemberInfo () {
 				let URL = this.__WEBSERVERURL__ + '/api/member/info';
 				this.$http.post(URL).then((res) => {
 					if (res.body.code == 0) {
@@ -58,7 +65,7 @@
 					console.log(JSON.stringify(res.body.data));
 				})
 			},
-			addImg(e) {
+			addImg (e) {
 				let URL = this.__WEBSERVERURL__ + '/uploadImg';
 				let formData = new FormData()
 				formData.append("file",e.target.files[0])
@@ -66,7 +73,7 @@
 					this.uploadAvatar(res.body.data)
 				})
 			},
-			uploadAvatar(imgUrl) {
+			uploadAvatar (imgUrl) {
 				let URL = this.__WEBSERVERURL__ + '/api/member/avatar'
 				let params = {
 					memberId: this.memberInfo._id,
@@ -80,9 +87,12 @@
 					console.log(JSON.stringify(res.body.data));
 				})
 			},
-			signout() {
+			signout () {
 				localStorage.clear();
 				this.$router.push({name: 'login'})
+			},
+			laterOpen () {
+				this.$vux.toast.text('稍后开放...','middle')
 			}
 		},
 		components: {
@@ -90,7 +100,8 @@
 			Group,
 			Cell,
 			XButton,
-			Box
+			Box,
+			Actionsheet
 		}
 	}
 </script>

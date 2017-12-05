@@ -20,7 +20,7 @@
 	</div>
 </template>
 <script type="text/javascript">
-import { Tabbar, TabbarItem } from 'vux'
+	import { Tabbar, TabbarItem } from 'vux'
 	export default {
 		data () {
 			return {

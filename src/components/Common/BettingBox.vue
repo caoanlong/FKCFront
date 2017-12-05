@@ -64,9 +64,19 @@
 				this.$emit('select',option);
 			},
 			betting() {
-				let URL = this.__WEBSERVERURL__ + '/api/project/betting';
+				let URL = this.__WEBSERVERURL__ + '/api/project/betting'
+				let goldBeanNum = 0
+				if (this.selected.key == 'All') {
+					if (Number(this.memberInfo.goldBean) < 10) {
+						this.$vux.toast.text('金豆数量小于10','middle')
+						return
+					}
+					goldBeanNum = Number(this.memberInfo.goldBean)
+				} else {
+					goldBeanNum = this.selected.value
+				}
 				let params = {
-					goldBeanNum: this.selected.key == 'All' ? this.memberInfo.goldBean : this.selected.value,
+					goldBeanNum: goldBeanNum,
 					projectId: this.projectId,
 					projectOption: this.selectOpt
 				}
