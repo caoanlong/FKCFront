@@ -1,7 +1,8 @@
 <template>
 	<div class="goodsWrapper">
 		<div class="goods">
-			<img ref="goodsImg" class="goodsImg" :style="{'height': goodsImgWidth + 'px'}" src="../../../static/images/default.png">
+			<img ref="goodsImg" class="goodsImg" :style="{'height': goodsImgWidth + 'px'}" :src="goods.prizeImg" v-if="goods.prizeImg">
+			<img ref="goodsImg" class="goodsImg" :style="{'height': goodsImgWidth + 'px'}" src="../../../static/images/default.png" v-else>
 			<p class="goodsTitle">{{goods.prizeName}}</p>
 			<p class="goodsPrice">参考价：{{goods.prizeRefPrice}}元</p>
 			<p class="goodsGoldPrice">{{goods.prizeGoldBeanPrice}}金豆</p>
