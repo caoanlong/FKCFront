@@ -48,10 +48,15 @@ const router = new Router({
 			component: resolve => require(['@/components/Success'], resolve)
 		},
 		{
-            path: '/podium',
-            name: 'podium',
-            component: resolve => require(['@/components/Podium'], resolve)
-        }
+			path: '/podium',
+			name: 'podium',
+			component: resolve => require(['@/components/Podium'], resolve)
+		},
+		{
+			path: '/prizeDetail',
+			name: 'prizeDetail',
+			component: resolve => require(['@/components/PrizeDetail'], resolve)
+		}
 	]
 })
 
