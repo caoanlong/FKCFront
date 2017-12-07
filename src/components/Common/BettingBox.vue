@@ -101,7 +101,7 @@
 				})
 			},
 			getMemberInfo() {
-				let URL = this.__WEBSERVERURL__ + '/api/member/info';
+				let URL = this.__WEBSERVERURL__ + '/api/member/info'
 				this.$http.post(URL).then((res) => {
 					if (res.body.code == 0) {
 						console.log(JSON.stringify(res.body.data))

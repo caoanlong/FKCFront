@@ -1,5 +1,5 @@
 <template>
-	<div class="goodsWrapper">
+	<router-link tag="div" :to="{name: 'prizeDetail', query: {id: goods._id}}" class="goodsWrapper">
 		<div class="goods">
 			<img ref="goodsImg" class="goodsImg" :style="{'height': goodsImgWidth + 'px'}" :src="goods.prizeImg" v-if="goods.prizeImg">
 			<img ref="goodsImg" class="goodsImg" :style="{'height': goodsImgWidth + 'px'}" src="../../../static/images/default.png" v-else>
@@ -7,7 +7,7 @@
 			<p class="goodsPrice">参考价：{{goods.prizeRefPrice}}元</p>
 			<p class="goodsGoldPrice">{{goods.prizeGoldBeanPrice}}金豆</p>
 		</div>
-	</div>
+	</router-link>
 </template>
 <script type="text/javascript">
 	export default {
