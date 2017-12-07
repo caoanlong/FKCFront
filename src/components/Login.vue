@@ -48,10 +48,11 @@
 	  				mobile: this.mobile
 	  			};
 	  			this.$http.post(URL,params).then((res) => {
+	  				// console.log(res.body)
 	  				if (res.body.code == 0) {
-	  					this.$vux.toast.text('验证码：'+res.body.data,'middle')
+	  					this.$vux.toast.text('短信已发送','middle')
 	  				}else {
-	  					this.$vux.toast.text(res.body.msg,'middle')
+	  					this.$vux.toast.text(res.body.msg+res.body.code,'middle')
 	  				}
 	  			})
 	  		},

@@ -84,12 +84,14 @@
 						this.memberInfo = res.body.data
 						localStorage.setItem('memberInfo',JSON.stringify(res.body.data))
 					}
-					console.log(JSON.stringify(res.body.data));
+					console.log(JSON.stringify(res.body.data))
 				})
 			},
 			signout () {
-				localStorage.clear();
-				this.$router.push({name: 'login'})
+				this.showExit = false
+				localStorage.clear()
+				this.$router.replace({name: 'login'})
+				// window.location.reload()
 			},
 			laterOpen () {
 				this.$vux.toast.text('稍后开放...','middle')

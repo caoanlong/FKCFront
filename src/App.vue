@@ -9,16 +9,7 @@
 			return {
 			}
 		},
-		computed: {
-			title() {
-				return this.$store.state.title
-			},
-			isCome() {
-				return this.$store.state.isCome
-			},
-			isAdd() {
-				return this.$store.state.isAdd
-			},
+		created () {
 		},
 		methods: {
 		}
