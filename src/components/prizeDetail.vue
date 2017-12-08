@@ -33,7 +33,7 @@
 		},
 		computed: {
 			memberInfo() {
-				return JSON.parse(localStorage.getItem('memberInfo'))
+				return this.$store.state.memberInfo
 			}
 		},
 		created () {
@@ -50,13 +50,56 @@
 					prizeId: this.$route.query.id
 				}
 				this.$http.get(URL, {params: params}).then(res => {
-					console.log(res.body.data)
+					// console.log(res.body.data)
 					this.prizeDetail = res.body.data
 				})
 			},
 			prizeDraw () {
-				this.$vux.toast.text('稍后开放...','middle')
-			}
+				if (Number(this.memberInfo.goldBean) < Number(this.prizeDetail.prizeGoldBeanPrice)) {
+					this.$vux.confirm.show({
+						title: '提示',
+						content: '金豆不足！',
+						confirmText: '去充值',
+						cancelText: '放弃',
+						onCancel: () => {
+							console.log('放弃')
+						},
+						onConfirm: () => {
+							this.$router.push({name: 'getGoldBean'})
+						}
+					})
+					return
+				}
+				let URL = this.__WEBSERVERURL__ + '/api/shop/prizeDraw'
+				let params = {
+					prizeId: this.prizeDetail._id,
+					prizeGoldBeanPrice: this.prizeDetail.prizeGoldBeanPrice
+				}
+				this.$http.post(URL, params).then(res => {
+					if (res.body.code == 0) {
+						this.getMemberInfo()
+						this.$vux.alert.show({
+							title: '恭喜您，抽中' + this.prizeDetail.prizeName,
+							content: '请在我的奖品中填写收获地址，方便发货。',
+						})
+					} else {
+						this.$vux.toast.text(res.body.msg + res.body.code,'middle')
+					}
+				})
+			},
+			getMemberInfo() {
+				let URL = this.__WEBSERVERURL__ + '/api/member/info'
+				this.$http.post(URL).then((res) => {
+					if (res.body.code == 0) {
+						console.log(JSON.stringify(res.body.data))
+						localStorage.setItem('memberInfo',JSON.stringify(res.body.data));
+						this.$store.commit({
+							type: 'getMemberInfo',
+							memberInfo: res.body.data
+						})
+					}
+				})
+			},
 		}
 	}
 </script>

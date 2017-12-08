@@ -68,7 +68,11 @@ export default {
 			this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop
 			this.clientHeight = document.documentElement.clientHeight || document.body.clientHeight
 			this.pageHeight = this.$refs.guessWrapper.offsetHeight
-			this.disY = this.pageHeight - this.clientHeight + 64
+			if (this.isOpen) {
+				this.disY = this.pageHeight - this.clientHeight + 54
+			} else {
+				this.disY = this.pageHeight - this.clientHeight + 64
+			}
 			console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
 			if (this.scrollTop == this.disY) {
 				if (this.pageIndex < this.pages) {
@@ -106,6 +110,12 @@ export default {
 			this.$http.get(URL,{params:params}).then((res) => {
 				this.pages = res.body.data.pages
 				this.list = this.list.concat(res.body.data.guessList)
+				if (res.body.data.guessList.length < res.body.data.pageSize) {
+					this.loadStatus = '~已经到底了~'
+				}
+				if (this.list.length == 0) {
+					this.loadStatus = '~没有结果~'
+				}
 			})
 		},
 		iswinFc() {

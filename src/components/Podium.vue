@@ -31,8 +31,8 @@
 				this.clientHeight = document.documentElement.clientHeight || document.body.clientHeight
 				this.pageHeight = this.$refs.podiumIn.offsetHeight
 				this.disY = this.pageHeight - this.clientHeight
-				console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
-				if (this.scrollTop > this.disY) {
+				// console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
+				if (this.scrollTop == this.disY) {
 					if (this.pageIndex < this.pages) {
 						this.loadStatus = '正在加载...'
 						this.pageIndex++
@@ -52,6 +52,12 @@
 				this.$http.get(URL,{params:params}).then((res) => {
 					this.pages = res.body.data.pages
 					this.goodsList = this.goodsList.concat(res.body.data.prizeList)
+					if (res.body.data.prizeList.length < res.body.data.pageSize) {
+						this.loadStatus = '~已经到底了~'
+					}
+					if (this.goodsList.length == 0) {
+						this.loadStatus = '~没有结果~'
+					}
 				})
 			}
 		},

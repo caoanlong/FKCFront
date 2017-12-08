@@ -52,14 +52,18 @@
 		created() {
 			document.title = '疯狂猜'
 			this.getMemberInfo()
-			this.getProjectType()
+			if ((new Date().getTime() - Number(localStorage.getItem('typeListLastModify'))) > 1000 * 60 * 60 * 24 * 3) {
+				this.getProjectType()
+			} else {
+				this.typeList = JSON.parse(localStorage.getItem('typeList'))
+			}
 			this.getProjectList()
 			window.addEventListener('scroll', (e) => {
 				this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop
 				this.clientHeight = document.documentElement.clientHeight || document.body.clientHeight
 				this.pageHeight = this.$refs.projectIn.offsetHeight
 				this.disY = this.pageHeight - this.clientHeight + 44
-				console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
+				// console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
 				if (this.scrollTop > this.disY) {
 					if (this.pageIndex < this.pages) {
 						this.loadStatus = '正在加载...'
@@ -76,6 +80,8 @@
 				let URL = this.__WEBSERVERURL__ + '/api/project/type'
 				this.$http.get(URL).then(res => {
 					this.typeList = res.body.data
+					localStorage.setItem('typeList', JSON.stringify(res.body.data))
+					localStorage.setItem('typeListLastModify', new Date().getTime())
 				})
 			},
 			getProjectList () {

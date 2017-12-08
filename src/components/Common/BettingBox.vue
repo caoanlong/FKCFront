@@ -81,18 +81,15 @@
 					projectOption: this.selectOpt
 				}
 				console.log(JSON.stringify(params))
-				var that = this;
+				let that = this;
 				this.$http.post(URL,params).then((res) => {
-					console.log(JSON.stringify(res.body));
+					console.log(JSON.stringify(res.body))
 					if (res.body.code == 0) {
 						this.$vux.alert.show({
 							title: '恭喜',
 							content: '投注成功',
 							onShow () {
 								that.getMemberInfo()
-							},
-							onHide () {
-								console.log('Plugin: I\'m hiding now')
 							}
 						})
 					}else {

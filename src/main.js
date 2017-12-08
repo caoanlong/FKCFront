@@ -8,10 +8,11 @@ import vueResource from 'vue-resource'
 import store from './store/store'
 import Vuelidate from 'vuelidate'
 import common from './assets/js/common'
-import  { AlertPlugin,ToastPlugin } from 'vux'
+import  { AlertPlugin,ToastPlugin,ConfirmPlugin } from 'vux'
 Vue.use(Vuelidate)
 Vue.use(AlertPlugin)
 Vue.use(ToastPlugin)
+Vue.use(ConfirmPlugin)
 
 Vue.use(vueResource)
 Vue.use(common)

@@ -2,18 +2,20 @@
 	<div class="account">
 		<div class="block"></div>
 		<div class="wrapper">
-			<group ref="wrapperIn">
-				<cell v-for="(item,i) in accountDetails" :key="i">
-					<div slot="title">
-						<p class="eclipsis" :style="{width: winWidth}">{{item.type}}<span style="color:#666;font-size:16px">({{item.info}})</span></p>
-						<p style="font-size: 14px;color: #999">{{item.addTime}}</p>
-					</div>
-					<div slot="default">
-						<span>{{item.goldBeanChange}}</span>
-					</div>
-				</cell>
+			<div ref="wrapperIn">
+				<group>
+					<cell v-for="(item,i) in accountDetails" :key="i">
+						<div slot="title">
+							<p class="eclipsis" :style="{width: winWidth}">{{item.type}}<span style="color:#666;font-size:16px">({{item.info}})</span></p>
+							<p style="font-size: 14px;color: #999">{{item.addTime}}</p>
+						</div>
+						<div slot="default">
+							<span>{{item.goldBeanChange}}</span>
+						</div>
+					</cell>
+				</group>
 				<pullUpLoad :loadStatus="loadStatus"></pullUpLoad>
-			</group>
+			</div>
 		</div>
 	</div>
 </template>
@@ -40,10 +42,10 @@ export default {
 			window.addEventListener('scroll', (e) => {
 				this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop
 				this.clientHeight = document.documentElement.clientHeight || document.body.clientHeight
-				this.pageHeight = this.$refs.wrapperIn.$el.offsetHeight
-				this.disY = this.pageHeight - this.clientHeight
-				console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
-				if (this.scrollTop > this.disY) {
+				this.pageHeight = this.$refs.wrapperIn.offsetHeight
+				this.disY = this.pageHeight - this.clientHeight + 10
+				// console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
+				if (this.scrollTop == this.disY) {
 					if (this.pageIndex < this.pages) {
 						this.loadStatus = '正在加载...'
 						this.pageIndex++
@@ -60,12 +62,17 @@ export default {
 				let params = {
 					pageIndex: this.pageIndex
 				}
-	  			this.$http.post(URL, params).then((res) => {
+	  			this.$http.get(URL, {params: params}).then((res) => {
 	  				if (res.body.code == 0) {
 	  					this.pages = res.body.data.pages
 	  					this.accountDetails = this.accountDetails.concat(res.body.data.accountDetail)
+	  					if (res.body.data.list.length < res.body.data.pageSize) {
+							this.loadStatus = '~已经到底了~'
+						}
+						if (this.accountDetails.length == 0) {
+							this.loadStatus = '~没有结果~'
+						}
 	  				}
-	  				console.log(JSON.stringify(res.body.data));
 	  			})
 			}
 		},
