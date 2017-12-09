@@ -7,7 +7,7 @@
 					<cell v-for="(item,i) in accountDetails" :key="i">
 						<div slot="title">
 							<p class="eclipsis" :style="{width: winWidth}">{{item.type}}<span style="color:#666;font-size:16px">({{item.info}})</span></p>
-							<p style="font-size: 14px;color: #999">{{item.addTime}}</p>
+							<p style="font-size: 14px;color: #999">{{item.addTime|getdatefromtimestamp}}</p>
 						</div>
 						<div slot="default">
 							<span>{{item.goldBeanChange}}</span>
@@ -66,7 +66,7 @@ export default {
 	  				if (res.body.code == 0) {
 	  					this.pages = res.body.data.pages
 	  					this.accountDetails = this.accountDetails.concat(res.body.data.accountDetail)
-	  					if (res.body.data.list.length < res.body.data.pageSize) {
+	  					if (res.body.data.accountDetail.length < res.body.data.pageSize) {
 							this.loadStatus = '~已经到底了~'
 						}
 						if (this.accountDetails.length == 0) {

@@ -24,7 +24,7 @@
 							},
 							{
 								label: '投注时间',
-								value: item.addTime.substr(0,10)
+								value: getdatefromtimestamp(item.addTime)
 							},
 							{
 								label: '投注赔率',
