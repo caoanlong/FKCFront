@@ -62,18 +62,18 @@ export default {
 				let params = {
 					pageIndex: this.pageIndex
 				}
-	  			this.$http.get(URL, {params: params}).then((res) => {
-	  				if (res.body.code == 0) {
-	  					this.pages = res.body.data.pages
-	  					this.accountDetails = this.accountDetails.concat(res.body.data.accountDetail)
-	  					if (res.body.data.accountDetail.length < res.body.data.pageSize) {
+				this.$http.get(URL, {params: params}).then((res) => {
+					if (res.body.code == 0) {
+						this.pages = res.body.data.pages
+						this.accountDetails = this.accountDetails.concat(res.body.data.accountDetail)
+						if (res.body.data.accountDetail.length < res.body.data.pageSize) {
 							this.loadStatus = '~已经到底了~'
 						}
 						if (this.accountDetails.length == 0) {
 							this.loadStatus = '~没有结果~'
 						}
-	  				}
-	  			})
+					}
+				})
 			}
 		},
 		components: {

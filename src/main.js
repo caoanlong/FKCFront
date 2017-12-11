@@ -46,6 +46,9 @@ Vue.filter('getdatefromtimestamp', function(value, bool) {
 		return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second
 	}
 })
+Vue.filter('trim', function (value) {
+	return value.split(' ').join('')
+})
 
 /* eslint-disable no-new */
 new Vue({

@@ -56,6 +56,31 @@ const router = new Router({
 			path: '/prizeDetail',
 			name: 'prizeDetail',
 			component: resolve => require(['@/components/PrizeDetail'], resolve)
+		},
+		{
+			path: '/myAddress',
+			name: 'myAddress',
+			component: resolve => require(['@/components/MyAddress'], resolve)
+		},
+		{
+			path: '/addNewAddress',
+			name: 'addNewAddress',
+			component: resolve => require(['@/components/AddNewAddress'], resolve)
+		},
+		{
+			path: '/editAddress',
+			name: 'editAddress',
+			component: resolve => require(['@/components/EditAddress'], resolve)
+		},
+		{
+			path: '/myPrize',
+			name: 'myPrize',
+			component: resolve => require(['@/components/MyPrize'], resolve)
+		},
+		{
+			path: '/selectAddress',
+			name: 'selectAddress',
+			component: resolve => require(['@/components/SelectAddress'], resolve)
 		}
 	]
 })

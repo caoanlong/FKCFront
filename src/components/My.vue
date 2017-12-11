@@ -20,10 +20,11 @@
 			</group>
 			<group>
 				<cell title="我的竞猜" is-link :link="{name: 'myGuess'}"></cell>
-				<cell title="我的奖品" is-link link="" @click.native="laterOpen"></cell>
+				<cell title="我的奖品" is-link :link="{name: 'myPrize'}"></cell>
 				<cell title="账户明细" is-link :link="{name: 'accountDetail'}"></cell>
 			</group>
 			<group>
+				<cell title="收获地址" is-link :link="{name: 'myAddress'}"></cell>
 				<cell title="意见反馈" is-link link="" @click.native="laterOpen"></cell>
 			</group>
 			<box gap="20px 10px">

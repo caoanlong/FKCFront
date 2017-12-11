@@ -109,7 +109,7 @@
 						})
 					}
 				})
-			},
+			}
 		},
 		components:{
 			Alert
