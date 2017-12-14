@@ -51,8 +51,8 @@
 		},
 		created() {
 			document.title = '疯狂猜'
-			this.getMemberInfo()
-			if ((new Date().getTime() - Number(localStorage.getItem('typeListLastModify'))) > 1000 * 60 * 60 * 24 * 3) {
+			// this.getMemberInfo()
+			if ((new Date().getTime() - Number(localStorage.getItem('typeListLastModify'))) > 3600000 * 72 || localStorage.getItem('typeList') == 'undefined') {
 				this.getProjectType()
 			} else {
 				this.typeList = JSON.parse(localStorage.getItem('typeList'))
