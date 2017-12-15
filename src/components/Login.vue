@@ -68,9 +68,9 @@
 	  				console.log(res.body);
 	  				this.$vux.toast.show({
 	  					text: res.body.msg
-	  				});
-	  				localStorage.setItem('token',res.body.token);
-	  				localStorage.setItem('memberInfo',JSON.stringify(res.body.data));
+	  				})
+	  				localStorage.setItem('token',res.body.token)
+	  				localStorage.setItem('memberInfo',JSON.stringify(res.body.data))
 	  				setTimeout(function() {
 	  					that.$router.push({name: 'home'});
 	  				},500)

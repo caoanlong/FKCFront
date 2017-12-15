@@ -33,7 +33,7 @@
 		},
 		computed: {
 			memberInfo() {
-				return this.$store.state.memberInfo
+				return JSON.parse(localStorage.getItem('memberInfo'))
 			}
 		},
 		created () {
