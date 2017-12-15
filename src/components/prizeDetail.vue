@@ -28,17 +28,19 @@
 		data () {
 			return {
 				prizeImgWidth: '',
-				prizeDetail: {}
+				prizeDetail: {},
+				memberInfo: {}
 			}
 		},
-		computed: {
-			memberInfo() {
-				return JSON.parse(localStorage.getItem('memberInfo'))
-			}
-		},
+		// computed: {
+		// 	memberInfo() {
+		// 		return JSON.parse(localStorage.getItem('memberInfo'))
+		// 	}
+		// },
 		created () {
 			document.title = '奖品详情'
 			this.getPrizeDetail()
+			this.memberInfo = JSON.parse(localStorage.getItem('memberInfo'))
 		},
 		mounted () {
 			this.prizeImgWidth = this.$refs.prizeImg.offsetWidth
@@ -77,7 +79,9 @@
 				}
 				this.$http.post(URL, params).then(res => {
 					if (res.body.code == 0) {
-						this.getMemberInfo()
+						this.getMemberInfo(() => {
+							this.memberInfo = JSON.parse(localStorage.getItem('memberInfo'))
+						})
 						this.$vux.alert.show({
 							title: '恭喜您，抽中' + this.prizeDetail.prizeName,
 							content: '请在我的奖品中填写收获地址，方便发货。',
@@ -87,7 +91,7 @@
 					}
 				})
 			},
-			getMemberInfo() {
+			getMemberInfo(callback) {
 				let URL = this.__WEBSERVERURL__ + '/api/member/info'
 				this.$http.post(URL).then((res) => {
 					if (res.body.code == 0) {
@@ -97,6 +101,9 @@
 							type: 'getMemberInfo',
 							memberInfo: res.body.data
 						})
+						if (callback) {
+							callback()
+						}
 					}
 				})
 			},

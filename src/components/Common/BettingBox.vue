@@ -50,13 +50,17 @@
 				selected: {
 					key: '500',
 					value: 500
-				}
+				},
+				memberInfo: {}
 			}
 		},
-		computed: {
-			memberInfo() {
-				return JSON.parse(localStorage.getItem('memberInfo'))
-			}
+		// computed: {
+		// 	memberInfo() {
+		// 		return JSON.parse(localStorage.getItem('memberInfo'))
+		// 	}
+		// },
+		created () {
+			this.memberInfo = JSON.parse(localStorage.getItem('memberInfo'))
 		},
 		methods: {
 			selectSize(option) {
@@ -89,7 +93,9 @@
 							title: '恭喜',
 							content: '投注成功',
 							onShow () {
-								that.getMemberInfo()
+								that.getMemberInfo(function () {
+									that.memberInfo = JSON.parse(localStorage.getItem('memberInfo'))
+								})
 							}
 						})
 					}else {
@@ -97,7 +103,7 @@
 					}
 				})
 			},
-			getMemberInfo() {
+			getMemberInfo(callback) {
 				let URL = this.__WEBSERVERURL__ + '/api/member/info'
 				this.$http.post(URL).then((res) => {
 					if (res.body.code == 0) {
@@ -107,6 +113,9 @@
 							type: 'getMemberInfo',
 							memberInfo: res.body.data
 						})
+						if (callback) {
+							callback()
+						}
 					}
 				})
 			}
