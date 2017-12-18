@@ -3,7 +3,7 @@
 		<router-link :to="{name: 'getGoldBean'}" tag="div" class="mine">
 			<div class="mineBean">
 				<p>金豆</p>
-				<p>{{memberInfo.goldBean || '未登录'}}</p>
+				<p>{{memberInfo ? memberInfo.goldBean : '未登录'}}</p>
 			</div>
 			<div class="add">
 				<img class="icon" src="../../assets/img/add.svg"/>
@@ -51,7 +51,7 @@
 					key: '500',
 					value: 500
 				},
-				memberInfo: {}
+				memberInfo: null
 			}
 		},
 		// computed: {

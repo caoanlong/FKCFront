@@ -179,11 +179,15 @@
 				</div>
 			</div>
 		</div>
+		<form  id="form" action="http://trans.palmf.cn/sdk/api/v1.0/cli/order_h5/0" method="post">
+		    <input type="hidden" id="orderInfo" name="orderInfo" v-model="orderInfo">
+		</form>
 	</div>
 </template>
 <script>
   import { Group,Cell,XButton,XDialog,CheckIcon } from 'vux'
-  import MD5 from 'md5'
+  import { appid, key } from '../assets/js/config'
+  import md5 from 'md5'
   export default {
 	data () {
 		return {
@@ -193,7 +197,8 @@
 			showAgreement: false,
 			isTipsInfoShow: false,
 			payNum: 0,
-			isAgree: true
+			isAgree: true,
+			orderInfo: ''
 		}
 	},
 	computed: {
@@ -204,6 +209,7 @@
 	created() {
 		document.title = '获取金豆'
 		this.getGoldBeanList()
+		console.log(appid, key)
 	},
 	methods: {
 		getGoldBeanList () {
@@ -218,33 +224,28 @@
 			this.payNum = goldBeanNum
 		},
 		buyGoldBean () {
-			// 支付对接参数
-			let url = 'http://pay.e-mac.com.cn/pay/v1/order'
-			let merNo = '10061'
-			let appId = '57'
-			let key = '91bf69f0d61480d32760ea3afd3679b2'
-			let transType = '1' // 支付方式
-			let transAmt = this.payNum // 支付金额
-			let transTime = this.getTimeNum() // 支付时间(yyyyMMddHHmmss)
-			let orderNo = this.getTimeNum() + this.getVerCode(8) // 订单号，不可重复
-			let returnUrl = encodeURIComponent('http://m.91fkc.com/#/success') // 公众号返回页面，可不填，不参与加密（以http://开头）
-			let showQR = 0 // 0:返回链接1:直接显示二维码(扫码接口有效，默认为0，不参与加密)
-			let beforeSign = merNo+'|'+appId+'|'+transType+'|'+transAmt+'|'+transTime+'|'+orderNo+'|'+key
-			let sign = MD5(beforeSign)
-			let clientIp = returnCitySN.cip
-			/* 加密信息，加密规则如下：
-			 * MD5(merNo|appId|transType|transAmt|transTime|orderNo|KEY)
-			 * KEY在对接时申请发放 
-			 */
 			let params = {
-				goldBeanNum: this.payNum,
-				orderNo: orderNo
+				'appid': appid,
+				'key': key,
+				'subject': this.payNum + '金豆', // 商品名称,
+				'amount': this.payNum, // 支付金额，单位/分,
+				'mchntOrderNo': this.getTimeNum() + this.getVerCode(8), // 订单号,
+				'body': '金豆',
+				'childAppid': '',
+				'clientIp': returnCitySN.cip,
+				'payChannelId': '', // 支付方式,
+				'notifyUrl': 'http://39.108.245.177:3000/api/notifyUtl',
+				'returnUrl': window.location.origin + '/#/GetGoldBean',
+				'type':'h5'
 			}
-			let URL = this.__WEBSERVERURL__ + '/api/shop/buyGoldBean'
+			// console.log(JSON.stringify(params))
+			let URL = this.__WEBSERVERURL__ + '/api/payOrder'
 			this.$http.post(URL, params).then(res => {
-				console.log(res)
 				if (res.body.code == 0) {
-					window.location.href = `${url}?merNo=${merNo}&appId=${appId}&key=${key}&transType=${transType}&transAmt=${transAmt}&transTime=${transTime}&orderNo=${orderNo}&sign=${sign}&returnUrl=${returnUrl}&clientIp=${clientIp}`
+					this.orderInfo = res.body.data
+					this.$nextTick(() => {
+						document.getElementById('form').submit()
+					})
 				}
 			})
 		}

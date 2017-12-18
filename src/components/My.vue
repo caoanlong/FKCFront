@@ -3,17 +3,22 @@
 		<div class="block"></div>
 		<div class="wrapper">
 			<div class="profile">
-				<div class="head">
-					<input type="file" class="avatar" ref="avatar" @change="addImg">
-					<img :src="memberInfo.avatar" v-if="memberInfo.avatar">
-					<img src="../assets/img/avatar.svg" v-else>
+				<div class="avatarInfo">
+					<div class="head">
+						<input type="file" class="avatar" ref="avatar" @change="addImg">
+						<img :src="memberInfo.avatar" v-if="memberInfo.avatar">
+						<img src="../assets/img/avatar.svg" v-else>
+					</div>
 				</div>
-				<div class="mobile">
-					<p>{{memberInfo.mobile}}</p>
+				<div class="info">
+					<div class="mobile">
+						<p>手机号：{{memberInfo.mobile}}</p>
+					</div>
+					<div class="charm">
+						<p>魅力值：{{memberInfo.charm}}</p>
+					</div>
 				</div>
-				<div class="charm">
-					<p>魅力值：{{memberInfo.charm}}</p>
-				</div>
+				<div class="freeSign" @click="freeSign">免费领豆</div>
 			</div>
 			<group gutter="0">
 				<cell title="我的金豆" :value="memberInfo.goldBean" is-link :link="{name: 'getGoldBean'}"></cell>
@@ -33,6 +38,71 @@
 		</div>
 		<Tabbar></Tabbar>
 		<actionsheet v-model="showExit" :menus="signoutMenu" @on-click-menu="showExit=false" @on-click-menu-delete="signout" show-cancel></actionsheet>
+		<div v-show="showFreeSign" class="dialog-mask"></div>
+		<div v-show="showFreeSign" class="dialog">
+			<div class="closeDialog" @click="showFreeSign = false"></div>
+			<div class="dialog-title">
+				<strong>免费领豆</strong>
+			</div>
+			<div class="goldPrize">
+				<div class="up">
+					<div class="week" :class="{'today': today == 1, 'isSign': freeReceive.Monday.isSign}">
+						<p class="weekDay">周一</p>
+						<img class="ico" src="../assets/img/goldrandom.svg" v-if="freeReceive.Monday.isRandom">
+						<img class="ico" src="../assets/img/goldbeans.svg" v-else>
+						<p class="goldNum" v-if="freeReceive.Monday.isSign">已领取</p>
+						<p class="goldNum" v-else>{{freeReceive.Monday.isRandom ? '随机' : freeReceive.Monday.goldNum}}金豆</p>
+					</div>
+					<div class="week" :class="{'today': today == 2, 'isSign': freeReceive.Tuesday.isSign}">
+						<p class="weekDay">周二</p>
+						<img class="ico" src="../assets/img/goldrandom.svg" v-if="freeReceive.Tuesday.isRandom">
+						<img class="ico" src="../assets/img/goldbeans.svg" v-else>
+						<p class="goldNum" v-if="freeReceive.Tuesday.isSign">已领取</p>
+						<p class="goldNum" v-else>{{freeReceive.Tuesday.isRandom ? '随机' : freeReceive.Tuesday.goldNum}}金豆</p>
+					</div>
+					<div class="week" :class="{'today': today == 3, 'isSign': freeReceive.Wednesday.isSign}">
+						<p class="weekDay">周三</p>
+						<img class="ico" src="../assets/img/goldrandom.svg" v-if="freeReceive.Wednesday.isRandom">
+						<img class="ico" src="../assets/img/goldbeans.svg" v-else>
+						<p class="goldNum" v-if="freeReceive.Wednesday.isSign">已领取</p>
+						<p class="goldNum" v-else>{{freeReceive.Wednesday.isRandom ? '随机' : freeReceive.Wednesday.goldNum}}金豆</p>
+					</div>
+					<div class="week" :class="{'today': today == 4, 'isSign': freeReceive.Thursday.isSign}">
+						<p class="weekDay">周四</p>
+						<img class="ico" src="../assets/img/goldrandom.svg" v-if="freeReceive.Thursday.isRandom">
+						<img class="ico" src="../assets/img/goldbeans.svg" v-else>
+						<p class="goldNum" v-if="freeReceive.Thursday.isSign">已领取</p>
+						<p class="goldNum" v-else>{{freeReceive.Thursday.isRandom ? '随机' : freeReceive.Thursday.goldNum}}金豆</p>
+					</div>
+				</div>
+				<div class="down">
+					<div class="week" :class="{'today': today == 5, 'isSign': freeReceive.Friday.isSign}">
+						<p class="weekDay">周五</p>
+						<img class="ico" src="../assets/img/goldrandom.svg" v-if="freeReceive.Friday.isRandom">
+						<img class="ico" src="../assets/img/goldbeans.svg" v-else>
+						<p class="goldNum" v-if="freeReceive.Friday.isSign">已领取</p>
+						<p class="goldNum" v-else>{{freeReceive.Friday.isRandom ? '随机' : freeReceive.Friday.goldNum}}金豆</p>
+					</div>
+					<div class="week" :class="{'today': today == 6, 'isSign': freeReceive.Saturday.isSign}">
+						<p class="weekDay">周六</p>
+						<img class="ico" src="../assets/img/goldrandom.svg" v-if="freeReceive.Saturday.isRandom">
+						<img class="ico" src="../assets/img/goldbeans.svg" v-else>
+						<p class="goldNum" v-if="freeReceive.Saturday.isSign">已领取</p>
+						<p class="goldNum" v-else>{{freeReceive.Saturday.isRandom ? '随机' : freeReceive.Saturday.goldNum}}金豆</p>
+					</div>
+					<div class="week" :class="{'today': today == 0, 'isSign': freeReceive.Sunday.isSign}">
+						<p class="weekDay">周日</p>
+						<img class="ico" src="../assets/img/goldrandom.svg" v-if="freeReceive.Sunday.isRandom">
+						<img class="ico" src="../assets/img/goldbeans.svg" v-else>
+						<p class="goldNum" v-if="freeReceive.Sunday.isSign">已领取</p>
+						<p class="goldNum" v-else>{{freeReceive.Sunday.isRandom ? '随机' : freeReceive.Sunday.goldNum}}金豆</p>
+					</div>
+				</div>
+			</div>
+			<div style="padding:15px;">
+				<x-button type="primary" @click.native="getSignGold">领取奖励</x-button>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -47,9 +117,34 @@
 					'title.noop': '确定退出吗？',
 					delete: '<span style="color:red">退出</span>'
 				},
+				showFreeSign: false,
+				freeReceive: {
+					'Monday': {},
+					'Tuesday': {},
+					'Wednesday': {},
+					'Thursday': {},
+					'Friday': {},
+					'Saturday': {},
+					'Sunday': {}
+				},
+				weekend: [
+					'Sunday',
+					'Monday',
+					'Tuesday',
+					'Wednesday',
+					'Thursday',
+					'Friday',
+					'Saturday'
+				],
+				isSign: false
 			}
 		},
-		created() {
+		computed: {
+			today () {
+				return new Date().getDay()
+			}
+		},
+		created () {
 			document.title = '我的'
 			this.getMemberInfo()
 		},
@@ -64,6 +159,41 @@
 						this.$router.push({name: 'login'})
 					}
 					console.log(JSON.stringify(res.body.data));
+				})
+			},
+			freeSign () {
+				this.showFreeSign = true
+				let URL = this.__WEBSERVERURL__ + '/api/member/freeReceive'
+				this.$http.get(URL).then((res) => {
+					if (res.body.code == 0) {
+						this.freeReceive = res.body.data
+					}
+					console.log(JSON.stringify(res.body.data))
+				})
+			},
+			getSignGold () {
+				if (this.freeReceive[this.weekend[this.today]].isSign || this.isSign) {
+					this.$vux.toast.text('今日已领取过了','middle')
+					return
+				}
+				this.isSign = true
+				let URL = this.__WEBSERVERURL__ + '/api/member/getSignGold'
+				let params = {
+					week: this.weekend[this.today],
+					goldNum: this.freeReceive[this.weekend[this.today]].goldNum
+				}
+				console.log(JSON.stringify(params))
+				this.$http.post(URL, params).then((res) => {
+					if (res.body.code == 0) {
+						this.$vux.toast.show({
+							text: '+' + params.goldNum + '金豆'
+						})
+						this.freeSign()
+						this.getMemberInfo()
+					} else {
+						this.$vux.toast.text(res.body.msg,'middle')
+					}
+					console.log(JSON.stringify(res.body.data))
 				})
 			},
 			addImg (e) {
@@ -118,42 +248,127 @@
 			top 0
 			right 0
 			.profile
+				display flex
+				position relative
 				width 100%
-				height 220px
-				padding-top 20px
+				// height 220px
+				padding 20px 0
 				background-color #35495e
-				.head
-					width 80px
-					height 80px
-					border-radius 40px
-					background-color #fff
-					border 2px solid #fff
-					margin 20px auto 0 auto
-					overflow hidden
-					position relative
-					.avatar
-						position absolute
+				.avatarInfo
+					flex 0 0 110px
+					padding-left 15px
+					.head
+						width 80px
+						height 80px
+						border-radius 40px
+						background-color #fff
+						border 2px solid #fff
+						overflow hidden
+						position relative
+						.avatar
+							position absolute
+							width 100%
+							height 100%
+							left 0
+							top 0
+							opacity 0
+						img
+							display block
+							width 100%
+							height 100%
+				.info
+					flex 1
+					.mobile
 						width 100%
-						height 100%
-						left 0
-						top 0
-						opacity 0
-					img
+						height 40px
+						line-height 40px
+						p
+							color #fff
+							text-align left
+					.charm
+						width 100%
+						height 40px
+						line-height 40px
+						p
+							color #fff
+							text-align left
+				.freeSign
+					position absolute
+					right 15px
+					bottom 25px
+					z-index 9
+					width 80px
+					height 30px
+					line-height 30px
+					text-align center
+					font-size 14px
+					color #ff6900
+					background-color #fff
+					border-radius 15px
+		.dialog-mask
+			position fixed
+			top 0
+			left 0
+			z-index 999
+			width 100%
+			height 100%
+			background-color rgba(0, 0, 0, .6)
+		.dialog
+			position fixed
+			top 50%
+			left 50%
+			z-index 1000
+			transform translate(-50% , -50%)
+			-webkit-transform translate(-50% , -50%)
+			width 80%
+			background-color #fff
+			text-align center
+			border-radius 3px
+			.closeDialog
+				position absolute
+				right 10px
+				top 10px
+				width 30px
+				height 30px
+				background-image url('../assets/img/close.svg')
+				background-repeat no-repeat
+				background-size 18px
+				background-position center
+			.dialog-title
+				padding 1.3em 1.6em 0.5em
+				strong
+					font-weight 400
+					font-size 18px
+			.goldPrize
+				width 100%
+				padding 10px
+				.up
+					display flex
+				.down
+					display flex
+					margin-top 5px
+					padding 0 30px
+				.week
+					flex 1
+					height 84px
+					margin 0 2px
+					border-radius 3px
+					background-color #eee
+					&.today
+						border 1px solid #ff6900
+					&.isSign
+						opacity .3
+						border none
+					.weekDay
+						height 26px
+						line-height 26px
+						font-size 12px
+						color #999
+					.ico
 						display block
 						width 100%
-						height 100%
-				.mobile
-					width 100%
-					height 50px
-					line-height 50px
-					p
-						color #fff
-						text-align center
-				.charm
-					width 100%
-					height 40px
-					line-height 20px
-					p
-						color #fff
-						text-align center
+						height 32px
+					.goldNum
+						font-size 12px
+						color #666
 </style>

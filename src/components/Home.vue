@@ -130,9 +130,6 @@
 			selectNum (data) {
 				console.log(JSON.stringify(data));
 				this.selectedNum = data.content;
-			},
-			sureSelect () {
-				this.$emit('close')
 			}
 		},
 		components: {

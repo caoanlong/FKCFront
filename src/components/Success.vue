@@ -1,6 +1,6 @@
 <template>
 	<div class="main">
-		<msg title="交易成功" description="无描述" :buttons="buttons" icon="success"></msg>
+		<msg title="交易成功" :description="description" :buttons="buttons" icon="success"></msg>
 	</div>
 </template>
 <script>
@@ -8,10 +8,11 @@
 	export default {
 		data () {
 			return {
+				description: this.$route.query.subject,
 				buttons: [{
 					type: 'primary',
 					text: '返回',
-					link: '/GetGoldBean'
+					link: '/' + this.$route.query.link
 			  	}]
 			}
 		},
