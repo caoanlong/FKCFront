@@ -6,7 +6,7 @@
 				<div class="avatarInfo">
 					<div class="head">
 						<input type="file" class="avatar" ref="avatar" @change="addImg">
-						<img :src="memberInfo.avatar" v-if="memberInfo.avatar">
+						<img :src="__WEBIMGSERVERURL__ + memberInfo.avatar" v-if="memberInfo.avatar">
 						<img src="../assets/img/avatar.svg" v-else>
 					</div>
 				</div>
@@ -150,7 +150,7 @@
 		},
 		methods: {
 			getMemberInfo () {
-				let URL = this.__WEBSERVERURL__ + '/api/member/info';
+				let URL = this.__WEBSERVERURL__ + '/api/member/info'
 				this.$http.post(URL).then((res) => {
 					if (res.body.code == 0) {
 						this.memberInfo = res.body.data
@@ -158,7 +158,7 @@
 					} else {
 						this.$router.push({name: 'login'})
 					}
-					console.log(JSON.stringify(res.body.data));
+					console.log(JSON.stringify(res.body.data))
 				})
 			},
 			freeSign () {
@@ -197,7 +197,7 @@
 				})
 			},
 			addImg (e) {
-				let URL = this.__WEBSERVERURL__ + '/uploadImg';
+				let URL = 'http://39.108.245.177:3001/uploadImg'
 				let formData = new FormData()
 				formData.append("file",e.target.files[0])
 				this.$http.post(URL,formData).then((res) => {

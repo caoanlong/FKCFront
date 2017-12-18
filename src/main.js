@@ -29,6 +29,10 @@ Vue.http.interceptors.push((request, next) => {
 			localStorage.removeItem('token')
 			window.location.href = '/#/login'
 		}
+		// if (resbonse.body.code != 0) {
+		// 	localStorage.removeItem('token')
+		// 	window.location.href = '/#/login'
+		// }
 	})
 })
 

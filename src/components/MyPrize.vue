@@ -11,7 +11,7 @@
 				</div>
 				<router-link tag="div" :to="{name: 'prizeDetail', query: {id: myPrize.prize._id}}" class="prize vux-1px-b vux-1px-t">
 					<div class="prizeImg">
-						<img :src="myPrize.prize.prizeImg">
+						<img :src="__WEBIMGSERVERURL__ + myPrize.prize.prizeImg">
 					</div>
 					<div class="prizeInfo">
 						<div class="title">{{myPrize.prize.prizeName}}</div>

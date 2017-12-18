@@ -13,7 +13,7 @@
 					<div class="mask">
 						<span class="time">截止时间：{{item.endTime|getdatefromtimestamp}}</span>
 					</div>
-					<img class="main-img" :src="item.imgUrl" v-if="item.imgUrl">
+					<img class="main-img" :src="__WEBIMGSERVERURL__ + item.imgUrl" v-if="item.imgUrl">
 					<img class="main-img" src="../../static/images/default.png" v-else>
 					<div class="content">
 						<p class="title" v-text="item.name"></p>
@@ -52,11 +52,12 @@
 		created() {
 			document.title = '疯狂猜'
 			// this.getMemberInfo()
-			if ((new Date().getTime() - Number(localStorage.getItem('typeListLastModify'))) > 3600000 * 72 || localStorage.getItem('typeList') == 'undefined') {
-				this.getProjectType()
-			} else {
-				this.typeList = JSON.parse(localStorage.getItem('typeList'))
-			}
+			// if ((new Date().getTime() - Number(localStorage.getItem('typeListLastModify'))) > 3600000 * 72 || localStorage.getItem('typeList') == 'undefined') {
+			// 	this.getProjectType()
+			// } else {
+			// 	this.typeList = JSON.parse(localStorage.getItem('typeList'))
+			// }
+			this.getProjectType()
 			this.getProjectList()
 			window.addEventListener('scroll', (e) => {
 				this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop

@@ -85,18 +85,18 @@ const router = new Router({
 	]
 })
 
-router.beforeEach((to, from, next) => {
-	if (to.meta.loginout) {
-		if (localStorage.getItem('token')&&localStorage.getItem('memberInfo')) {
-			next({name: 'home'})
-		}else {
-			next()
-		}
-	}else {
-		// if (!(localStorage.getItem('token')&&localStorage.getItem('memberInfo'))) {
-		// 	next({name: 'login'})
-		// }
-		next()
-	}
-})
+// router.beforeEach((to, from, next) => {
+// 	if (to.meta.loginout) {
+// 		if (localStorage.getItem('token')&&localStorage.getItem('memberInfo')) {
+// 			next({name: 'home'})
+// 		}else {
+// 			next()
+// 		}
+// 	}else {
+// 		// if (!(localStorage.getItem('token')&&localStorage.getItem('memberInfo'))) {
+// 		// 	next({name: 'login'})
+// 		// }
+// 		next()
+// 	}
+// })
 export default router

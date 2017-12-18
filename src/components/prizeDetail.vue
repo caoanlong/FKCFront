@@ -1,6 +1,6 @@
 <template>
 	<div class="prizeDetail">
-		<img ref="prizeImg" class="prizeImg" :style="{'height': prizeImgWidth + 'px'}" :src="prizeDetail.prizeImg" v-if="prizeDetail.prizeImg">
+		<img ref="prizeImg" class="prizeImg" :style="{'height': prizeImgWidth + 'px'}" :src="__WEBIMGSERVERURL__ + prizeDetail.prizeImg" v-if="prizeDetail.prizeImg">
 		<img ref="prizeImg" class="prizeImg" :style="{'height': prizeImgWidth + 'px'}" src="../../static/images/default.png" v-else>
 		<div class="prizeContent vux-1px-t">
 			<p class="prizeTitle">{{prizeDetail.prizeName}}</p>
