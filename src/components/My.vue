@@ -147,6 +147,9 @@
 		created () {
 			document.title = '我的'
 			this.getMemberInfo()
+			if (this.$route.query.showSign) {
+				this.freeSign()
+			}
 		},
 		methods: {
 			getMemberInfo () {
