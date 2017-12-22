@@ -59,6 +59,11 @@
 		// 		return JSON.parse(localStorage.getItem('memberInfo'))
 		// 	}
 		// },
+		watch: {
+			isShow () {
+				this.memberInfo = JSON.parse(localStorage.getItem('memberInfo'))
+			}
+		},
 		created () {
 			this.memberInfo = JSON.parse(localStorage.getItem('memberInfo'))
 		},

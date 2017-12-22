@@ -5,14 +5,18 @@
 			<group gutter="0">
 				<cell title="我的金豆" :value="memberInfo.goldBean"></cell>
 			</group>
-			<group title="金豆列表">
-				<cell :title="item.num+'金豆'" v-for="(item,i) in list" :key="i">
-					<img slot="icon" width="20" style="display:block;margin-right:5px;" src="../assets/img/goldbean.svg">
-					<div slot="default">
-						<x-button type="primary" mini @click.native="showPayToast(item.num)">&nbsp;获取&nbsp;</x-button>
+			<div class="goldList">
+				<p class="litleTitle">金豆列表</p>
+				<div class="goldUl vux-1px-t vux-1px-b">
+					<div class="goldLi vux-1px-b" v-for="(item,i) in list" :key="i">
+						<img class="icon" src="../assets/img/goldbean.svg">
+						<p class="num">{{item.num}}金豆<span class="rmb">¥{{item.num/100}}</span></p>
+						<div class="btn">
+							<x-button type="primary" mini @click.native="showPayToast(item.num)">&nbsp;获取&nbsp;</x-button>
+						</div>
 					</div>
-				</cell>
-			</group>
+				</div>
+			</div>
 			<div v-show="showPay" class="dialog-mask"></div>
 			<div v-show="showPay" class="dialog">
 				<div class="closeDialog" @click="showPay = false"></div>
@@ -180,7 +184,7 @@
 			</div>
 		</div>
 		<form  id="form" action="http://trans.palmf.cn/sdk/api/v1.0/cli/order_h5/0" method="post">
-		    <input type="hidden" id="orderInfo" name="orderInfo" v-model="orderInfo">
+			<input type="hidden" id="orderInfo" name="orderInfo" v-model="orderInfo">
 		</form>
 	</div>
 </template>
@@ -268,6 +272,35 @@
 			left 0
 			top 0
 			right 0
+			.goldList
+				width 100%
+				.litleTitle
+					color #999
+					font-size 14px
+					margin-top 0.77em
+					margin-bottom 0.3em
+					padding-left 15px
+					padding-right 15px
+				.goldUl
+					background-color #fff
+					padding 0 15px
+					.goldLi
+						display flex
+						height 45px
+						line-height 45px
+						.icon
+							display block
+							width 20px
+							flex 0 0 20px
+						.num
+							flex 1
+							padding-left 5px
+							.rmb
+								color #bbb
+								font-size 14px
+								padding-left 10px
+						.btn
+							flex 0 0 70px
 			.dialog-mask
 				position fixed
 				top 0

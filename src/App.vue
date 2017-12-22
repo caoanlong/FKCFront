@@ -17,7 +17,7 @@
 				// 微信分享
 				this.getWeixinConfig(location.href, () => {
 					wx.onMenuShareTimeline({
-						title: this.title, // 分享标题
+						title: this.title + '，' + this.desc, // 分享标题
 						desc: this.desc, // 分享描述
 						link: location.origin, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
 						imgUrl: this.__WEBIMGSERVERURL__ + '/file-1513780566518.jpeg', // 分享图标
