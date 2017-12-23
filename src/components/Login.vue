@@ -1,6 +1,7 @@
 <template>
 	<div class="main">
-		<group labelWidth="70px">
+		<div class="header" v-if="!isWX"><router-link tag="div" class="back" :to="{name: 'home'}"><i></i>返回</router-link>登录</div>
+		<group labelWidth="70px" :style="{'margin-top': isWX ? 0 : '44px'}">
 			<x-input title="手机号" name="mobile" placeholder="请输入手机号码" keyboard="number" v-model="mobile"></x-input>
 			<x-input title="验证码" class="weui-vcode" keyboard="number" v-model="verCode">
 				<x-button slot="right" type="primary" mini :disabled="$v.mobile.$invalid||isGetVCode" @click.native="getCode">{{codeBtn}}</x-button>
@@ -34,6 +35,11 @@
 				required
 			},
 			validationGroup: ['mobile','verCode']
+		},
+		computed: {
+			isWX () {
+				return this.isWeixin()
+			}
 		},
 		created() {
 			document.title = '登录'
@@ -108,4 +114,31 @@
 		left 0
 		right 0
 		bottom 0
+		.header
+			position fixed
+			left 0
+			top 0
+			width 100%
+			height 44px
+			line-height 44px
+			text-align center
+			color #fff
+			background-color #35495e
+			position relative
+			.back
+				position absolute
+				left 0
+				top 0
+				padding-left 20px
+				font-size 14px
+				i
+					position absolute
+					left 10px
+					top 16px
+					display block
+					width 12px
+					height 12px
+					border-top 2px solid #fff
+					border-left 2px solid #fff
+					transform rotate(-45deg)
 </style>

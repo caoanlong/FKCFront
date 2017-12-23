@@ -1,6 +1,7 @@
 <template>
 	<div class="main">
-		<div class="selectWarpper">
+		<div class="header" v-if="!isWX">疯狂猜<div class="freeSign" @click="freeSign"></div></div>
+		<div class="selectWarpper vux-1px-b" :style="{'top': isWX ? '0px' : '44px'}">
 			<div class="tab">
 				<tab bar-active-color="#668599" :line-width="0">
 					<tab-item style="width: 25%" selected @click.native="searchByCondition(null)">全部</tab-item>
@@ -8,10 +9,10 @@
 			  	</tab>
 			  	<div class="shadow"></div>
 			</div>
-		  	<div class="freeSign" @click="freeSign"></div>
+		  	<div class="freeSign" @click="freeSign" v-if="isWX"></div>
 		</div>
 		<div class="block"></div>
-		<div class="wrapper" ref="projectWrapper">
+		<div class="wrapper" ref="projectWrapper" :style="{'top': isWX ? '44px' : '88px'}">
 			<div ref="projectIn">
 				<div class="list vux-1px-b" v-for="item in list" :key="item._id">
 					<div class="mask">
@@ -142,23 +143,26 @@
 		computed: {
 			today () {
 				return new Date().getDay()
+			},
+			isWX () {
+				return this.isWeixin()
 			}
 		},
 		created() {
 			document.title = '疯狂猜'
 			// this.getMemberInfo()
-			// if ((new Date().getTime() - Number(localStorage.getItem('typeListLastModify'))) > 3600000 * 72 || localStorage.getItem('typeList') == 'undefined') {
-			// 	this.getProjectType()
-			// } else {
-			// 	this.typeList = JSON.parse(localStorage.getItem('typeList'))
-			// }
-			this.getProjectType()
+			if ((new Date().getTime() - Number(localStorage.getItem('typeListLastModify'))) > 3600000 * 72 || localStorage.getItem('typeList') == 'undefined') {
+				this.getProjectType()
+			} else {
+				this.typeList = JSON.parse(localStorage.getItem('typeList'))
+			}
+			// this.getProjectType()
 			this.getProjectList()
 			window.addEventListener('scroll', (e) => {
 				this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop
 				this.clientHeight = document.documentElement.clientHeight || document.body.clientHeight
 				this.pageHeight = this.$refs.projectIn.offsetHeight
-				this.disY = this.pageHeight - this.clientHeight + 44
+				this.disY = this.pageHeight - this.clientHeight + (this.isWX ? 44 : 88)
 				// console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
 				if (this.scrollTop > this.disY) {
 					if (this.pageIndex < this.pages) {
@@ -277,6 +281,27 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.main
 		overflow hidden
+		.header
+			position fixed
+			left 0
+			top 0
+			width 100%
+			height 44px
+			line-height 44px
+			text-align center
+			color #fff
+			background-color #35495e
+			position relative
+			.freeSign
+				position absolute
+				right 0
+				top 0
+				width 44px
+				height 44px
+				background-image url('../assets/img/gift.svg')
+				background-repeat no-repeat
+				background-size 26px
+				background-position center
 		.selectWarpper
 			position fixed
 			left 0
@@ -296,14 +321,13 @@
 					top 0px
 					width 10px
 					height 44px
-					// background -webkit-linear-gradient(left, rgba(0,0,0,0) , rgba(0,0,0,.1))
 			.freeSign
 				flex 0 0 44px
 				width 44px
 				height 42px
 				background-image url('../assets/img/gift.svg')
 				background-repeat no-repeat
-				background-size 28px
+				background-size 26px
 				background-position center
 		.wrapper
 			width 100%

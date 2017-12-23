@@ -16,6 +16,7 @@
 			$route () {
 				// 微信分享
 				this.getWeixinConfig(location.href, () => {
+					// 朋友圈分享
 					wx.onMenuShareTimeline({
 						title: this.title + '，' + this.desc, // 分享标题
 						desc: this.desc, // 分享描述
@@ -28,6 +29,7 @@
 						// 用户取消分享后执行的回调函数
 						}
 					})
+					// 转发给朋友
 					wx.onMenuShareAppMessage({
 						title: this.title, // 分享标题
 						desc: this.desc, // 分享描述
@@ -42,6 +44,7 @@
 						// 用户取消分享后执行的回调函数
 						}
 					})
+					// 分享到QQ
 					wx.onMenuShareQQ({
 						title: this.title, // 分享标题
 						desc: this.desc, // 分享描述

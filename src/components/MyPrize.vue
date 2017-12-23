@@ -1,7 +1,8 @@
 <template>
 	<div class="myPrize">
+		<div class="header" v-if="!isWX"><div tag="div" class="back" @click="back"><i></i>返回</div>我的奖品</div>
 		<div class="block"></div>
-		<div class="wrapper">
+		<div class="wrapper" :style="{'top': isWX ? 0 : '44px'}">
 			<div class="myPrizeList vux-1px-b vux-1px-t" v-for="myPrize in myPrizeList">
 				<div class="waybill">
 					<div class="waybillNo">{{myPrize.waybillNo?'运单号：'+myPrize.waybillNo:''}}</div>
@@ -44,6 +45,11 @@
 				myPrizeList: []
 			}
 		},
+		computed: {
+			isWX () {
+				return this.isWeixin()
+			}
+		},
 		created () {
 			document.title = '我的奖品'
 			this.getMyPrizeList()
@@ -68,6 +74,9 @@
 						this.getMyPrizeList()
 					}
 				})
+			},
+			back () {
+				window.history.go(-1)
 			}
 		},
 		components: {
@@ -79,6 +88,33 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.myPrize
 		overflow hidden
+		.header
+			position fixed
+			left 0
+			top 0
+			width 100%
+			height 44px
+			line-height 44px
+			text-align center
+			color #fff
+			background-color #35495e
+			position relative
+			.back
+				position absolute
+				left 0
+				top 0
+				padding-left 20px
+				font-size 14px
+				i
+					position absolute
+					left 10px
+					top 16px
+					display block
+					width 12px
+					height 12px
+					border-top 2px solid #fff
+					border-left 2px solid #fff
+					transform rotate(-45deg)
 		.wrapper
 			width 100%
 			position absolute

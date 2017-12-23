@@ -1,7 +1,8 @@
 <template>
 	<div class="podium">
+		<div class="header" v-if="!isWX">领奖台</div>
 		<div class="block"></div>
-		<div class="podiumWrapper">
+		<div class="podiumWrapper" :style="{'top': isWX ? 0 : '44px'}">
 			<div ref="podiumIn">
 				<Goods v-for="goods in goodsList" :key="goods._id" :goods="goods"></Goods>
 				<pullUpLoad :loadStatus="loadStatus"></pullUpLoad>
@@ -21,6 +22,11 @@
 				goodsList: [],
 				pageIndex: 1,
 				pages: 1
+			}
+		},
+		computed: {
+			isWX () {
+				return this.isWeixin()
 			}
 		},
 		created () {
@@ -71,6 +77,17 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 .podium
 	overflow hidden
+	.header
+		position fixed
+		left 0
+		top 0
+		width 100%
+		height 44px
+		line-height 44px
+		text-align center
+		color #fff
+		background-color #35495e
+		position relative
 	.podiumWrapper
 		width 100%
 		position absolute

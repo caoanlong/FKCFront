@@ -1,7 +1,8 @@
 <template>
 	<div class="prizeDetail">
-		<img ref="prizeImg" class="prizeImg" :style="{'height': prizeImgWidth + 'px'}" :src="__WEBIMGSERVERURL__ + prizeDetail.prizeImg" v-if="prizeDetail.prizeImg">
-		<img ref="prizeImg" class="prizeImg" :style="{'height': prizeImgWidth + 'px'}" src="../../static/images/default.png" v-else>
+		<div class="header" v-if="!isWX"><div tag="div" class="back" @click="back"><i></i>返回</div>奖品详情</div>
+		<img ref="prizeImg" class="prizeImg" :style="{'height': prizeImgWidth + 'px', 'margin-top': isWX ? 0 : '44px'}" :src="__WEBIMGSERVERURL__ + prizeDetail.prizeImg" v-if="prizeDetail.prizeImg">
+		<img ref="prizeImg" class="prizeImg" :style="{'height': prizeImgWidth + 'px', 'margin-top': isWX ? 0 : '44px'}" src="../../static/images/default.png" v-else>
 		<div class="prizeContent vux-1px-t">
 			<p class="prizeTitle">{{prizeDetail.prizeName}}</p>
 			<p class="price">
@@ -32,11 +33,11 @@
 				memberInfo: {}
 			}
 		},
-		// computed: {
-		// 	memberInfo() {
-		// 		return JSON.parse(localStorage.getItem('memberInfo'))
-		// 	}
-		// },
+		computed: {
+			isWX () {
+				return this.isWeixin()
+			}
+		},
 		created () {
 			document.title = '奖品详情'
 			this.getPrizeDetail()
@@ -107,6 +108,9 @@
 					}
 				})
 			},
+			back () {
+				window.history.go(-1)
+			}
 		}
 	}
 </script>
@@ -114,6 +118,33 @@
 	.prizeDetail
 		width 100%
 		background-color #fff
+		.header
+			position fixed
+			left 0
+			top 0
+			width 100%
+			height 44px
+			line-height 44px
+			text-align center
+			color #fff
+			background-color #35495e
+			position relative
+			.back
+				position absolute
+				left 0
+				top 0
+				padding-left 20px
+				font-size 14px
+				i
+					position absolute
+					left 10px
+					top 16px
+					display block
+					width 12px
+					height 12px
+					border-top 2px solid #fff
+					border-left 2px solid #fff
+					transform rotate(-45deg)
 		.prizeImg
 			display block
 			width 100%

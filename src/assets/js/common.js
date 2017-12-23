@@ -1,3 +1,4 @@
+/* 1位数前面加0转两位数 */
 function oneToTwoNum (num) {
 	let number = 0
 	if (num < 10) {
@@ -7,6 +8,7 @@ function oneToTwoNum (num) {
 	}
 	return number
 }
+
 export default function install (Vue, option) {
 	// Vue.prototype.__WEBSERVERURL__ = 'http://127.0.0.1:3000'
 	Vue.prototype.__WEBSERVERURL__ = 'http://39.108.245.177:3000'
@@ -24,6 +26,7 @@ export default function install (Vue, option) {
 		let time = '' + date.getFullYear() + oneToTwoNum(date.getMonth()+1) + oneToTwoNum(date.getDate()) + oneToTwoNum(date.getHours()) + oneToTwoNum(date.getMinutes()) + oneToTwoNum(date.getSeconds())
 		return time
 	}
+	// 转时间戳
 	Vue.prototype.getdatefromtimestamp = function (input, bool) {
 		let now = new Date(Number(input))
 		let year = now.getFullYear()
@@ -38,6 +41,16 @@ export default function install (Vue, option) {
 			return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second
 		}
 	}
+	// 判断是否为微信浏览器
+	Vue.prototype.isWeixin = function () {
+		let u = navigator.userAgent.toLowerCase() 
+		if(u.match(/MicroMessenger/i) == "micromessenger") {  
+			return true
+		} else {  
+			return false
+		}
+	}
+
 	Vue.prototype.getWeixinConfig = function (url, callback, bool) {
 		let URL = this.__WEBSERVERURL__ + '/weixin/config'
 		let params = {

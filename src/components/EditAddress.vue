@@ -1,6 +1,7 @@
 <template>
 	<div class="editAddress">
-		<group>
+		<div class="header" v-if="!isWX"><div tag="div" class="back" @click="back"><i></i>返回</div>修改地址</div>
+		<group :style="{'margin-top': isWX ? 0 : '44px'}">
 			<x-input title="收货人" text-align="right" v-model="consignee"></x-input>
 			<x-input title="联系电话" text-align="right" keyboard="number" v-model="mobile"></x-input>
 			<x-address title="所在地区" :list="addressData" v-model="area"></x-address>
@@ -25,6 +26,11 @@
 				area: [],
 				detailedAddress: '',
 				isSetDefault: false
+			}
+		},
+		computed: {
+			isWX () {
+				return this.isWeixin()
 			}
 		},
 		created () {
@@ -96,6 +102,9 @@
 						}
 					}
 				})
+			},
+			back () {
+				window.history.go(-1)
 			}
 		},
 		components: {
@@ -112,4 +121,31 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.editAddress
 		width 100%
+		.header
+			position fixed
+			left 0
+			top 0
+			width 100%
+			height 44px
+			line-height 44px
+			text-align center
+			color #fff
+			background-color #35495e
+			position relative
+			.back
+				position absolute
+				left 0
+				top 0
+				padding-left 20px
+				font-size 14px
+				i
+					position absolute
+					left 10px
+					top 16px
+					display block
+					width 12px
+					height 12px
+					border-top 2px solid #fff
+					border-left 2px solid #fff
+					transform rotate(-45deg)
 </style>

@@ -1,7 +1,8 @@
 <template>
 	<div class="mygoldbean">
+		<div class="header" v-if="!isWX"><div tag="div" class="back" @click="back"><i></i>返回</div>金豆列表</div>
 		<div class="block"></div>
-		<div class="wrapper">
+		<div class="wrapper" :style="{'top': isWX ? 0 : '44px'}">
 			<group gutter="0">
 				<cell title="我的金豆" :value="memberInfo.goldBean"></cell>
 			</group>
@@ -208,6 +209,9 @@
 	computed: {
 		memberInfo() {
 			return JSON.parse(localStorage.getItem('memberInfo'))
+		},
+		isWX () {
+			return this.isWeixin()
 		}
 	},
 	created() {
@@ -252,6 +256,9 @@
 					})
 				}
 			})
+		},
+		back () {
+			window.history.go(-1)
 		}
 	},
 	components: {
@@ -266,6 +273,33 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.mygoldbean
 		overflow hidden
+		.header
+			position fixed
+			left 0
+			top 0
+			width 100%
+			height 44px
+			line-height 44px
+			text-align center
+			color #fff
+			background-color #35495e
+			position relative
+			.back
+				position absolute
+				left 0
+				top 0
+				padding-left 20px
+				font-size 14px
+				i
+					position absolute
+					left 10px
+					top 16px
+					display block
+					width 12px
+					height 12px
+					border-top 2px solid #fff
+					border-left 2px solid #fff
+					transform rotate(-45deg)
 		.wrapper
 			width 100%
 			position absolute

@@ -1,7 +1,8 @@
 <template>
 	<div class="account">
+		<div class="header" v-if="!isWX"><div tag="div" class="back" @click="back"><i></i>返回</div>账户明细</div>
 		<div class="block"></div>
-		<div class="wrapper">
+		<div class="wrapper" :style="{'top': isWX ? 0 : '44px'}">
 			<div ref="wrapperIn">
 				<group>
 					<cell v-for="(item,i) in accountDetails" :key="i">
@@ -34,6 +35,9 @@ export default {
 		computed: {
 			winWidth() {
 				return (window.screen.width-90) + 'px'
+			},
+			isWX () {
+				return this.isWeixin()
 			}
 		},
 		created() {
@@ -43,7 +47,7 @@ export default {
 				this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop
 				this.clientHeight = document.documentElement.clientHeight || document.body.clientHeight
 				this.pageHeight = this.$refs.wrapperIn.offsetHeight
-				this.disY = this.pageHeight - this.clientHeight + 10
+				this.disY = this.pageHeight - this.clientHeight + 10 + (this.isWX ? 10 : 64)
 				// console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
 				if (this.scrollTop == this.disY) {
 					if (this.pageIndex < this.pages) {
@@ -74,6 +78,9 @@ export default {
 						}
 					}
 				})
+			},
+			back () {
+				window.history.go(-1)
 			}
 		},
 		components: {
@@ -86,6 +93,33 @@ export default {
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.account
 		overflow hidden
+		.header
+			position fixed
+			left 0
+			top 0
+			width 100%
+			height 44px
+			line-height 44px
+			text-align center
+			color #fff
+			background-color #35495e
+			position relative
+			.back
+				position absolute
+				left 0
+				top 0
+				padding-left 20px
+				font-size 14px
+				i
+					position absolute
+					left 10px
+					top 16px
+					display block
+					width 12px
+					height 12px
+					border-top 2px solid #fff
+					border-left 2px solid #fff
+					transform rotate(-45deg)
 		.wrapper
 			width 100%
 			position absolute

@@ -1,7 +1,8 @@
 <template>
 	<div class="my">
+		<div class="header" v-if="!isWX">我的</div>
 		<div class="block"></div>
-		<div class="wrapper">
+		<div class="wrapper" :style="{'top': isWX ? 0 : '44px'}">
 			<div class="profile">
 				<div class="avatarInfo">
 					<div class="head">
@@ -142,6 +143,9 @@
 		computed: {
 			today () {
 				return new Date().getDay()
+			},
+			isWX () {
+				return this.isWeixin()
 			}
 		},
 		created () {
@@ -244,6 +248,17 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.my
 		overflow hidden
+		.header
+			position fixed
+			left 0
+			top 0
+			width 100%
+			height 44px
+			line-height 44px
+			text-align center
+			color #fff
+			background-color #35495e
+			position relative
 		.wrapper
 			width 100%
 			position absolute

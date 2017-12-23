@@ -1,12 +1,13 @@
 <template>
 	<div class="myguess">
-		<tab class="tab">
+		<div class="header" v-if="!isWX"><div tag="div" class="back" @click="back"><i></i>返回</div>我的竞猜</div>
+		<tab class="tab" :style="{'top': isWX ? '0px' : '44px'}">
 			<tab-item selected @on-item-click="searchList(1)">全部</tab-item>
 			<tab-item @on-item-click="searchList(2)">待开奖</tab-item>
 			<tab-item @on-item-click="searchList(3)">已开奖</tab-item>
 		</tab>
 		<div class="block"></div>
-		<div class="wrapper">
+		<div class="wrapper" :style="{'top': isWX ? '0px' : '44px'}">
 			<div ref="guessWrapper">
 				<div style="padding: 15px 30px" v-show="isOpen">
 					<button-tab v-model="isWinNumber">
@@ -61,6 +62,11 @@ export default {
 			isLottery: 1
 		}
 	},
+	computed: {
+		isWX () {
+			return this.isWeixin()
+		}
+	},
 	created() {
 		document.title = '我的竞猜'
 		this.getGuessList()
@@ -69,11 +75,11 @@ export default {
 			this.clientHeight = document.documentElement.clientHeight || document.body.clientHeight
 			this.pageHeight = this.$refs.guessWrapper.offsetHeight
 			if (this.isOpen) {
-				this.disY = this.pageHeight - this.clientHeight + 54
+				this.disY = this.pageHeight - this.clientHeight + (this.isWX ? 54 : 98)
 			} else {
-				this.disY = this.pageHeight - this.clientHeight + 64
+				this.disY = this.pageHeight - this.clientHeight + (this.isWX ? 64 : 108)
 			}
-			console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
+			// console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
 			if (this.scrollTop == this.disY) {
 				if (this.pageIndex < this.pages) {
 					this.loadStatus = '正在加载...'
@@ -124,6 +130,9 @@ export default {
 			this.pages = 1
 			this.isLottery = 3
 			this.getGuessList()
+		},
+		back () {
+			window.history.go(-1)
 		}
 	},
 	components: {
@@ -144,6 +153,33 @@ export default {
 		position absolute
 		top 44px
 		left 0
+		.header
+			position fixed
+			left 0
+			top 0
+			width 100%
+			height 44px
+			line-height 44px
+			text-align center
+			color #fff
+			background-color #35495e
+			position relative
+			.back
+				position absolute
+				left 0
+				top 0
+				padding-left 20px
+				font-size 14px
+				i
+					position absolute
+					left 10px
+					top 16px
+					display block
+					width 12px
+					height 12px
+					border-top 2px solid #fff
+					border-left 2px solid #fff
+					transform rotate(-45deg)
 		.tab
 			position fixed
 			left 0

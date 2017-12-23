@@ -1,7 +1,8 @@
 <template>
 	<div class="address">
+		<div class="header" v-if="!isWX"><div tag="div" class="back" @click="back"><i></i>返回</div>设置收货地址</div>
 		<div class="block"></div>
-		<div class="wrapper">
+		<div class="wrapper" :style="{'top': isWX ? 0 : '44px'}">
 			<div class="addressList vux-1px-b" v-for="address in addressList" @click="selectAddress(address.consignee, address.mobile, address.area, address.detailedAddress)">
 				<div class="name-mobile">
 					<p class="consignee">{{address.consignee}}</p>
@@ -10,7 +11,7 @@
 				<div class="detailedAddress vux-1px-b">{{address.area|trim}}{{address.detailedAddress}}</div>
 			</div>
 		</div>
-		<router-link tag="div" :to="{name: 'myAddress'}" class="addBtn">管理</router-link>
+		<router-link tag="div" :to="{name: 'addNewAddress', query: {pos: 'selectAddress'}}" class="addBtn">添加新地址</router-link>
 	</div>
 </template>
 <script>
@@ -19,6 +20,11 @@
 		data () {
 			return {
 				addressList: [],
+			}
+		},
+		computed: {
+			isWX () {
+				return this.isWeixin()
 			}
 		},
 		created() {
@@ -46,6 +52,9 @@
 					this.$vux.toast.text(res.body.msg,'middle')
 					this.$router.replace({name: 'myPrize'})
 				})
+			},
+			back () {
+				window.history.go(-1)
 			}
 		},
 		components: {
@@ -56,6 +65,33 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
 	.address
 		overflow hidden
+		.header
+			position fixed
+			left 0
+			top 0
+			width 100%
+			height 44px
+			line-height 44px
+			text-align center
+			color #fff
+			background-color #35495e
+			position relative
+			.back
+				position absolute
+				left 0
+				top 0
+				padding-left 20px
+				font-size 14px
+				i
+					position absolute
+					left 10px
+					top 16px
+					display block
+					width 12px
+					height 12px
+					border-top 2px solid #fff
+					border-left 2px solid #fff
+					transform rotate(-45deg)
 		.wrapper
 			width 100%
 			position absolute
