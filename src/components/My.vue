@@ -30,8 +30,8 @@
 				<cell title="账户明细" is-link :link="{name: 'accountDetail'}"></cell>
 			</group>
 			<group>
-				<cell title="收获地址" is-link :link="{name: 'myAddress'}"></cell>
-				<cell title="意见反馈" is-link link="" @click.native="laterOpen"></cell>
+				<cell title="收货地址" is-link :link="{name: 'myAddress'}"></cell>
+				<!-- <cell title="意见反馈" is-link link="" @click.native="laterOpen"></cell> -->
 			</group>
 			<box gap="20px 10px">
 				<x-button type="default" @click.native="showExit=true">退出</x-button>

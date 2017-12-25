@@ -1,8 +1,8 @@
 <template>
 	<div class="mygoldbean">
-		<div class="header" v-if="!isWX"><div tag="div" class="back" @click="back"><i></i>返回</div>金豆列表</div>
+		<div class="header"><div tag="div" class="back" @click="back"><i></i>返回</div>金豆列表</div>
 		<div class="block"></div>
-		<div class="wrapper" :style="{'top': isWX ? 0 : '44px'}">
+		<div class="wrapper" :style="{'top': '44px'}">
 			<group gutter="0">
 				<cell title="我的金豆" :value="memberInfo.goldBean"></cell>
 			</group>
@@ -258,7 +258,7 @@
 			})
 		},
 		back () {
-			window.history.go(-1)
+			this.$router.push({name: 'my'})
 		}
 	},
 	components: {

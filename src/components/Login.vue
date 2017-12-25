@@ -46,13 +46,13 @@
 		},
 		methods: {
 			getCode() {
-				if (this.isGetVCode) return;
-				this.timeGo();
+				if (this.isGetVCode) return
+				this.timeGo()
 				
-				let URL = this.__WEBSERVERURL__ + '/api/member/verCode';
+				let URL = this.__WEBSERVERURL__ + '/api/member/verCode'
 				let params = {
 					mobile: this.mobile
-				};
+				}
 				this.$http.post(URL,params).then((res) => {
 					// console.log(res.body)
 					if (res.body.code == 0) {
@@ -63,38 +63,35 @@
 				})
 			},
 			login() {
-				let URL = this.__WEBSERVERURL__ + '/api/member/login';
+				let URL = this.__WEBSERVERURL__ + '/api/member/login'
 				let params = {
-					memberName: this.memberName,
 					mobile: this.mobile,
-					verCode: this.verCode,
-				};
-				var that = this;
+					verCode: this.verCode
+				}
+				this.$route.query.from && (params.from = this.$route.query.from)
+				localStorage.getItem('from') && (params.from = localStorage.getItem('from'))
 				this.$http.post(URL,params).then((res) => {
-					console.log(res.body);
+					console.log(res.body)
 					this.$vux.toast.show({
 						text: res.body.msg
 					})
 					localStorage.setItem('token',res.body.token)
 					localStorage.setItem('memberInfo',JSON.stringify(res.body.data))
-					setTimeout(function() {
-						that.$router.push({name: 'home'});
-					},500)
-				});
+					this.$router.push({name: 'home'})
+				})
 			},
 			timeGo() {
 				if (this.codeNum == 0) {
-					this.codeBtn = '点击获取';
-					this.isGetVCode = false;
-					this.codeNum = 60;
-					return;
+					this.codeBtn = '点击获取'
+					this.isGetVCode = false
+					this.codeNum = 60
+					return
 				} else {
-					var that = this;
-					this.isGetVCode = true;
-					this.codeBtn = this.codeNum + 's';
-					this.codeNum--;
-					setTimeout(function() {
-						that.timeGo();
+					this.isGetVCode = true
+					this.codeBtn = this.codeNum + 's'
+					this.codeNum--
+					setTimeout(() => {
+						this.timeGo()
 					}, 1000)
 				}
 			}

@@ -150,7 +150,10 @@
 		},
 		created() {
 			document.title = '疯狂猜'
-			// this.getMemberInfo()
+			if (this.$route.query.from) {
+				localStorage.setItem('from', this.$route.query.from)
+			}
+			
 			if ((new Date().getTime() - Number(localStorage.getItem('typeListLastModify'))) > 3600000 * 72 || localStorage.getItem('typeList') == 'undefined') {
 				this.getProjectType()
 			} else {
