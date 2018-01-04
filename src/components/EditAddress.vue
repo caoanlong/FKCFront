@@ -130,7 +130,7 @@
 			line-height 44px
 			text-align center
 			color #fff
-			background-color #35495e
+			background-color #2B2623
 			position relative
 			.back
 				position absolute

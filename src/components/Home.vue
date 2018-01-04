@@ -1,34 +1,64 @@
 <template>
 	<div class="main">
-		<div class="header" v-if="!isWX">疯狂猜<div class="freeSign" @click="freeSign"></div></div>
-		<div class="selectWarpper vux-1px-b" :style="{'top': isWX ? '0px' : '44px'}">
-			<div class="tab">
-				<tab bar-active-color="#668599" :line-width="0">
-					<tab-item style="width: 25%" selected @click.native="searchByCondition(null)">全部</tab-item>
-					<tab-item style="width: 25%" v-for="type in typeList" :key="type._id" @click.native="searchByCondition(type._id)">{{type.name}}</tab-item>
-			  	</tab>
-			  	<div class="shadow"></div>
-			</div>
-		  	<div class="freeSign" @click="freeSign" v-if="isWX"></div>
+		<div class="header">
+			<router-link :to="{name: 'login'}" tag="div" class="loginBtn">登录</router-link>
+			<div class="title">91疯狂猜</div>
+			<div class="freeSign" @click="freeSign"></div>
 		</div>
 		<div class="block"></div>
-		<div class="wrapper" ref="projectWrapper" :style="{'top': isWX ? '44px' : '88px'}">
-			<div ref="projectIn">
-				<div class="list vux-1px-b" v-for="item in list" :key="item._id">
-					<div class="mask">
-						<span class="time">截止时间：{{item.endTime|getdatefromtimestamp}}</span>
-					</div>
-					<img class="main-img" :src="__WEBIMGSERVERURL__ + item.imgUrl" v-if="item.imgUrl">
-					<img class="main-img" src="../../static/images/default.png" v-else>
-					<div class="content">
-						<p class="title" v-text="item.name"></p>
-						<div class="options">
-							<Options v-for="(option,i) in item.options" :data="option" :index="i" :selected="selectedOption" :key="option.content" @selectOption="selectOption"></Options>
-						</div>
-						<BettingBox :projectId="item._id.toString()" :selectOpt="selectedOption" :isShow="item.options.indexOf(selectedOption)>-1" @select="selectNum"></BettingBox>
+		<div class="wrapper">
+			<div class="wrapperIn">
+				<div class="banner">
+					<img src="../assets/img/banner.png">
+				</div>
+				<div class="winMsg">
+					<div class="title"></div>
+					<div class="content">恭喜“1***”在猜球中赢得12345金豆！</div>
+				</div>
+				<div class="projectEntrance">
+					<div class="title vux-1px-b">娱乐竞猜</div>
+					<div class="options">
+						<router-link :to="{name: 'getGoldBean'}" tag="div" class="option">
+							<div class="icon goldBean"></div>
+							<div class="text">
+								<div class="text-h">金豆充值</div>
+								<div class="text-i">充的多送的多</div>
+							</div>
+						</router-link>
+						<router-link :to="{name: 'project'}" tag="div" class="option">
+							<div class="icon physics"></div>
+							<div class="text">
+								<div class="text-h">体育竞猜</div>
+								<div class="text-i">足球篮球趣味竞猜</div>
+							</div>
+						</router-link>
+						<router-link :to="{name: 'project'}" tag="div" class="option">
+							<div class="icon game"></div>
+							<div class="text">
+								<div class="text-h">电竞娱乐</div>
+								<div class="text-i">电竞电影综艺竞猜</div>
+							</div>
+						</router-link>
+						<router-link :to="{name: 'project'}" tag="div" class="option">
+							<div class="icon economics"></div>
+							<div class="text">
+								<div class="text-h">经济竞猜</div>
+								<div class="text-i">股票黄金走势竞猜</div>
+							</div>
+						</router-link>
 					</div>
 				</div>
-				<pullUpLoad :loadStatus="loadStatus"></pullUpLoad>
+				<div class="prizeChange">
+					<div class="title vux-1px-b">奖品兑换<router-link :to="{name: 'podium'}" tag="span" class="more">更多</router-link></div>
+					<div class="prizeOptions">
+						<router-link :to="{name: 'prizeDetail', query: {id: prize._id}}" tag="div" class="option" v-for="prize in prizeList" :key="prize._id">
+							<img :src="__WEBIMGSERVERURL__ + prize.prizeImg" v-if="prize.prizeImg">
+							<img src="../../static/images/default.png" v-else>
+							<div class="prizeName">{{prize.prizeName}}</div>
+							<div class="prizePrice">{{prize.prizeGoldBeanPrice}}金豆</div>
+						</router-link>
+					</div>
+				</div>
 			</div>
 		</div>
 		<Tabbar></Tabbar>
@@ -108,15 +138,8 @@
 	export default {
 		data () {
 			return {
-				loadStatus: '正在加载...',
-				list: [],
-				pageIndex: 1,
-				pages: 1,
 				memberInfo: {},
-				selectedOption: {},
-				selectedNum: '',
-				typeList: [],
-				projectType: '',
+				prizeList: [],
 
 				showFreeSign: false,
 				freeReceive: {
@@ -149,67 +172,21 @@
 			}
 		},
 		created() {
-			document.title = '疯狂猜'
+			document.title = '91疯狂猜'
 			if (this.$route.query.from) {
 				localStorage.setItem('from', this.$route.query.from)
 			}
-			
-			if ((new Date().getTime() - Number(localStorage.getItem('typeListLastModify'))) > 3600000 * 72 || localStorage.getItem('typeList') == 'undefined') {
-				this.getProjectType()
-			} else {
-				this.typeList = JSON.parse(localStorage.getItem('typeList'))
-			}
-			// this.getProjectType()
-			this.getProjectList()
-			window.addEventListener('scroll', (e) => {
-				this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-				this.clientHeight = document.documentElement.clientHeight || document.body.clientHeight
-				this.pageHeight = this.$refs.projectIn.offsetHeight
-				this.disY = this.pageHeight - this.clientHeight + (this.isWX ? 44 : 88)
-				// console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
-				if (this.scrollTop > this.disY) {
-					if (this.pageIndex < this.pages) {
-						this.loadStatus = '正在加载...'
-						this.pageIndex++
-						this.getProjectList()
-					} else {
-						this.loadStatus = '~已经到底了~'
-					}
-				}
-			})
+			this.getPrizeList()
 		},
 		methods: {
-			getProjectType () {
-				let URL = this.__WEBSERVERURL__ + '/api/project/type'
-				this.$http.get(URL).then(res => {
-					this.typeList = res.body.data
-					localStorage.setItem('typeList', JSON.stringify(res.body.data))
-					localStorage.setItem('typeListLastModify', new Date().getTime())
-				})
-			},
-			getProjectList () {
-				let URL = this.__WEBSERVERURL__ + '/api/project'
+			getPrizeList() {
+				let URL = this.__WEBSERVERURL__ + '/api/prize'
 				let params = {
-					projectType: this.projectType,
-					pageIndex: this.pageIndex
-
+					pageSize: 3
 				}
-				this.$http.get(URL,{params: params}).then((res) => {
-					// console.log(JSON.stringify(res.body.data))
-					this.pages = res.body.data.pages
-					this.list = this.list.concat(res.body.data.projectList)
+				this.$http.get(URL,{params:params}).then((res) => {
+					this.prizeList = res.body.data
 				})
-			},
-			searchByCondition (id) {
-				if (id) {
-					this.projectType = id
-				} else {
-					this.projectType = ''
-				}
-				this.list = []
-				this.pageIndex = 1
-				this.pages = 1
-				this.getProjectList()
 			},
 			getMemberInfo () {
 				let URL = this.__WEBSERVERURL__ + '/api/member/info';
@@ -225,14 +202,6 @@
 						  this.$router.push({name: 'login'})
 					}
 				})
-			},
-			selectOption (data) {
-				console.log(JSON.stringify(data));
-				this.selectedOption = data;
-			},
-			selectNum (data) {
-				console.log(JSON.stringify(data));
-				this.selectedNum = data.content;
 			},
 			freeSign () {
 				this.showFreeSign = true
@@ -288,46 +257,22 @@
 			position fixed
 			left 0
 			top 0
+			display flex
 			width 100%
 			height 44px
 			line-height 44px
 			text-align center
 			color #fff
-			background-color #35495e
+			background-color #2B2623
 			position relative
-			.freeSign
-				position absolute
-				right 0
-				top 0
-				width 44px
-				height 44px
-				background-image url('../assets/img/gift.svg')
-				background-repeat no-repeat
-				background-size 26px
-				background-position center
-		.selectWarpper
-			position fixed
-			left 0
-			top 0
-			z-index 99
-			width 100%
-			background-color #fff
-			overflow scroll
-			-webkit-overflow-scrolling touch
-			display flex
-			.tab
+			.loginBtn
+				flex 0 0 54px
+				font-size 14px
+			.title
 				flex 1
-				position relative
-				.shadow
-					position absolute
-					right 0px
-					top 0px
-					width 10px
-					height 44px
 			.freeSign
-				flex 0 0 44px
-				width 44px
-				height 42px
+				flex 0 0 54px
+				height 44px
 				background-image url('../assets/img/gift.svg')
 				background-repeat no-repeat
 				background-size 26px
@@ -339,39 +284,118 @@
 			top 44px
 			right 0
 			bottom 46px
-			.list
-				position relative
-				margin-bottom 10px
-				width 100%
-				.mask
-					position absolute
-					top 0
-					left 0
+			.wrapperIn
+				padding-bottom 60px
+				.banner
+					width 100%
+					height 120px
+					background-color #ccc
+					img
+						width 100%
+				.winMsg
 					width 100%
 					height 50px
-					line-height 50px
-					z-index 10
-					background linear-gradient( top,rgba(0,0,0,.7),rgba(0,0,0,0))
-					.time
-						color #fff
+					background-color #fff
+					padding 15px 0
+					display flex
+					.title
+						flex 0 0 90px
+						border-right 1px solid #ddd
+						background-image url('../assets/img/winMsg.png')
+						background-size 64px
+						background-repeat no-repeat
+						background-position center
+					.content
+						flex 1
+						padding-left 10px
 						font-size 14px
-						padding 5px 20px 5px 10px
-						border-top-right-radius 15px
-						border-bottom-right-radius 15px
-						background-color rgba(255,255,255,.2)
-						// border 1px solid rgba(255,255,255,.5)
-						border-left 0
-				.main-img
-					display block
+						color #999
+				.projectEntrance
 					width 100%
-					height 180px
-				.content
-					width 100%
-					padding 5px 15px
+					margin-top 10px
 					background-color #fff
 					.title
-						font-size 17px
-						line-height 160%
+						width 100%
+						height 50px
+						line-height 50px
+						padding 0 10px
+					.options
+						width 100%
+						&:before
+						&:after
+							content ''
+							display block
+							clear both
+							width 0
+							height 0
+						.option
+							float left
+							display flex
+							width 50%
+							height 100px
+							.icon
+								flex 0 0 70px
+								background-size 46px
+								background-repeat no-repeat
+								background-position center
+								&.goldBean
+									background-image url('../assets/img/goldBean.png')
+								&.physics
+									background-image url('../assets/img/physics.png')
+								&.game
+									background-image url('../assets/img/game.png')
+								&.economics
+									background-image url('../assets/img/economics.png')
+							.text
+								padding 24px 0
+								.text-h
+									font-size 15px
+									line-height 2
+								.text-i
+									font-size 13px
+									color #999
+				.prizeChange
+					width 100%
+					margin-top 10px
+					background-color #fff
+					.title
+						width 100%
+						height 50px
+						line-height 50px
+						padding 0 10px
+						.more
+							float right
+							text-align right
+							display block
+							width 100px
+							font-size 14px
+							color #09BB07
+					.prizeOptions
+						width 100%
+						&:before
+						&:after
+							content ''
+							display block
+							clear both
+							width 0
+							height 0
+						.option
+							float left
+							width 33.3%
+							img
+								display block
+								height 80px
+								margin 20px auto
+							.prizeName
+								padding-left 15px
+								color #666
+								font-size 14px
+								overflow hidden
+								text-overflow ellipsis
+								white-space nowrap
+							.prizePrice
+								padding-left 15px
+								color #ff6900
 		.dialog-mask
 			position fixed
 			top 0

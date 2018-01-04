@@ -15,6 +15,11 @@ const router = new Router({
 			component: resolve => require(['@/components/Home'], resolve)
 		},
 		{
+			path: '/project',
+			name: 'project',
+			component: resolve => require(['@/components/Project'], resolve)
+		},
+		{
 			path: '/login',
 			name: 'login',
 			component: resolve => require(['@/components/Login'], resolve),

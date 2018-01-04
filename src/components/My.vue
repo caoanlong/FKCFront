@@ -257,7 +257,7 @@
 			line-height 44px
 			text-align center
 			color #fff
-			background-color #35495e
+			background-color #2B2623
 			position relative
 		.wrapper
 			width 100%
@@ -271,7 +271,7 @@
 				width 100%
 				// height 220px
 				padding 20px 0
-				background-color #35495e
+				background-color #2B2623
 				.avatarInfo
 					flex 0 0 110px
 					padding-left 15px
