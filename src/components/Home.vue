@@ -25,21 +25,21 @@
 								<div class="text-i">充的多送的多</div>
 							</div>
 						</router-link>
-						<router-link :to="{name: 'project'}" tag="div" class="option">
+						<router-link :to="{name: 'project', query: {id: typeList[0] ? typeList[0]._id : '', title: '体育竞猜'}}" tag="div" class="option">
 							<div class="icon physics"></div>
 							<div class="text">
 								<div class="text-h">体育竞猜</div>
 								<div class="text-i">足球篮球趣味竞猜</div>
 							</div>
 						</router-link>
-						<router-link :to="{name: 'project'}" tag="div" class="option">
+						<router-link :to="{name: 'project', query: {id: typeList[2] ? typeList[2]._id : '', title: '电竞娱乐'}}" tag="div" class="option">
 							<div class="icon game"></div>
 							<div class="text">
 								<div class="text-h">电竞娱乐</div>
 								<div class="text-i">电竞电影综艺竞猜</div>
 							</div>
 						</router-link>
-						<router-link :to="{name: 'project'}" tag="div" class="option">
+						<router-link :to="{name: 'project', query: {id: typeList[1] ? typeList[1]._id : '', title: '经济竞猜'}}" tag="div" class="option">
 							<div class="icon economics"></div>
 							<div class="text">
 								<div class="text-h">经济竞猜</div>
@@ -140,6 +140,7 @@
 			return {
 				memberInfo: {},
 				prizeList: [],
+				typeList: [],
 
 				showFreeSign: false,
 				freeReceive: {
@@ -177,8 +178,15 @@
 				localStorage.setItem('from', this.$route.query.from)
 			}
 			this.getPrizeList()
+			this.getProjectType()
 		},
 		methods: {
+			getProjectType () {
+				let URL = this.__WEBSERVERURL__ + '/api/project/type'
+				this.$http.get(URL).then(res => {
+					this.typeList = res.body.data
+				})
+			},
 			getPrizeList() {
 				let URL = this.__WEBSERVERURL__ + '/api/prize'
 				let params = {

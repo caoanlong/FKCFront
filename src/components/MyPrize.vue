@@ -1,8 +1,8 @@
 <template>
 	<div class="myPrize">
-		<div class="header" v-if="!isWX"><div tag="div" class="back" @click="back"><i></i>返回</div>我的奖品</div>
+		<div class="header"><div tag="div" class="back" @click="back"><i></i>返回</div>我的奖品</div>
 		<div class="block"></div>
-		<div class="wrapper" :style="{'top': isWX ? 0 : '44px'}">
+		<div class="wrapper">
 			<div class="myPrizeList vux-1px-b vux-1px-t" v-for="myPrize in myPrizeList">
 				<div class="waybill">
 					<div class="waybillNo">{{myPrize.waybillNo?'运单号：'+myPrize.waybillNo:''}}</div>

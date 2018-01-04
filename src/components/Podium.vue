@@ -1,8 +1,8 @@
 <template>
 	<div class="podium">
-		<div class="header" v-if="!isWX">领奖台</div>
+		<div class="header">领奖台</div>
 		<div class="block"></div>
-		<div class="podiumWrapper" :style="{'top': isWX ? 0 : '44px'}">
+		<div class="podiumWrapper">
 			<div ref="podiumIn">
 				<Goods v-for="goods in goodsList" :key="goods._id" :goods="goods"></Goods>
 				<pullUpLoad :loadStatus="loadStatus"></pullUpLoad>
@@ -92,7 +92,7 @@
 		width 100%
 		position absolute
 		left 0
-		top 0
+		top 44px
 		right 0
 		padding 5px
 </style>

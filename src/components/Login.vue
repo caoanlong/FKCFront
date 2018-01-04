@@ -1,7 +1,7 @@
 <template>
 	<div class="main">
-		<div class="header" v-if="!isWX"><router-link tag="div" class="back" :to="{name: 'home'}"><i></i>返回</router-link>登录</div>
-		<group labelWidth="70px" :style="{'margin-top': isWX ? 0 : '44px'}">
+		<div class="header"><router-link tag="div" class="back" :to="{name: 'home'}"><i></i>返回</router-link>登录</div>
+		<group labelWidth="70px" style="margin-top:44px">
 			<x-input title="手机号" name="mobile" placeholder="请输入手机号码" keyboard="number" v-model="mobile"></x-input>
 			<x-input title="验证码" class="weui-vcode" keyboard="number" v-model="verCode">
 				<x-button slot="right" type="primary" mini :disabled="$v.mobile.$invalid||isGetVCode" @click.native="getCode">{{codeBtn}}</x-button>

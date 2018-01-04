@@ -1,8 +1,8 @@
 <template>
 	<div class="my">
-		<div class="header" v-if="!isWX">我的</div>
+		<div class="header">我的</div>
 		<div class="block"></div>
-		<div class="wrapper" :style="{'top': isWX ? 0 : '44px'}">
+		<div class="wrapper">
 			<div class="profile">
 				<div class="avatarInfo">
 					<div class="head">
@@ -263,7 +263,7 @@
 			width 100%
 			position absolute
 			left 0
-			top 0
+			top 44px
 			right 0
 			.profile
 				display flex

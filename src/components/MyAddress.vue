@@ -1,8 +1,8 @@
 <template>
 	<div class="address">
-		<div class="header" v-if="!isWX"><div tag="div" class="back" @click="back"><i></i>返回</div>收货地址</div>
+		<div class="header"><div tag="div" class="back" @click="back"><i></i>返回</div>收货地址</div>
 		<div class="block"></div>
-		<div class="wrapper" :style="{'top': isWX ? 0 : '44px'}">
+		<div class="wrapper">
 			<div class="addressList vux-1px-b" v-for="address in addressList">
 				<div class="name-mobile">
 					<p class="consignee">{{address.consignee}}</p>
@@ -132,7 +132,7 @@
 			width 100%
 			position absolute
 			left 0
-			top 0
+			top 44px
 			right 0
 			.addressList
 				width 100%

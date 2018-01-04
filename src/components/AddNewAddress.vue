@@ -1,7 +1,7 @@
 <template>
 	<div class="addAddress">
-		<div class="header" v-if="!isWX"><div tag="div" class="back" @click="back"><i></i>返回</div>新增地址</div>
-		<group :style="{'margin-top': isWX ? 0 : '44px'}">
+		<div class="header"><div tag="div" class="back" @click="back"><i></i>返回</div>新增地址</div>
+		<group style="margin-top:44px">
 			<x-input title="收货人" text-align="right" v-model="consignee"></x-input>
 			<x-input title="联系电话" text-align="right" keyboard="number" v-model="mobile"></x-input>
 			<x-address title="所在地区" :list="addressData" v-model="area"></x-address>

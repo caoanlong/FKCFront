@@ -1,8 +1,8 @@
 <template>
 	<div class="account">
-		<div class="header" v-if="!isWX"><div tag="div" class="back" @click="back"><i></i>返回</div>账户明细</div>
+		<div class="header"><div tag="div" class="back" @click="back"><i></i>返回</div>账户明细</div>
 		<div class="block"></div>
-		<div class="wrapper" :style="{'top': isWX ? 0 : '44px'}">
+		<div class="wrapper">
 			<div ref="wrapperIn">
 				<group>
 					<cell v-for="(item,i) in accountDetails" :key="i">
@@ -47,7 +47,7 @@ export default {
 				this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop
 				this.clientHeight = document.documentElement.clientHeight || document.body.clientHeight
 				this.pageHeight = this.$refs.wrapperIn.offsetHeight
-				this.disY = this.pageHeight - this.clientHeight + 10 + (this.isWX ? 10 : 64)
+				this.disY = this.pageHeight - this.clientHeight + 74
 				// console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
 				if (this.scrollTop == this.disY) {
 					if (this.pageIndex < this.pages) {
@@ -124,6 +124,6 @@ export default {
 			width 100%
 			position absolute
 			left 0
-			top -20px
+			top 44px
 			right 0
 </style>

@@ -1,7 +1,7 @@
 <template>
 	<div class="myguess">
-		<div class="header" v-if="!isWX"><div tag="div" class="back" @click="back"><i></i>返回</div>我的竞猜</div>
-		<tab class="tab" :style="{'top': isWX ? '0px' : '44px'}">
+		<div class="header"><div tag="div" class="back" @click="back"><i></i>返回</div>我的竞猜</div>
+		<tab class="tab">
 			<tab-item selected @on-item-click="searchList(1)">全部</tab-item>
 			<tab-item @on-item-click="searchList(2)">待开奖</tab-item>
 			<tab-item @on-item-click="searchList(3)">已开奖</tab-item>
@@ -62,11 +62,6 @@ export default {
 			isLottery: 1
 		}
 	},
-	computed: {
-		isWX () {
-			return this.isWeixin()
-		}
-	},
 	created() {
 		document.title = '我的竞猜'
 		this.getGuessList()
@@ -75,9 +70,9 @@ export default {
 			this.clientHeight = document.documentElement.clientHeight || document.body.clientHeight
 			this.pageHeight = this.$refs.guessWrapper.offsetHeight
 			if (this.isOpen) {
-				this.disY = this.pageHeight - this.clientHeight + (this.isWX ? 54 : 98)
+				this.disY = this.pageHeight - this.clientHeight + 98
 			} else {
-				this.disY = this.pageHeight - this.clientHeight + (this.isWX ? 64 : 108)
+				this.disY = this.pageHeight - this.clientHeight + 108
 			}
 			// console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
 			if (this.scrollTop == this.disY) {
