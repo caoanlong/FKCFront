@@ -6,8 +6,8 @@
 			<tab-item @on-item-click="searchList(2)">待开奖</tab-item>
 			<tab-item @on-item-click="searchList(3)">已开奖</tab-item>
 		</tab>
-		<div class="block"></div>
-		<div class="wrapper" :style="{'top': isWX ? '0px' : '44px'}">
+		<!-- <div class="block"></div> -->
+		<div class="wrapper" style="top:44px">
 			<div ref="guessWrapper">
 				<div style="padding: 15px 30px" v-show="isOpen">
 					<button-tab v-model="isWinNumber">
@@ -178,7 +178,7 @@ export default {
 		.tab
 			position fixed
 			left 0
-			top 0
+			top 44px
 			width 100%
 			z-index 10
 		.wrapper

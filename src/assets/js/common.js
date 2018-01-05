@@ -8,6 +8,13 @@ function oneToTwoNum (num) {
 	}
 	return number
 }
+function getStyle(obj,attr){
+	if (obj.currentStyle) {
+		return obj.currentStyle[attr]
+	} else{
+		return getComputedStyle(obj,false)[attr]
+	}
+}
 
 export default function install (Vue, option) {
 	// Vue.prototype.__WEBSERVERURL__ = 'http://127.0.0.1:3000'
@@ -92,5 +99,38 @@ export default function install (Vue, option) {
 				callback()
 			}
 		})
+	}
+	// 运动框架
+	Vue.prototype.startMove = function (obj, json, fnEnd) {
+		clearInterval(obj.timer)
+		obj.timer = setInterval(function(){
+			//假设所有的值都已经到了
+			var bStop = true
+			for(var attr in json){
+				var curStyle
+				if (attr == 'opacity') {
+					curStyle = Math.round(parseFloat(getStyle(obj,attr))*100)
+				} else{
+					curStyle = parseInt(getStyle(obj,attr))
+				}
+				var speed = (json[attr] - curStyle)/5
+				speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed)
+				if (curStyle != json[attr]) {
+					bStop=false
+				};
+				if (attr == 'opacity') {
+					obj.filter = 'alpha(opacity:' + (curStyle+speed)+')'
+					obj.style[attr] = (curStyle+speed)/100
+				} else{
+					obj.style[attr] = curStyle+speed + 'px'
+				};
+			}
+			if (bStop) {
+				clearInterval(obj.timer)
+				if (fnEnd) {
+					fnEnd()
+				}
+			}
+		}, 30)
 	}
 }

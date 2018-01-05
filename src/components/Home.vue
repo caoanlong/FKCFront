@@ -1,7 +1,8 @@
 <template>
 	<div class="main">
 		<div class="header">
-			<router-link :to="{name: 'login'}" tag="div" class="loginBtn">登录</router-link>
+			<!-- <router-link :to="{name: 'login'}" tag="div" class="loginBtn">登录</router-link> -->
+			<div class="loginBtn"></div>
 			<div class="title">91疯狂猜</div>
 			<div class="freeSign" @click="freeSign"></div>
 		</div>
@@ -13,7 +14,11 @@
 				</div>
 				<div class="winMsg">
 					<div class="title"></div>
-					<div class="content">恭喜“1***”在猜球中赢得12345金豆！</div>
+					<div class="content" style="overflow: hidden;position: relative">
+						<div id="msgList" style="position:absolute;left: 0;top: 0">
+							<div style="padding-left: 8px" v-for="msg in msgList" :key="msg">{{msg}}</div>
+						</div>
+					</div>
 				</div>
 				<div class="projectEntrance">
 					<div class="title vux-1px-b">娱乐竞猜</div>
@@ -161,7 +166,12 @@
 					'Friday',
 					'Saturday'
 				],
-				isSign: false
+				isSign: false,
+				msgList: [
+					`恭喜1${parseInt(Math.random()*10)}*****${parseInt(Math.random()*10000)}在猜球中赢得${parseInt(Math.random()*10000)}金豆！`,
+					`恭喜1${parseInt(Math.random()*10)}*****${parseInt(Math.random()*10000)}在猜球中赢得${parseInt(Math.random()*10000)}金豆！`
+				],
+				top: 0
 			}
 		},
 		computed: {
@@ -179,6 +189,17 @@
 			}
 			this.getPrizeList()
 			this.getProjectType()
+		},
+		mounted() {
+			this.timer = setInterval(() => {
+				this.msgList.push(`恭喜1${parseInt(Math.random()*10)}*****${parseInt(Math.random()*10000)}在猜球中赢得${parseInt(Math.random()*10000)}金豆！`)
+				this.startMove(document.getElementById('msgList'), {top: -22})
+				this.msgList.shift()
+				document.getElementById('msgList').style.top = 0
+			}, 4000)
+		},
+		beforeDestroy() {
+			clearInterval(this.timer)
 		},
 		methods: {
 			getProjectType () {
