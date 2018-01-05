@@ -150,10 +150,13 @@
 		},
 		created () {
 			document.title = '我的'
-			this.getMemberInfo()
+			if (this.$route.query.openid) {
+				localStorage.setItem('openid', this.$route.query.openid)
+			}
 			if (this.$route.query.showSign) {
 				this.freeSign()
 			}
+			this.getMemberInfo()
 		},
 		methods: {
 			getMemberInfo () {

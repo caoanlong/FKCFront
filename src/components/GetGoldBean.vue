@@ -184,9 +184,22 @@
 				</div>
 			</div>
 		</div>
-		<form  id="form" action="http://trans.palmf.cn/sdk/api/v1.0/cli/order_h5/0" method="post">
-			<input type="hidden" id="orderInfo" name="orderInfo" v-model="orderInfo">
-		</form>
+		<!-- <form  id="form" action="https://api.qujuhe.com/pay_index" method="post">
+			<input type="hidden" id="pay_memberid" name="pay_memberid" v-model="params.pay_memberid">
+			<input type="hidden" id="pay_orderid" name="pay_orderid" v-model="params.pay_orderid">
+			<input type="hidden" id="pay_applydate" name="pay_applydate" v-model="params.pay_applydate">
+			<input type="hidden" id="pay_bankcode" name="pay_bankcode" v-model="params.pay_bankcode">
+			<input type="hidden" id="pay_notifyurl" name="pay_notifyurl" v-model="params.pay_notifyurl">
+			<input type="hidden" id="pay_callbackurl" name="pay_callbackurl" v-model="params.pay_callbackurl">
+			<input type="hidden" id="pay_amount" name="pay_amount" v-model="params.pay_amount">
+			<input type="hidden" id="pay_md5sign" name="pay_md5sign" v-model="params.pay_md5sign">
+			<input type="hidden" id="pay_productname" name="pay_productname" v-model="params.pay_productname">
+			<input type="hidden" id="sub_openid" name="sub_openid" v-model="params.sub_openid">
+			<input type="hidden" id="pay_deviceIp" name="pay_deviceIp" v-model="params.pay_deviceIp">
+			<input type="hidden" id="pay_scene" name="pay_scene" v-model="params.pay_scene">
+			<input type="hidden" id="pay_productdesc" name="pay_productdesc" v-model="params.pay_productdesc">
+			<input type="hidden" id="pay_producturl" name="pay_producturl" v-model="params.pay_producturl">
+		</form> -->
 	</div>
 </template>
 <script>
@@ -203,7 +216,22 @@
 			isTipsInfoShow: false,
 			payNum: 0,
 			isAgree: true,
-			orderInfo: ''
+			params: {
+				'pay_memberid': '15120',
+				'pay_orderid': this.getTimeNum() + this.getVerCode(8),
+				'pay_applydate': this.getTimeNum2(),
+				'pay_bankcode': '901',
+				'pay_notifyurl': 'http://39.108.245.177:3000/api/notifyUtl',
+				'pay_callbackurl': 'http://m.91fkc.com',
+				'pay_amount': 0,
+				'pay_md5sign': '',
+				'pay_productname': '',
+				'sub_openid': localStorage.getItem('openid'),
+				'pay_deviceIp': returnCitySN.cip,
+				'pay_scene': 'Wap',
+				'pay_productdesc': '金豆',
+				'pay_producturl': 'http://m.91fkc.com',
+			}
 		}
 	},
 	computed: {
@@ -217,45 +245,64 @@
 	created() {
 		document.title = '获取金豆'
 		this.getGoldBeanList()
-		console.log(appid, key)
 	},
 	methods: {
 		getGoldBeanList () {
 			let URL = this.__WEBSERVERURL__ + '/api/shop/goldBeanType'
 			this.$http.get(URL).then(res => {
-				console.log(JSON.stringify(res.body))
 				this.list = res.body.data.goldBeanTypeList
 			})
 		},
 		showPayToast (goldBeanNum) {
 			this.showPay = true
 			this.payNum = goldBeanNum
+			this.params.pay_amount = goldBeanNum > 10000 ? (goldBeanNum/100 - 0.01) : goldBeanNum/100
+			this.params.pay_productname = goldBeanNum + '金豆'
 		},
 		buyGoldBean () {
-			let params = {
-				'appid': appid,
-				'key': key,
-				'subject': this.payNum + '金豆', // 商品名称,
-				'amount': this.payNum, // 支付金额，单位/分,
-				'mchntOrderNo': this.getTimeNum() + this.getVerCode(8), // 订单号,
-				'body': '金豆',
-				'childAppid': '',
-				'clientIp': returnCitySN.cip,
-				'payChannelId': '', // 支付方式,
-				'notifyUrl': 'http://39.108.245.177:3000/api/notifyUtl',
-				'returnUrl': window.location.origin + '/#/GetGoldBean',
-				'type':'h5'
-			}
-			// console.log(JSON.stringify(params))
+			console.log(JSON.stringify(this.params))
 			let URL = this.__WEBSERVERURL__ + '/api/payOrder'
-			this.$http.post(URL, params).then(res => {
+			this.$http.post(URL, this.params).then(res => {
 				if (res.body.code == 0) {
-					this.orderInfo = res.body.data
+					// alert(JSON.stringify(res.body.data))
+					// this.params.pay_md5sign = res.body.data
+					let payjs_json = JSON.parse(res.body.data.js_prepay_info)
+					alert(res.body.data.js_prepay_info)
 					this.$nextTick(() => {
-						document.getElementById('form').submit()
+						// document.getElementById('form').submit()
+						this.callpay(payjs_json)
 					})
 				}
 			})
+		},
+		callpay (data) {
+			var closureCall = function () {
+		        this.jsApiCall(data)
+		    }
+		    if (typeof WeixinJSBridge == "undefined") {
+		        if (document.addEventListener) {
+		            document.addEventListener('WeixinJSBridgeReady', closureCall, false)
+		        } else if (document.attachEvent) {
+		            document.attachEvent('WeixinJSBridgeReady', closureCall)
+		            document.attachEvent('onWeixinJSBridgeReady', closureCall)
+		        }
+		    } else {
+		        closureCall()
+		    }
+		},
+		jsApiCall (data) {
+			alert(data)
+			WeixinJSBridge.invoke(
+				'getBrandWCPayRequest',
+				data,
+				function (res) {
+					WeixinJSBridge.log(res.err_msg)
+					alert(res.err_code + res.err_desc + res.err_msg)
+					if (res.err_msg == "get_brand_wcpay_request:ok") {
+						//支付成功后，写自己的逻辑
+					}     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+				}
+			)
 		},
 		back () {
 			window.history.go(-1)

@@ -187,6 +187,9 @@
 			if (this.$route.query.from) {
 				localStorage.setItem('from', this.$route.query.from)
 			}
+			if (this.$route.query.openid) {
+				localStorage.setItem('openid', this.$route.query.openid)
+			}
 			this.getPrizeList()
 			this.getProjectType()
 		},
@@ -202,6 +205,9 @@
 			clearInterval(this.timer)
 		},
 		methods: {
+			// getOpenid () {
+			// 	let URL = 
+			// },
 			getProjectType () {
 				let URL = this.__WEBSERVERURL__ + '/api/project/type'
 				this.$http.get(URL).then(res => {

@@ -33,6 +33,11 @@ export default function install (Vue, option) {
 		let time = '' + date.getFullYear() + oneToTwoNum(date.getMonth()+1) + oneToTwoNum(date.getDate()) + oneToTwoNum(date.getHours()) + oneToTwoNum(date.getMinutes()) + oneToTwoNum(date.getSeconds())
 		return time
 	}
+	Vue.prototype.getTimeNum2 = function () {
+		let date = new Date()
+		let time = date.getFullYear() + '-' + oneToTwoNum(date.getMonth()+1) + '-' + oneToTwoNum(date.getDate()) + ' ' + oneToTwoNum(date.getHours()) + ':' + oneToTwoNum(date.getMinutes()) + ':' + oneToTwoNum(date.getSeconds())
+		return time
+	}
 	// 转时间戳
 	Vue.prototype.getdatefromtimestamp = function (input, bool) {
 		let now = new Date(Number(input))
