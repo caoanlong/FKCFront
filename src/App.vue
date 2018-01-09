@@ -23,19 +23,34 @@
 			if (this.$route.query.from) {
 				localStorage.setItem('from', this.$route.query.from)
 			}
-			if (!window.location.search.includes('openid') && this.isWeixin()) {
-				window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe0fd26ab323ce46d&redirect_uri=${encodeURIComponent('http://admin.91fkc.com/weixin/getOpenID')}&response_type=code&scope=snsapi_userinfo&state=index#wechat_redirect`
-				return
+			if (this.isWeixin()) {
+				let openid = localStorage.getItem('openid')
+				if (!openid) {
+					let code = this.getQueryString('code')
+					if (code) {
+						this.getWxUserInfo()
+					} else {
+						window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe0fd26ab323ce46d&redirect_uri=${window.location.href}&response_type=code&scope=snsapi_base&state=index#wechat_redirect`
+					}
+				}
 			}
-			if (this.$route.query.openid) {
-				localStorage.setItem('openid', this.$route.query.openid)
-			}
-			// this.weixinShare()
 		},
 		mounted () {
 			this.weixinShare()
 		},
 		methods: {
+			getWxUserInfo () {
+				let params = {
+					code: this.getQueryString('code')
+				}
+				let URL = this.__WEBSERVERURL__ + '/weixin/getOpenIDNew'
+				this.$http.get(URL, {params: params}).then(res => {
+					let openid = res.body.data
+					if (openid) {
+						localStorage.setItem('openid', openid)
+					}
+				})
+			},
 			weixinShare () {
 				// 微信分享
 				this.getWeixinConfig(location.href, () => {

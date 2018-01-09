@@ -62,6 +62,15 @@ export default function install (Vue, option) {
 			return false
 		}
 	}
+	// 获取地址栏参数
+	Vue.prototype.getQueryString = function (name) {
+		let reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)")
+		let r = window.location.search.substr(1).match(reg)
+		if(r!=null) {
+			return unescape(r[2])
+		}
+		return null
+	}
 
 	Vue.prototype.getWeixinConfig = function (url, callback, bool) {
 		let URL = this.__WEBSERVERURL__ + '/weixin/config'
@@ -91,14 +100,6 @@ export default function install (Vue, option) {
 			})
 			wx.error(function(res){
 				console.log(res)
-			})
-			wx.checkJsApi({
-				jsApiList: ['chooseImage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
-				success: function(res) {
-					console.log(res)
-				// 以键值对的形式返回，可用的api值true，不可用为false
-				// 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
-				}
 			})
 			if (!bool) {
 				callback()

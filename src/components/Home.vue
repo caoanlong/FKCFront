@@ -12,7 +12,7 @@
 				<div class="banner">
 					<img src="../assets/img/banner.png">
 				</div>
-				<div class="winMsg">
+				<div class="winMsg vux-1px-b">
 					<div class="title"></div>
 					<div class="content" style="overflow: hidden;position: relative">
 						<div id="msgList" style="position:absolute;left: 0;top: 0">
@@ -20,7 +20,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="projectEntrance">
+				<div class="projectEntrance vux-1px-b">
 					<div class="title vux-1px-b">娱乐竞猜</div>
 					<div class="options">
 						<router-link :to="{name: 'getGoldBean'}" tag="div" class="option">
@@ -53,7 +53,7 @@
 						</router-link>
 					</div>
 				</div>
-				<div class="prizeChange">
+				<div class="prizeChange vux-1px-b">
 					<div class="title vux-1px-b">奖品兑换<router-link :to="{name: 'podium'}" tag="span" class="more">更多</router-link></div>
 					<div class="prizeOptions">
 						<router-link :to="{name: 'prizeDetail', query: {id: prize._id}}" tag="div" class="option" v-for="prize in prizeList" :key="prize._id">
@@ -398,6 +398,7 @@
 							color #09BB07
 					.prizeOptions
 						width 100%
+						padding-bottom 20px
 						&:before
 						&:after
 							content ''

@@ -119,7 +119,7 @@
 			width 100%
 			position absolute
 			left 0
-			top 0
+			top 44px
 			right 0
 			.myPrizeList
 				width 100%
