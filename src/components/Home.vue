@@ -168,8 +168,8 @@
 				],
 				isSign: false,
 				msgList: [
-					`恭喜1${parseInt(Math.random()*10)}*****${parseInt(Math.random()*10000)}在猜球中赢得${parseInt(Math.random()*10000)}金豆！`,
-					`恭喜1${parseInt(Math.random()*10)}*****${parseInt(Math.random()*10000)}在猜球中赢得${parseInt(Math.random()*10000)}金豆！`
+					`恭喜1${parseInt(Math.random()*10)}*****${parseInt(Math.random()*10000)}赢得${parseInt(Math.random()*10000)}金豆！`,
+					`恭喜1${parseInt(Math.random()*10)}*****${parseInt(Math.random()*10000)}赢得${parseInt(Math.random()*10000)}金豆！`
 				],
 				top: 0
 			}
@@ -184,18 +184,12 @@
 		},
 		created() {
 			document.title = '91疯狂猜'
-			if (this.$route.query.from) {
-				localStorage.setItem('from', this.$route.query.from)
-			}
-			if (this.$route.query.openid) {
-				localStorage.setItem('openid', this.$route.query.openid)
-			}
 			this.getPrizeList()
 			this.getProjectType()
 		},
 		mounted() {
 			this.timer = setInterval(() => {
-				this.msgList.push(`恭喜1${parseInt(Math.random()*10)}*****${parseInt(Math.random()*10000)}在猜球中赢得${parseInt(Math.random()*10000)}金豆！`)
+				this.msgList.push(`恭喜1${parseInt(Math.random()*10)}*****${parseInt(Math.random()*10000)}赢得${parseInt(Math.random()*10000)}金豆！`)
 				this.startMove(document.getElementById('msgList'), {top: -22})
 				this.msgList.shift()
 				document.getElementById('msgList').style.top = 0
@@ -205,9 +199,6 @@
 			clearInterval(this.timer)
 		},
 		methods: {
-			// getOpenid () {
-			// 	let URL = 
-			// },
 			getProjectType () {
 				let URL = this.__WEBSERVERURL__ + '/api/project/type'
 				this.$http.get(URL).then(res => {

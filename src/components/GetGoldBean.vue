@@ -220,7 +220,7 @@
 				'pay_memberid': '15120',
 				'pay_orderid': this.getTimeNum() + this.getVerCode(8),
 				'pay_applydate': this.getTimeNum2(),
-				'pay_bankcode': '901',
+				'pay_bankcode': this.isWeixin() ? '901' : '908',
 				'pay_notifyurl': 'http://39.108.245.177:3000/api/notifyUtl',
 				'pay_callbackurl': 'http://m.91fkc.com',
 				'pay_amount': 0,
@@ -260,44 +260,41 @@
 			this.params.pay_productname = goldBeanNum + '金豆'
 		},
 		buyGoldBean () {
-			console.log(JSON.stringify(this.params))
 			let URL = this.__WEBSERVERURL__ + '/api/payOrder'
 			this.$http.post(URL, this.params).then(res => {
 				if (res.body.code == 0) {
-					// alert(JSON.stringify(res.body.data))
 					// this.params.pay_md5sign = res.body.data
-					let payjs_json = JSON.parse(res.body.data.js_prepay_info)
-					alert(res.body.data.js_prepay_info)
 					this.$nextTick(() => {
 						// document.getElementById('form').submit()
-						this.callpay(payjs_json)
+						if (this.isWeixin() && localStorage.getItem('openid')) {
+							let payjs_json = JSON.parse(res.body.data.js_prepay_info)
+							this.callpay(payjs_json)
+						} else {
+							window.location.href = res.body.data.code_url
+						}
 					})
 				}
 			})
 		},
 		callpay (data) {
-			var closureCall = function () {
-		        this.jsApiCall(data)
-		    }
-		    if (typeof WeixinJSBridge == "undefined") {
-		        if (document.addEventListener) {
-		            document.addEventListener('WeixinJSBridgeReady', closureCall, false)
-		        } else if (document.attachEvent) {
-		            document.attachEvent('WeixinJSBridgeReady', closureCall)
-		            document.attachEvent('onWeixinJSBridgeReady', closureCall)
-		        }
-		    } else {
-		        closureCall()
-		    }
+			if (typeof WeixinJSBridge == "undefined") {
+				if (document.addEventListener) {
+					document.addEventListener('WeixinJSBridgeReady', this.jsApiCall, false)
+				} else if (document.attachEvent) {
+					document.attachEvent('WeixinJSBridgeReady', this.jsApiCall)
+					document.attachEvent('onWeixinJSBridgeReady', this.jsApiCall)
+				}
+			} else {
+				this.jsApiCall(data)
+			}
 		},
 		jsApiCall (data) {
-			alert(data)
 			WeixinJSBridge.invoke(
 				'getBrandWCPayRequest',
 				data,
 				function (res) {
 					WeixinJSBridge.log(res.err_msg)
-					alert(res.err_code + res.err_desc + res.err_msg)
+					// alert(res.err_code + res.err_desc + res.err_msg)
 					if (res.err_msg == "get_brand_wcpay_request:ok") {
 						//支付成功后，写自己的逻辑
 					}     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
