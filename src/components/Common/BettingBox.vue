@@ -86,6 +86,7 @@
 				}
 				let params = {
 					goldBeanNum: goldBeanNum,
+					openid: localStorage.getItem('openid') || '',
 					projectId: this.projectId,
 					projectOption: this.selectOpt
 				}
