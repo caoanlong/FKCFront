@@ -11,7 +11,7 @@
 				title: '91疯狂猜',
 				desc: '猜体育、经济、娱乐事件、猜猜更精彩！',
 				// shareLink: `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe0fd26ab323ce46d&redirect_uri=${encodeURIComponent('http://admin.91fkc.com/weixin/getOpenID')}&response_type=code&scope=snsapi_base&state=index#wechat_redirect`,
-				shareLink: location.origin
+				shareLink: location.href
 			}
 		},
 		watch: {
