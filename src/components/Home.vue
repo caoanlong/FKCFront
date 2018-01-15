@@ -140,6 +140,7 @@
 	import BettingBox from './Common/BettingBox'
 	import pullUpLoad from './Common/pullUpLoad'
 	import {Tab, TabItem, XButton} from 'vux'
+	import { Swiper, Slide } from 'vue-swiper-component'
 	export default {
 		data () {
 			return {
@@ -272,7 +273,9 @@
 			pullUpLoad,
 			Tab,
 			TabItem,
-			XButton
+			XButton,
+			Swiper,
+    		Slide
 		}
 	}
 </script>
