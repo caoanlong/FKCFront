@@ -1,15 +1,15 @@
 <template>
   	<div class="item" :class="{'active': selected == data}" @click="changeOption(data)">
 		<span class="tag" v-if="index == 0">A</span>
-		<span class="tag" v-if="index == 1">B</span>
-		<span class="tag" v-if="index == 2">C</span>
-		<span class="tag" v-if="index == 3">D</span>
-		<span class="tag" v-if="index == 4">E</span>
-		<span class="tag" v-if="index == 5">F</span>
-		<span class="tag" v-if="index == 6">G</span>
-		<span class="tag" v-if="index == 7">H</span>
-		<span class="tag" v-if="index == 8">I</span>
-		<span class="tag" v-if="index == 9">J</span>
+		<span class="tag" v-else-if="index == 1">B</span>
+		<span class="tag" v-else-if="index == 2">C</span>
+		<span class="tag" v-else-if="index == 3">D</span>
+		<span class="tag" v-else-if="index == 4">E</span>
+		<span class="tag" v-else-if="index == 5">F</span>
+		<span class="tag" v-else-if="index == 6">G</span>
+		<span class="tag" v-else-if="index == 7">H</span>
+		<span class="tag" v-else-if="index == 8">I</span>
+		<span class="tag" v-else-if="index == 9">J</span>
 		<span class="tx" v-text="data.content"></span>
 		<span class="odds">赔率{{data.odds}}</span>
 	</div>
@@ -44,6 +44,7 @@ export default {
 		border 1px solid #1AAD19
 		position relative
 		padding-left 36px
+		padding-right 90px
 		color #1AAD19
 		background-color #fff
 		.tag
@@ -58,8 +59,11 @@ export default {
 			border-radius 12px
 			background-color #1AAD19
 		.odds
-			float right
-			width 80px
+			display block
+			position absolute
+			right 0
+			top 0
+			width 90px
 			height 34px
 			text-align right
 			padding-right 15px
