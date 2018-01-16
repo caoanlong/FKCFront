@@ -20,8 +20,8 @@
 			}
 		},
 		created () {
-			if (this.$route.query.from) {
-				localStorage.setItem('from', this.$route.query.from)
+			if (location.hash.includes('from')) {
+				localStorage.setItem('from', location.hash.split('from=')[1])
 			}
 			if (this.isWeixin()) {
 				let openid = localStorage.getItem('openid')

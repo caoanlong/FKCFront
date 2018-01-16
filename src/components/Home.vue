@@ -9,9 +9,16 @@
 		<div class="block"></div>
 		<div class="wrapper">
 			<div class="wrapperIn">
-				<div class="banner">
+				<!-- <div class="banner">
 					<img src="../assets/img/banner.png">
-				</div>
+				</div> -->
+				<Swiper class="banner" v-if="bannerList.length > 0">
+				   	<Slide v-for="(banner, key) in bannerList" :key="key">
+				   		<a :href="banner.linkUrl">
+				   			<img :src="__WEBIMGSERVERURL__ + banner.img"/>
+				   		</a>
+				   	</Slide>
+				</Swiper>
 				<div class="winMsg vux-1px-b">
 					<div class="title"></div>
 					<div class="content" style="overflow: hidden;position: relative">
@@ -147,6 +154,7 @@
 				memberInfo: {},
 				prizeList: [],
 				typeList: [],
+				bannerList: [],
 
 				showFreeSign: false,
 				freeReceive: {
@@ -185,6 +193,7 @@
 		},
 		created() {
 			document.title = '91疯狂猜'
+			this.getBanner()
 			this.getPrizeList()
 			this.getProjectType()
 		},
@@ -200,6 +209,12 @@
 			clearInterval(this.timer)
 		},
 		methods: {
+			getBanner () {
+				let URL = this.__WEBSERVERURL__ + '/api/project/banner'
+				this.$http.get(URL).then(res => {
+					this.bannerList = res.body.data
+				})
+			},
 			getProjectType () {
 				let URL = this.__WEBSERVERURL__ + '/api/project/type'
 				this.$http.get(URL).then(res => {
@@ -275,7 +290,7 @@
 			TabItem,
 			XButton,
 			Swiper,
-    		Slide
+			Slide
 		}
 	}
 </script>
