@@ -60,6 +60,19 @@
 						</router-link>
 					</div>
 				</div>
+				<div class="hotGuess vux-1px-b">
+					<div class="title vux-1px-b">热门竞猜<router-link :to="{name: 'project', query: {id: typeList[0] ? typeList[0]._id : '', title: '体育竞猜'}}" tag="span" class="more">更多</router-link></div>
+					<div class="guess vux-1px-b">
+						<div class="content">
+							<p class="title" v-text="hotGuess.name"></p>
+							<div class="options">
+								<Options v-for="(option,i) in hotGuess.options" :data="option" :index="i" :selected="selectedOption" :key="option.content" @selectOption="selectOption"></Options>
+							</div>
+							<div v-show="hotGuess.options&&!hotGuess.options.includes(selectedOption)" class="hot-guess-info">热点事件竞猜，比拼谁是预言家</div>
+							<BettingBox :projectId="hotGuess._id&&hotGuess._id.toString()" :selectOpt="selectedOption" :isShow="hotGuess.options&&hotGuess.options.includes(selectedOption)" @select="selectNum"></BettingBox>
+						</div>
+					</div>
+				</div>
 				<div class="prizeChange vux-1px-b">
 					<div class="title vux-1px-b">奖品兑换<router-link :to="{name: 'podium'}" tag="span" class="more">更多</router-link></div>
 					<div class="prizeOptions">
@@ -155,6 +168,9 @@
 				prizeList: [],
 				typeList: [],
 				bannerList: [],
+				hotGuess: {},
+				selectedOption: {},
+				selectedNum: '',
 
 				showFreeSign: false,
 				freeReceive: {
@@ -219,6 +235,18 @@
 				let URL = this.__WEBSERVERURL__ + '/api/project/type'
 				this.$http.get(URL).then(res => {
 					this.typeList = res.body.data
+					this.$nextTick(() => {
+						this.getHotGuess()
+					})
+				})
+			},
+			getHotGuess () {
+				let URL = this.__WEBSERVERURL__ + '/api/project/hot'
+				let params = {
+					projectType: this.typeList[0]._id
+				}
+				this.$http.get(URL, {params: params}).then(res => {
+					this.hotGuess = res.body.data
 				})
 			},
 			getPrizeList() {
@@ -280,6 +308,14 @@
 					console.log(JSON.stringify(res.body.data))
 				})
 			},
+			selectOption (data) {
+				console.log(JSON.stringify(data));
+				this.selectedOption = data;
+			},
+			selectNum (data) {
+				console.log(JSON.stringify(data));
+				this.selectedNum = data.content;
+			}
 		},
 		components: {
 			Tabbar,
@@ -393,11 +429,46 @@
 							.text
 								padding 24px 0
 								.text-h
+									font-weight bold
 									font-size 15px
 									line-height 2
 								.text-i
 									font-size 13px
 									color #999
+				.hotGuess
+					width 100%
+					margin-top 10px
+					background-color #fff
+					.title
+						width 100%
+						// height 50px
+						line-height 50px
+						padding 0 10px
+						.more
+							float right
+							text-align right
+							display block
+							width 100px
+							font-size 14px
+							color #09BB07
+					.guess
+						position relative
+						margin-bottom 10px
+						width 100%
+						.content
+							width 100%
+							padding 5px 15px
+							background-color #fff
+							.title
+								font-size 17px
+								line-height 160%
+					.hot-guess-info
+						width 100%
+						height 50px
+						line-height 50px
+						color #999
+						font-size 14px
+						text-align center
 				.prizeChange
 					width 100%
 					margin-top 10px
