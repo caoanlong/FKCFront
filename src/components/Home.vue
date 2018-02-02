@@ -13,11 +13,11 @@
 					<img src="../assets/img/banner.png">
 				</div> -->
 				<Swiper class="banner" v-if="bannerList.length > 0">
-				   	<Slide v-for="(banner, key) in bannerList" :key="key">
-				   		<a :href="banner.linkUrl">
-				   			<img :src="__WEBIMGSERVERURL__ + banner.img"/>
-				   		</a>
-				   	</Slide>
+					<Slide v-for="(banner, key) in bannerList" :key="key">
+						<a :href="banner.linkUrl">
+							<img :src="__WEBIMGSERVERURL__ + banner.img"/>
+						</a>
+					</Slide>
 				</Swiper>
 				<div class="winMsg vux-1px-b">
 					<div class="title"></div>
@@ -30,38 +30,19 @@
 				<div class="projectEntrance vux-1px-b">
 					<div class="title vux-1px-b">娱乐竞猜</div>
 					<div class="options">
-						<router-link :to="{name: 'getGoldBean'}" tag="div" class="option">
-							<div class="icon goldBean"></div>
-							<div class="text">
-								<div class="text-h">金豆充值</div>
-								<div class="text-i">充的多送的多</div>
+						<router-link v-for="item in sortTypeList" :key="item._id" :to="{name: 'project', query: {id: item._id, title: item.name}}" tag="div" class="option">
+							<div class="icon">
+								<img :src="__WEBIMGSERVERURL__ + item.icon">
 							</div>
-						</router-link>
-						<router-link :to="{name: 'project', query: {id: typeList[0] ? typeList[0]._id : '', title: '体育竞猜'}}" tag="div" class="option">
-							<div class="icon physics"></div>
 							<div class="text">
-								<div class="text-h">体育竞猜</div>
-								<div class="text-i">足球篮球趣味竞猜</div>
-							</div>
-						</router-link>
-						<router-link :to="{name: 'project', query: {id: typeList[2] ? typeList[2]._id : '', title: '电竞娱乐'}}" tag="div" class="option">
-							<div class="icon game"></div>
-							<div class="text">
-								<div class="text-h">电竞娱乐</div>
-								<div class="text-i">电竞电影综艺竞猜</div>
-							</div>
-						</router-link>
-						<router-link :to="{name: 'project', query: {id: typeList[1] ? typeList[1]._id : '', title: '经济竞猜'}}" tag="div" class="option">
-							<div class="icon economics"></div>
-							<div class="text">
-								<div class="text-h">经济竞猜</div>
-								<div class="text-i">股票黄金走势竞猜</div>
+								<div class="text-h">{{item.name}}</div>
+								<div class="text-i">{{item.desc}}</div>
 							</div>
 						</router-link>
 					</div>
 				</div>
 				<div class="hotGuess vux-1px-b">
-					<div class="title vux-1px-b">热门竞猜<router-link :to="{name: 'project', query: {id: typeList[0] ? typeList[0]._id : '', title: '体育竞猜'}}" tag="span" class="more">更多</router-link></div>
+					<div class="title vux-1px-b">热门竞猜<router-link :to="{name: 'project', query: {id: typeList[0]&&typeList[0]._id, title: typeList[0]&&typeList[0].name}}" tag="span" class="more">更多</router-link></div>
 					<div class="guess vux-1px-b">
 						<div class="content">
 							<p class="title" v-text="hotGuess.name"></p>
@@ -161,6 +142,24 @@
 	import pullUpLoad from './Common/pullUpLoad'
 	import {Tab, TabItem, XButton} from 'vux'
 	import { Swiper, Slide } from 'vue-swiper-component'
+	const by = (name) => {
+		return (o, p) => {
+			let a, b
+			if (typeof o === "object" && typeof p === "object" && o && p) {
+				a = o[name]
+				b = p[name]
+				if (a === b) {
+					return 0
+				}
+				if (typeof a === typeof b) {
+				   return a < b ? -1 : 1
+				}
+				return typeof a < typeof b ? -1 : 1;
+			} else {
+				throw ("error")
+			}
+		}
+	}
 	export default {
 		data () {
 			return {
@@ -205,6 +204,9 @@
 			},
 			isWX () {
 				return this.isWeixin()
+			},
+			sortTypeList () {
+				return this.typeList.sort(by('sort'))
 			}
 		},
 		created() {
@@ -415,17 +417,12 @@
 							height 100px
 							.icon
 								flex 0 0 70px
-								background-size 46px
-								background-repeat no-repeat
-								background-position center
-								&.goldBean
-									background-image url('../assets/img/goldBean.png')
-								&.physics
-									background-image url('../assets/img/physics.png')
-								&.game
-									background-image url('../assets/img/game.png')
-								&.economics
-									background-image url('../assets/img/economics.png')
+								img
+									display block
+									margin 28px auto 0 auto
+									width 46px
+									height 46px
+									border-radius 23px
 							.text
 								padding 24px 0
 								.text-h

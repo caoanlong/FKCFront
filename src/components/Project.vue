@@ -5,17 +5,19 @@
 		<div class="wrapper" ref="projectWrapper">
 			<div ref="projectIn">
 				<div class="list vux-1px-b" v-for="item in list" :key="item._id">
-					<div class="mask">
-						<span class="time">截止时间：{{item.endTime|getdatefromtimestamp}}</span>
-					</div>
-					<img class="main-img" :src="__WEBIMGSERVERURL__ + item.imgUrl" v-if="item.imgUrl">
-					<img class="main-img" src="../../static/images/default.png" v-else>
+					<router-link tag="div" :to="{name: 'projectDetail', query: {id: item._id, title: $route.query.title}}">
+						<div class="mask">
+							<span class="time">截止时间：{{item.endTime|getdatefromtimestamp}}</span>
+						</div>
+						<img class="main-img" :src="__WEBIMGSERVERURL__ + item.imgUrl" v-if="item.imgUrl">
+						<img class="main-img" src="../../static/images/default.png" v-else>
+					</router-link>
 					<div class="content">
 						<p class="title" v-text="item.name"></p>
 						<div class="options">
 							<Options v-for="(option,i) in item.options" :data="option" :index="i" :selected="selectedOption" :key="option.content" @selectOption="selectOption"></Options>
 						</div>
-						<BettingBox :projectId="item._id.toString()" :selectOpt="selectedOption" :isShow="item.options.indexOf(selectedOption)>-1" @select="selectNum"></BettingBox>
+						<BettingBox :projectId="item._id.toString()" :selectOpt="selectedOption" :isShow="item.options&&item.options.includes(selectedOption)" @select="selectNum"></BettingBox>
 					</div>
 				</div>
 				<pullUpLoad :loadStatus="loadStatus"></pullUpLoad>
@@ -50,14 +52,15 @@
 		},
 		created() {
 			document.title = this.$route.query.title
-			
 			this.getProjectList()
+		},
+		mounted() {
 			window.addEventListener('scroll', (e) => {
 				this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop
 				this.clientHeight = document.documentElement.clientHeight || document.body.clientHeight
 				this.pageHeight = this.$refs.projectIn.offsetHeight
 				this.disY = this.pageHeight - this.clientHeight + 54
-				console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
+				// console.log(this.scrollTop, this.clientHeight, this.pageHeight, this.disY)
 				if (this.scrollTop == this.disY) {
 					if (this.pageIndex < this.pages) {
 						this.loadStatus = '正在加载...'
@@ -77,15 +80,16 @@
 					pageIndex: this.pageIndex
 				}
 				this.$http.get(URL,{params: params}).then((res) => {
+					// console.log(res.body.data.projectList)
 					this.pages = res.body.data.pages
 					this.list = this.list.concat(res.body.data.projectList)
 				})
 			},
 			getMemberInfo () {
-				let URL = this.__WEBSERVERURL__ + '/api/member/info';
+				let URL = this.__WEBSERVERURL__ + '/api/member/info'
 				this.$http.post(URL).then((res) => {
 					if (res.body.code == 0) {
-						console.log(JSON.stringify(res.body.data))
+						// console.log(JSON.stringify(res.body.data))
 						this.memberInfo = res.body.data;
 						this.$store.commit({
 							type: 'getMemberInfo',
@@ -105,7 +109,8 @@
 				this.selectedNum = data.content;
 			},
 			back () {
-				window.history.go(-1)
+				// window.history.go(-1)
+				this.$router.push({name: 'home'})
 			}
 		},
 		components: {

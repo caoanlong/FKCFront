@@ -5,18 +5,18 @@
 		<div class="wrapper">
 			<div class="myPrizeList vux-1px-b vux-1px-t" v-for="myPrize in myPrizeList">
 				<div class="waybill">
-					<div class="waybillNo">{{myPrize.waybillNo?'运单号：'+myPrize.waybillNo:''}}</div>
+					<div class="waybillNo">{{myPrize.waybillNo?'运单号：' + myPrize.waybillNo:''}}</div>
 					<div class="isSend" style="color: #1aad19" v-if="myPrize.isSend == '1'">已发货</div>
 					<div class="isSend" style="color: #999" v-else-if="myPrize.isSend == '2'">已完成</div>
 					<div class="isSend" style="color: #e64340" v-else>未发货</div>
 				</div>
-				<router-link tag="div" :to="{name: 'prizeDetail', query: {id: myPrize.prize._id}}" class="prize vux-1px-b vux-1px-t">
+				<router-link tag="div" :to="{name: 'prizeDetail', query: {id: myPrize.prize && myPrize.prize._id}}" class="prize vux-1px-b vux-1px-t">
 					<div class="prizeImg">
-						<img :src="__WEBIMGSERVERURL__ + myPrize.prize.prizeImg">
+						<img :src="__WEBIMGSERVERURL__ + (myPrize.prize && myPrize.prize.prizeImg)">
 					</div>
 					<div class="prizeInfo">
-						<div class="title">{{myPrize.prize.prizeName}}</div>
-						<div class="info">{{myPrize.prize.prizeInfo}}</div>
+						<div class="title">{{myPrize.prize && myPrize.prize.prizeName}}</div>
+						<div class="info">{{myPrize.prize && myPrize.prize.prizeInfo}}</div>
 					</div>
 				</router-link>
 				<div class="mobile" v-if="myPrize.mobile">
