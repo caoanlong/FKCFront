@@ -46,9 +46,9 @@
 				<div style="padding:15px;height:90%" v-html="protocol.content"></div>
 			</div>
 		</div>
-		<!-- <form  id="form" action="http://trans.palmf.cn/sdk/api/v1.0/cli/order_api/0" method="post">
+		<form  id="form" action="http://trans.palmf.cn/sdk/api/v1.0/cli/order_h5/0" method="post">
 			<input type="hidden" id="orderInfo" name="orderInfo" v-model="orderInfo">
-		</form> -->
+		</form>
 	</div>
 </template>
 <script>
@@ -92,8 +92,8 @@
 		showPayToast (goldBeanNum) {
 			this.showPay = true
 			this.payNum = goldBeanNum
-			this.params.pay_amount = goldBeanNum > 10000 ? (goldBeanNum/100 - 0.01) : goldBeanNum/100
-			this.params.pay_productname = goldBeanNum + '金豆'
+			// this.params.pay_amount = goldBeanNum > 10000 ? (goldBeanNum/100 - 0.01) : goldBeanNum/100
+			// this.params.pay_productname = goldBeanNum + '金豆'
 		},
 		buyGoldBean () {
 			let params = {
@@ -105,26 +105,26 @@
 				'body': '金豆',
 				'childAppid': '',
 				'clientIp': returnCitySN.cip,
-				'payChannelId': '2000000002', // 支付方式,
+				'payChannelId': this.isWeixin() ? '2000000002' : '', // 支付方式,
 				'notifyUrl': 'http://39.108.245.177:3000/api/notifyUtl',
 				'returnUrl': window.location.origin + '/#/GetGoldBean',
-				'type':'h5',
+				'type': this.isWeixin() ? 'api' : 'h5',
 				'openId': localStorage.getItem('openid')
 			}
 			let URL = this.__WEBSERVERURL__ + '/api/payOrder'
 			this.$http.post(URL, params).then(res => {
-				let extra = res.body.data.extra
-				// this.$vux.toast.text(extra,'middle')
-				this.$nextTick(() => {
-					this.callpay(JSON.parse(extra))
-				})
-				
-				// if (res.body.code == 0) {
-					// this.orderInfo = res.body.data
-					// this.$nextTick(() => {
-						// document.getElementById('form').submit()
-					// })
-				// }
+				let resData = res.body.data
+				if (this.isWeixin()) {
+					let extra = resData.extra
+					this.$nextTick(() => {
+						this.callpay(JSON.parse(extra))
+					})
+				} else {
+					this.orderInfo = resData
+					this.$nextTick(() => {
+						document.getElementById('form').submit()
+					})
+				}
 			})
 		},
 		callpay (data) {

@@ -26,7 +26,7 @@
 			class="betting-box vux-1px-t"
 			:projectId="projectDetail._id.toString()" 
 			:selectOpt="selectedOption" 
-			:isShow="projectDetail.options&&projectDetail.options.includes(selectedOption)" @select="selectNum">
+			:isShow="projectDetail.options && projectDetail.options.includes(selectedOption)" @select="selectNum">
 		</BettingBox>
 	</div>
 </template>
@@ -54,14 +54,16 @@
 				}
 				this.$http.get(URL,{params: params}).then((res) => {
 					this.projectDetail = res.body.data
+					this.selectedOption = res.body.data.options[0]
 					this.$route.meta.desc = this.projectDetail.name
 				})
 			},
 			selectOption (data) {
-				this.selectedOption = data;
+				console.log(data)
+				this.selectedOption = data
 			},
 			selectNum (data) {
-				this.selectedNum = data.content;
+				this.selectedNum = data.content
 			},
 			back () {
 				if (this.$route.query.title) {
@@ -131,7 +133,7 @@
 			.main-img
 				display block
 				width 100%
-				height 220px
+				height 180px
 			.content
 				width auto
 				padding 5px 15px
