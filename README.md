@@ -1,6 +1,6 @@
 # fkc
 
-> for fkc
+> 基于Vue.js Vuex Vue-resource Vue-router
 
 ## Build Setup
 
