@@ -1,7 +1,7 @@
 {
   "name": "fkc",
   "version": "1.0.0",
-  "description": "for fkc",
+  "description": "A Vue.js product for fkc",
   "author": "Caoanlong",
   "private": true,
   "scripts": {
